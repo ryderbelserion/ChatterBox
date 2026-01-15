@@ -1,0 +1,41 @@
+[versions]
+
+## Other
+bStats = "3.1.0" # https://github.com/Bastian/bStats
+fusion = "3.4.3" # https://github.com/ryderbelserion/Fusion
+
+## Gradle Plugins
+fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
+feather = "0.4.0" # https://github.com/ryderbelserion/Feather
+shadow = "9.3.0" # https://github.com/GradleUp/shadow
+
+# Databases
+hikari = "7.0.2" # https://github.com/brettwooldridge/HikariCP
+postgres = "42.7.8" # https://github.com/postgres/postgres
+
+[plugins]
+# https://github.com/mfnalex/gradle-fix-javadoc-plugin
+fix-javadoc = { id = "com.jeff-media.fix-javadoc-plugin", version.ref = "fix-javadoc" }
+
+[libraries]
+# https://github.com/ryderbelserion/Feather
+feather = { module = "com.ryderbelserion.feather.core:com.ryderbelserion.feather.core.gradle.plugin", version.ref = "feather" }
+
+# https://github.com/GradleUp/shadow
+shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
+
+# https://github.com/postgres/postgres
+postgres = { module = "'org.postgresql:postgresql", version.ref = "postgres" }
+
+# https://github.com/brettwooldridge/HikariCP
+hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
+
+# https://github.com/ryderbelserion/Fusion
+fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref = "fusion" }
+fusion-core = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref = "fusion" }
+
+[bundles]
+build = [
+    "feather",
+    "shadow"
+]
