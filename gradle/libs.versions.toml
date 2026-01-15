@@ -1,7 +1,8 @@
 [versions]
+## Hytale
+hytale = "1.0.0" # https://hytale.com
 
 ## Other
-bStats = "3.1.0" # https://github.com/Bastian/bStats
 fusion = "3.4.3" # https://github.com/ryderbelserion/Fusion
 
 ## Gradle Plugins
@@ -9,7 +10,7 @@ fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 feather = "0.4.0" # https://github.com/ryderbelserion/Feather
 shadow = "9.3.0" # https://github.com/GradleUp/shadow
 
-# Databases
+## Databases
 hikari = "7.0.2" # https://github.com/brettwooldridge/HikariCP
 postgres = "42.7.8" # https://github.com/postgres/postgres
 

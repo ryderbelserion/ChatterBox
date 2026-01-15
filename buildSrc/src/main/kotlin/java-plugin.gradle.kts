@@ -29,27 +29,4 @@ tasks {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(25)
     }
-
-    processResources {
-        filteringCharset = Charsets.UTF_8.name()
-
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-
-        inputs.properties(
-            "name" to rootProject.name,
-            "version" to rootProject.version,
-            "description" to rootProject.description.toString(),
-            "minecraft" to libs.findVersion("minecraft").get(),
-            "website" to "https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}",
-            "group" to project.group
-        )
-
-        with(copySpec {
-            include("*paper-plugin.yml", "*plugin.yml")
-
-            from("src/main/resources") {
-                expand(inputs.properties)
-            }
-        })
-    }
 }

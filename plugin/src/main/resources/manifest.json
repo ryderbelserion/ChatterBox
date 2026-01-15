@@ -1,0 +1,22 @@
+{
+  "Group": "${artifact}",
+  "Name": "${artifact}",
+  "Version": "${version}",
+  "Description": "${description}",
+  "Main": "${group}.${artifact}",
+  "Authors": [
+    {
+      "Name": "ryderbelserion",
+      "Email": "",
+      "Url": ""
+    }
+  ],
+  "Website": "ryderbelserion.com",
+  "ServerVersion": "*",
+  "Dependencies": {},
+  "OptionalDependencies": {},
+  "LoadBefore": {},
+  "DisabledByDefault": false,
+  "IncludesAssetPack": true,
+  "SubPlugins": []
+}
