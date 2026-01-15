@@ -1,5 +1,14 @@
+### Intellij
+.kotlin/
+.idea/
+!.idea/icon.png
+
+### Gradle
 .gradle
+build/
 
-.idea
+### Servers
+run/
 
-build
+### Output
+jars/
