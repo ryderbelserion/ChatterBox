@@ -76,7 +76,7 @@ public class ChatterBox extends JavaPlugin {
         final int count = this.fileManager.getFiles(folder, ".json", 1).size();
 
         try {
-            configuration.node("total_count").set(count);
+            configuration.node("player_count").set(count);
         } catch (final SerializationException exception) {
             throw new RuntimeException(exception);
         }

@@ -7,7 +7,6 @@ import com.ryderbelserion.chatterbox.api.objects.User;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -34,7 +33,11 @@ public class UserManager {
 
     public void init() {
         if (Files.notExists(this.path)) {
-            create(this.path);
+            try {
+                Files.createDirectory(this.path);
+            } catch (final IOException exception) {
+                this.logger.atWarning().log("Could not create %s directory.".formatted(this.path));
+            }
         }
     }
 
@@ -48,15 +51,17 @@ public class UserManager {
         final boolean hasPlayedBefore = Files.exists(file);
 
         if (!hasPlayedBefore) {
-            create(file);
+            try {
+                Files.createFile(file);
+            } catch (final IOException exception) {
+                this.logger.atWarning().log("Could not create %s directory.".formatted(file));
+            }
         }
 
-        this.fileManager.addFile(file, FileType.JSON, action -> { // always create this file first.
-            action.removeAction(FileAction.EXTRACT_FILE);
+        this.fileManager.addFile(file, FileType.JSON, action -> action.removeAction(FileAction.EXTRACT_FILE));
 
-            final JsonCustomFile customFile = (JsonCustomFile) action;
-
-            final BasicConfigurationNode configuration = customFile.getConfiguration();
+        this.fileManager.getJsonFile(file).ifPresent(action -> {
+            final BasicConfigurationNode configuration = action.getConfiguration();
 
             try {
                 configuration.node("display", "username").set(username);
@@ -74,7 +79,7 @@ public class UserManager {
                 throw new RuntimeException(exception);
             }
 
-            customFile.save();
+            action.save();
         });
 
         final User user = new User(uuid, username);
@@ -86,13 +91,5 @@ public class UserManager {
 
     public Optional<User> getUser(@NotNull final UUID uuid) {
         return Optional.of(this.users.get(uuid));
-    }
-
-    private void create(@NotNull final Path path) {
-        try {
-            Files.createDirectory(path);
-        } catch (final IOException exception) {
-            this.logger.atWarning().log("Could not create %s directory.".formatted(path));
-        }
     }
 }
