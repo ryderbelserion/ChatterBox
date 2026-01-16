@@ -1,12 +1,13 @@
 package com.ryderbelserion.chatterbox.api;
 
 import com.ryderbelserion.fusion.files.FileManager;
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractChatterBox<S> {
+public abstract class AbstractChatterBox<S, T> {
 
     public static final String namespace = "chatterbox";
 
@@ -45,6 +46,12 @@ public abstract class AbstractChatterBox<S> {
      */
     public void sendMessage(@NotNull final S sender, @NotNull final String component) {
         sendMessage(sender, component, new HashMap<>());
+    }
+
+    public abstract T getComponent(@NotNull final S sender, @NotNull final String component, @NotNull final Map<String, String> placeholders);
+
+    public T getComponent(@NotNull final S sender, @NotNull final String component) {
+        return getComponent(sender, component, new HashMap<>());
     }
 
     /**

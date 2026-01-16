@@ -19,12 +19,50 @@ root:
     join-message:
       # Should we override the join message?
       toggle: true
+      # Title Settings
+      title:
+        # Should it be a fancy title?
+        toggle: false
+        # The top text
+        header: "Player has joined!"
+        # The bottom text
+        footer: "{player}"
+        # Handles the delays
+        delay:
+          # How long should it show for?
+          duration: 5
+          # Handles the fade out
+          fade:
+            # How long should it take to fade out?
+            out: 1
+            # How long should it take to fade in?
+            in: 1
       # Available Placeholders: {player}, {prefix}, {suffix}
+      # If use-titles is true, this is the header.
       output: "<dark_gray>[<green>+</green>]</dark_gray> {player}"
+      # If use-titles is true, this is the footer.
+      footer: "{player}"
     # All settings related to the quit message
-    # This currently does not work, as there is no way to disable the existing quit message.
     quit-message:
       # Should we override the quit message?
       toggle: true
+      # Title Settings
+      title:
+        # Should it be a fancy title?
+        toggle: false
+        # The top text
+        header: "Player has quit!"
+        # The bottom text
+        footer: "{player}"
+        # Handles the delays
+        delay:
+          # How long should it show for?
+          duration: 5
+          # Handles the fade out
+          fade:
+            # How long should it take to fade out?
+            out: 1
+            # How long should it take to fade in?
+            in: 1
       # Available Placeholders: {player}, {prefix}, {suffix}
       output: "<dark_gray>[<red>-</red>]</dark_gray> {player}"

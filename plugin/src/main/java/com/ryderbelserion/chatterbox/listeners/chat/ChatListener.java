@@ -1,9 +1,7 @@
 package com.ryderbelserion.chatterbox.listeners.chat;
 
-import com.hypixel.hytale.common.plugin.PluginIdentifier;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
-import com.hypixel.hytale.server.core.plugin.PluginManager;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.rydderbelserion.chatterbox.common.enums.Configs;
 import com.ryderbelserion.chatterbox.api.enums.Support;
@@ -16,7 +14,6 @@ import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-
 import java.util.HashMap;
 import java.util.Map;
 

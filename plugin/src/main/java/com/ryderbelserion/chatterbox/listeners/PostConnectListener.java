@@ -2,16 +2,20 @@ package com.ryderbelserion.chatterbox.listeners;
 
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.HytaleServer;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.event.events.player.AddPlayerToWorldEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
+import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.util.EventTitleUtil;
 import com.rydderbelserion.chatterbox.common.enums.Configs;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
+import com.ryderbelserion.chatterbox.api.utils.StringUtils;
 import com.ryderbelserion.chatterbox.messages.MessageRegistry;
 import com.ryderbelserion.chatterbox.users.UserManager;
 import net.luckperms.api.LuckPerms;
@@ -26,6 +30,8 @@ import java.util.concurrent.TimeUnit;
 
 public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
+    private final static String default_message = "<dark_gray>[<green>+</green>]</dark_gray> {player}";
+
     private final ChatterBox instance = ChatterBox.getInstance();
 
     private final ChatterBoxPlatform plugin = this.instance.getPlugin();
@@ -38,7 +44,6 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
     public void init(final EventRegistry registry) {
         registry.register(getEvent(), event -> {
             final PlayerRef player = event.getPlayerRef();
-            final UUID uuid = player.getUuid();
             final String playerName = player.getUsername();
 
             this.userManager.addUser(player);
@@ -79,8 +84,6 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
             }
 
             if (config.node("root", "traffic", "join-message", "toggle").getBoolean(true)) {
-                final String output = config.node("root", "traffic", "join-message", "output").getString("<dark_gray>[<green>+</green>]</dark_gray> {player}");
-
                 final Map<String, String> placeholders = new HashMap<>();
 
                 placeholders.put("{player}", playerName);
@@ -99,8 +102,46 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
                     placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
                 }
 
-                for (final PlayerRef reference : Universe.get().getPlayers()) {
-                    this.plugin.sendMessage(reference, output, placeholders);
+                final CommentedConfigurationNode title = config.node("root", "traffic", "join-message", "title");
+
+                if (title.node("toggle").getBoolean(false)) {
+                    final Message header = this.plugin.getComponent(
+                            player,
+                            title.node("header").getString("Player has joined!"),
+                            placeholders
+                    );
+
+                    final Message footer = this.plugin.getComponent(
+                            player,
+                            title.node("footer").getString("{player}"),
+                            placeholders
+                    );
+
+                    final Universe universe = Universe.get();
+
+                    final int duration = title.node("delay", "duration").getInt(5);
+                    final int fadeIn = title.node("delay", "fade", "in").getInt(1);
+                    final int fadeOut = title.node("delay", "fade", "out").getInt(1);
+
+                    universe.getPlayers().forEach(reference -> {
+                        final UUID uuid = reference.getWorldUuid();
+
+                        if (uuid != null) {
+                            final World world = universe.getWorld(uuid);
+
+                            if (world != null) {
+                                world.execute(() -> EventTitleUtil.showEventTitleToPlayer(reference, header, footer, true, null, duration,
+                                        fadeIn,
+                                        fadeOut));
+                            }
+                        }
+                    });
+                } else {
+                    final CommentedConfigurationNode node = config.node("root", "traffic", "join-message", "output");
+
+                    final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
+
+                    Universe.get().sendMessage(this.plugin.getComponent(player, output, placeholders));
                 }
             }
         });

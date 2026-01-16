@@ -1,5 +1,6 @@
 package com.ryderbelserion.chatterbox.api;
 
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.rydderbelserion.chatterbox.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.api.utils.StringUtils;
@@ -11,7 +12,7 @@ import org.jspecify.annotations.NonNull;
 import java.nio.file.Path;
 import java.util.Map;
 
-public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver> {
+public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver, Message> {
 
     /**
      * Builds the plugin class
@@ -32,6 +33,11 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver> {
      */
     @Override
     public void sendMessage(@NonNull final IMessageReceiver sender, @NotNull final String component, @NotNull final Map<String, String> placeholders) {
-        sender.sendMessage(ColorUtils.toHytale(MiniMessage.miniMessage().deserialize(StringUtils.replacePlaceholders(component, placeholders))));
+        sender.sendMessage(getComponent(sender, component, placeholders));
+    }
+
+    @Override
+    public Message getComponent(@NonNull IMessageReceiver sender, @NotNull String component, @NotNull Map<String, String> placeholders) {
+        return ColorUtils.toHytale(MiniMessage.miniMessage().deserialize(StringUtils.replacePlaceholders(component, placeholders)));
     }
 }

@@ -1,7 +1,10 @@
 package com.ryderbelserion.chatterbox.api.utils;
 
+import com.ryderbelserion.fusion.files.FileException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.serialize.SerializationException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +24,16 @@ public class StringUtils {
         }
 
         return safeMessage;
+    }
+
+    public static @NotNull List<String> getStringList(@NotNull final CommentedConfigurationNode node, @NotNull final String defaultValue) {
+        try {
+            final List<String> list = node.getList(String.class);
+
+            return list != null ? list : List.of(defaultValue);
+        } catch (SerializationException exception) {
+            throw new FileException(String.format("Failed to serialize %s!", node.path()), exception);
+        }
     }
 
     public static @NotNull String toString(@NotNull final List<String> list) {

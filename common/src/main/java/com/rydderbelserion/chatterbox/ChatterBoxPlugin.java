@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public abstract class ChatterBoxPlugin<S> extends AbstractChatterBox<S> {
+public abstract class ChatterBoxPlugin<S, T> extends AbstractChatterBox<S, T> {
 
     /**
      * Builds the plugin class
