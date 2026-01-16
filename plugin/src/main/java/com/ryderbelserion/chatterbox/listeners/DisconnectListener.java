@@ -42,6 +42,8 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
             final CommentedConfigurationNode config = Configs.config.getYamlConfig();
 
+            String primaryGroup = "";
+
             if (config.node("root", "traffic", "quit-message", "toggle").getBoolean(true)) {
                 final Map<String, String> placeholders = new HashMap<>();
 
@@ -51,6 +53,8 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                     final LuckPerms luckperms = LuckPermsProvider.get();
 
                     final User user = luckperms.getPlayerAdapter(PlayerRef.class).getUser(player);
+
+                    primaryGroup = user.getPrimaryGroup().toLowerCase();
 
                     final CachedMetaData data = user.getCachedData().getMetaData();
 
@@ -63,7 +67,7 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
                 final Universe universe = Universe.get();
 
-                final CommentedConfigurationNode title = config.node("root", "traffic", "quit-message", "title");
+                final CommentedConfigurationNode title = primaryGroup.isBlank() ? config.node("root", "traffic", "quit-message", "title") : config.node("root", "traffic", "quit-message", "groups", primaryGroup, "title");
 
                 if (title.node("toggle").getBoolean(false)) {
                     final Message header = this.plugin.getComponent(
@@ -96,7 +100,7 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                         }
                     });
                 } else {
-                    final CommentedConfigurationNode node = config.node("root", "traffic", "quit-message", "output");
+                    final CommentedConfigurationNode node = primaryGroup.isBlank() ? config.node("root", "traffic", "quit-message", "output") : config.node("root", "traffic", "quit-message", "groups", primaryGroup, "output");
 
                     final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
 

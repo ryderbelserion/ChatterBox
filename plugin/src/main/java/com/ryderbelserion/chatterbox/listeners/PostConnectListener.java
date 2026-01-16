@@ -80,6 +80,8 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
                         () -> execute(player, this.messageRegistry.getMessage(Messages.message_of_the_day), placeholders, delay));
             }
 
+            String primaryGroup = "";
+
             if (config.node("root", "traffic", "join-message", "toggle").getBoolean(true)) {
                 final Map<String, String> placeholders = new HashMap<>();
 
@@ -90,6 +92,8 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
                     final User user = luckperms.getPlayerAdapter(PlayerRef.class).getUser(player);
 
+                    primaryGroup = user.getPrimaryGroup().toLowerCase();
+
                     final CachedMetaData data = user.getCachedData().getMetaData();
 
                     final String prefix = data.getPrefix();
@@ -99,7 +103,7 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
                     placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
                 }
 
-                final CommentedConfigurationNode title = config.node("root", "traffic", "join-message", "title");
+                final CommentedConfigurationNode title = primaryGroup.isBlank() ? config.node("root", "traffic", "join-message", "title") : config.node("root", "traffic", "join-message", "groups", primaryGroup, "title");
 
                 if (title.node("toggle").getBoolean(false)) {
                     final Message header = this.plugin.getComponent(
@@ -134,7 +138,7 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
                         }
                     });
                 } else {
-                    final CommentedConfigurationNode node = config.node("root", "traffic", "join-message", "output");
+                    final CommentedConfigurationNode node = primaryGroup.isBlank() ? config.node("root", "traffic", "join-message", "output") : config.node("root", "traffic", "join-message", "groups", primaryGroup, "output");
 
                     final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
 
