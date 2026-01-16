@@ -1,7 +1,7 @@
 rootProject.name = "ChatterBox"
 
 listOf(
-    "plugin" to "plugin",
+    "hytale" to "hytale",
 
     "common" to "common",
     "api" to "api"
