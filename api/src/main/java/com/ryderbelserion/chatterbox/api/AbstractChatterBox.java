@@ -48,8 +48,23 @@ public abstract class AbstractChatterBox<S, T> {
         sendMessage(sender, component, new HashMap<>());
     }
 
+    /**
+     * Builds a component
+     *
+     * @param sender the message receiver
+     * @param component the unparsed string
+     * @param placeholders map of placeholders
+     * @return {@link T}
+     */
     public abstract T getComponent(@NotNull final S sender, @NotNull final String component, @NotNull final Map<String, String> placeholders);
 
+    /**
+     * Builds a component
+     *
+     * @param sender the message receiver
+     * @param component the unparsed string
+     * @return {@link T}
+     */
     public T getComponent(@NotNull final S sender, @NotNull final String component) {
         return getComponent(sender, component, new HashMap<>());
     }

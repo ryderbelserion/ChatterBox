@@ -36,6 +36,14 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver, Messa
         sender.sendMessage(getComponent(sender, component, placeholders));
     }
 
+    /**
+     * Builds a component
+     *
+     * @param sender {@link IMessageReceiver}
+     * @param component {@link Component}
+     * @param placeholders a map of placeholders
+     * @return {@link Message}
+     */
     @Override
     public Message getComponent(@NonNull IMessageReceiver sender, @NotNull String component, @NotNull Map<String, String> placeholders) {
         return ColorUtils.toHytale(MiniMessage.miniMessage().deserialize(StringUtils.replacePlaceholders(component, placeholders)));
