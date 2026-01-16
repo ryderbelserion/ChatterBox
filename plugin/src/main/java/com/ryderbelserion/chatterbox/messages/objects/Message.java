@@ -7,7 +7,6 @@ import com.ryderbelserion.chatterbox.api.messages.objects.IMessage;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.ryderbelserion.chatterbox.api.utils.StringUtils;
 import com.ryderbelserion.fusion.files.FileException;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -43,7 +42,7 @@ public class Message implements IMessage<IMessageReceiver> {
             map.putIfAbsent("{prefix}", prefix);
         }
 
-        this.platform.sendMessage(player, MiniMessage.miniMessage().deserialize(StringUtils.replacePlaceholders(this.value, map)));
+        this.platform.sendMessage(player, this.value, map);
     }
 
     private @NotNull List<String> getStringList(@NotNull final CommentedConfigurationNode node) {

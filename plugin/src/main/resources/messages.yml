@@ -22,12 +22,6 @@ messages:
     no-permission: "{prefix}<red>You do not have permission to use that command!"
     # Available placeholders: {prefix}
     inventory-not-empty: "{prefix}<red>Inventory is not empty, Please clear up some room."
-  # Messages handling join/quit messages.
-  traffic:
-    # Available placeholders: {player}
-    join-message: " <dark_gray>[<green>+</green>]</dark_gray> {player}"
-    # Available placeholders: {player}
-    quit-message: " <dark_gray>[<red>-</red>]</dark_gray> {player}"
   # Available placeholders: {player}
   motd:
     - "<gray>------------------------------------"

@@ -2,7 +2,11 @@ package com.ryderbelserion.chatterbox.api;
 
 import com.ryderbelserion.fusion.files.FileManager;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.NotNull;
+
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class AbstractChatterBox<S> {
 
@@ -30,9 +34,20 @@ public abstract class AbstractChatterBox<S> {
      * Sends a message to the sender
      *
      * @param sender {@link S}
-     * @param component {@link Component}
+     * @param component {@link String}
+     * @param placeholders a map of placeholders
      */
-    public abstract void sendMessage(S sender, Component component);
+    public abstract void sendMessage(@NotNull final S sender, @NotNull final String component, @NotNull final Map<String, String> placeholders);
+
+    /**
+     * Sends a message to the sender
+     *
+     * @param sender {@link S}
+     * @param component {@link String}
+     */
+    public void sendMessage(@NotNull final S sender, @NotNull final String component) {
+        sendMessage(sender, component, new HashMap<>());
+    }
 
     /**
      * Start the mod

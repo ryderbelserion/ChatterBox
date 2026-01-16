@@ -9,6 +9,22 @@ root:
   # Settings related to the motd.
   motd:
     # Should the message of the day be sent?
+    # You can configure the output of these in messages.yml, or the locale folder.
     toggle: false
     # The time to wait in seconds before sending the message of the day.
     delay: 0
+  # All options related to join/quit events.
+  traffic:
+    # All settings related to the join message.
+    join-message:
+      # Should we override the join message?
+      toggle: true
+      # Available Placeholders: {player}
+      output: "<dark_gray>[<green>+</green>]</dark_gray> {player}"
+    # All settings related to the quit message
+    # This currently does not work, as there is no way to disable the existing quit message.
+    quit-message:
+      # Should we override the quit message?
+      toggle: true
+      # Available Placeholders: {player}
+      output: "<dark_gray>[<red>-</red>]</dark_gray> {player}"

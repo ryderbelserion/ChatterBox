@@ -91,6 +91,12 @@ public class UserManager implements IUserManager<PlayerRef, User> {
         this.users.put(uuid, user);
     }
 
+    public void removeUser(@NotNull final UUID uuid) {
+        this.fileManager.removeFile(this.userPath.resolve("%s.json".formatted(uuid)));
+
+        this.users.remove(uuid);
+    }
+
     @Override
     public Optional<User> getUser(@NotNull final UUID uuid) {
         return Optional.of(this.users.get(uuid));
