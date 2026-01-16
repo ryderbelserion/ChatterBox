@@ -31,8 +31,6 @@ public class ChatterBox extends JavaPlugin {
 
     @Override
     protected void start() {
-        super.start();
-
         this.plugin = new ChatterBoxPlatform(getDataDirectory(), getFile());
         this.plugin.init();
 
