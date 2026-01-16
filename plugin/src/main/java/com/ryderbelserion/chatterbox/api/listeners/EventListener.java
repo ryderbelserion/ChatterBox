@@ -1,4 +1,4 @@
-package com.ryderbelserion.chatterbox.api;
+package com.ryderbelserion.chatterbox.api.listeners;
 
 import com.hypixel.hytale.event.EventRegistry;
 

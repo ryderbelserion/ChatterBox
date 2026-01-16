@@ -3,7 +3,7 @@ package com.ryderbelserion.chatterbox.listeners;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
 import com.ryderbelserion.chatterbox.ChatterBox;
-import com.ryderbelserion.chatterbox.api.EventListener;
+import com.ryderbelserion.chatterbox.api.listeners.EventListener;
 import com.ryderbelserion.chatterbox.users.UserManager;
 
 public class PostConnectListener implements EventListener<PlayerConnectEvent> {
@@ -14,7 +14,9 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
     @Override
     public void init(final EventRegistry registry) {
-        registry.register(getEvent(), event -> this.userManager.addUser(event.getPlayerRef()));
+        registry.register(getEvent(), event -> {
+            this.userManager.addUser(event.getPlayerRef());
+        });
     }
 
     @Override

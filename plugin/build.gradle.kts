@@ -9,6 +9,8 @@ repositories {
 dependencies {
     implementation("com.ryderbelserion.fusion", "fusion-files", "3.4.3")
 
+    implementation(project(":chatterbox-api"))
+
     compileOnly(files(System.getenv("HYTALE_SERVER")))
 }
 

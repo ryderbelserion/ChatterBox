@@ -3,7 +3,10 @@ package com.ryderbelserion.chatterbox.users;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.ryderbelserion.chatterbox.ChatterBox;
+import com.ryderbelserion.chatterbox.api.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.api.enums.Configs;
 import com.ryderbelserion.chatterbox.api.objects.User;
+import com.ryderbelserion.chatterbox.api.users.IUserManager;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
@@ -15,38 +18,37 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class UserManager {
+public class UserManager implements IUserManager<PlayerRef, User> {
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final FileManager fileManager = this.instance.getFileManager();
+    private final HytaleLogger logger = this.instance.getLogger();
+
+    private final ChatterBoxPlugin plugin = this.instance.getPlugin();
+
+    private final FileManager fileManager = this.plugin.getFileManager();
+
+    private final Path userPath = this.plugin.getUserPath();
 
     private final Map<UUID, User> users = new HashMap<>();
 
-    private final HytaleLogger logger;
-    private final Path path;
-
-    public UserManager(@NotNull final Path path, @NotNull final HytaleLogger logger) {
-        this.path = path.resolve("users");
-        this.logger = logger;
-    }
-
     public void init() {
-        if (Files.notExists(this.path)) {
+        if (Files.notExists(this.userPath)) {
             try {
-                Files.createDirectory(this.path);
+                Files.createDirectory(this.userPath);
             } catch (final IOException exception) {
-                this.logger.atWarning().log("Could not create %s directory.".formatted(this.path));
+                this.logger.atWarning().log("Could not create %s directory.".formatted(this.userPath));
             }
         }
     }
 
+    @Override
     public void addUser(@NotNull final PlayerRef player) {
         final String username = player.getUsername();
-        final UUID uuid = player.getUuid();
         final String locale = player.getLanguage();
+        final UUID uuid = player.getUuid();
 
-        final Path file = this.path.resolve("%s.json".formatted(uuid));
+        final Path file = this.userPath.resolve("%s.json".formatted(uuid));
 
         final boolean hasPlayedBefore = Files.exists(file);
 
@@ -71,7 +73,7 @@ public class UserManager {
                 if (!hasPlayedBefore) {
                     configuration.node("creation", "date").set(Calendar.getInstance().getTimeInMillis());
 
-                    final BasicConfigurationNode server = com.ryderbelserion.chatterbox.api.enums.Files.server.getJsonConfig();
+                    final BasicConfigurationNode server = Configs.server.getJsonConfig();
 
                     configuration.node("creation", "number").set(server.node("player_count").getInt(0) + 1);
                 }
@@ -89,6 +91,7 @@ public class UserManager {
         this.users.put(uuid, user);
     }
 
+    @Override
     public Optional<User> getUser(@NotNull final UUID uuid) {
         return Optional.of(this.users.get(uuid));
     }

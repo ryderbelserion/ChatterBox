@@ -1,6 +1,7 @@
 package com.ryderbelserion.chatterbox.api.enums;
 
 import com.ryderbelserion.chatterbox.ChatterBox;
+import com.ryderbelserion.chatterbox.api.ChatterBoxPlugin;
 import com.ryderbelserion.fusion.files.FileException;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
@@ -11,20 +12,22 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.nio.file.Path;
 import java.util.Optional;
 
-public enum Files {
+public enum Configs {
+
+    config("config.yml"),
 
     server("server.json");
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final FileManager fileManager = this.instance.getFileManager();
+    private final ChatterBoxPlugin plugin = this.instance.getPlugin();
+
+    private final FileManager fileManager = this.plugin.getFileManager();
 
     private final Path path;
 
-    Files(@NotNull final String name) {
-        final Path directory = this.instance.getDataPath();
-
-        this.path = directory.resolve(name);
+    Configs(@NotNull final String name) {
+        this.path = this.plugin.getDataPath().resolve(name);
     }
 
     public @NotNull final BasicConfigurationNode getJsonConfig() {

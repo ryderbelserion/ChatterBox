@@ -1,7 +1,9 @@
 rootProject.name = "ChatterBox"
 
 listOf(
-    "plugin" to "plugin"
+    "plugin" to "plugin",
+
+    "api" to "api"
 ).forEach {
     includeProject(it)
 }
