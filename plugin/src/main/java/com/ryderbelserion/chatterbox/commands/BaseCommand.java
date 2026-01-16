@@ -9,5 +9,7 @@ public class BaseCommand extends AbstractCommandCollection {
         super("chatterbox", "The base command for ChatterBox");
 
         addSubCommand(new ReloadCommand());
+
+        requirePermission("chatterbox.command.use");
     }
 }
