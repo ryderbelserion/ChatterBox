@@ -7,16 +7,14 @@
   "Authors": [
     {
       "Name": "ryderbelserion",
-      "Email": "",
-      "Url": ""
+      "Email": "contact@ryderbelserion.com",
+      "Url": "ryderbelserion.com"
     }
   ],
-  "Website": "ryderbelserion.com",
+  "Website": "https://www.curseforge.com/hytale/mods/chatterbox",
   "ServerVersion": "*",
   "Dependencies": {},
   "OptionalDependencies": {},
-  "LoadBefore": {},
   "DisabledByDefault": false,
-  "IncludesAssetPack": true,
-  "SubPlugins": []
+  "IncludesAssetPack": true
 }

@@ -1,9 +1,10 @@
 package com.ryderbelserion.chatterbox.api;
 
 import com.ryderbelserion.fusion.files.FileManager;
+import net.kyori.adventure.text.Component;
 import java.nio.file.Path;
 
-public abstract class AbstractChatterBox {
+public abstract class AbstractChatterBox<S> {
 
     public static final String namespace = "chatterbox";
 
@@ -26,6 +27,14 @@ public abstract class AbstractChatterBox {
     }
 
     /**
+     * Sends a message to the sender
+     *
+     * @param sender {@link S}
+     * @param component {@link Component}
+     */
+    public abstract void sendMessage(S sender, Component component);
+
+    /**
      * Start the mod
      */
     public abstract void init();
@@ -41,6 +50,8 @@ public abstract class AbstractChatterBox {
      * @return the total amount of users
      */
     public abstract int getServerUsers();
+
+    public abstract Path getServerUsersFolder();
 
     public final FileManager getFileManager() {
         return this.fileManager;

@@ -1,18 +1,16 @@
 package com.ryderbelserion.chatterbox.messages;
 
-import com.hypixel.hytale.logger.HytaleLogger;
-import com.ryderbelserion.chatterbox.ChatterBox;
+import com.rydderbelserion.chatterbox.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.AbstractChatterBox;
-import com.ryderbelserion.chatterbox.api.AbstractKey;
-import com.ryderbelserion.chatterbox.api.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.messages.IMessageRegistry;
 import com.ryderbelserion.chatterbox.api.utils.StringUtils;
 import com.ryderbelserion.chatterbox.messages.objects.Message;
 import com.ryderbelserion.fusion.files.FileManager;
+import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-import java.awt.*;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
@@ -20,23 +18,19 @@ import java.util.Map;
 
 public class MessageRegistry implements IMessageRegistry<Message> {
 
-    private final ChatterBox instance = ChatterBox.getInstance();
-
-    private final HytaleLogger logger = this.instance.getLogger();
-
-    private final ChatterBoxPlugin plugin = this.instance.getPlugin();
+    private final ChatterBoxPlugin plugin = (ChatterBoxPlugin) ChatterBoxProvider.getInstance();
 
     private final FileManager fileManager = this.plugin.getFileManager();
 
     private final Path path = this.plugin.getDataPath();
 
-    private final Map<AbstractKey, Map<AbstractKey, Message>> messages = new HashMap<>();
+    private final Map<Key, Map<Key, Message>> messages = new HashMap<>();
 
     @Override
-    public void addMessage(@NotNull final AbstractKey locale, @NotNull final AbstractKey key, @NotNull final Message message) {
-        this.logger.atInfo().log("Registering the message @ %s for %s", locale.asString(), key.asString());
+    public void addMessage(@NotNull final Key locale, @NotNull final Key key, @NotNull final Message message) {
+        //this.logger.atInfo().log("Registering the message @ %s for %s", locale.asString(), key.asString());
 
-        final Map<AbstractKey, Message> keys = this.messages.getOrDefault(locale, new HashMap<>());
+        final Map<Key, Message> keys = this.messages.getOrDefault(locale, new HashMap<>());
 
         keys.put(key, message);
 
@@ -44,17 +38,17 @@ public class MessageRegistry implements IMessageRegistry<Message> {
     }
 
     @Override
-    public void removeMessage(@NotNull final AbstractKey key) {
+    public void removeMessage(@NotNull final Key key) {
         this.messages.remove(key);
     }
 
     @Override
-    public Message getMessageByLocale(@NotNull final AbstractKey locale, @NotNull final AbstractKey key) {
+    public Message getMessageByLocale(@NotNull final Key locale, @NotNull final Key key) {
         return this.messages.getOrDefault(locale, this.messages.get(Messages.default_locale)).get(key);
     }
 
     @Override
-    public Message getMessage(@NotNull final AbstractKey key) {
+    public Message getMessage(@NotNull final Key key) {
         return this.messages.get(Messages.default_locale).get(key);
     }
 
@@ -70,7 +64,7 @@ public class MessageRegistry implements IMessageRegistry<Message> {
             this.fileManager.getYamlFile(path).ifPresentOrElse(file -> {
                 final String fileName = file.getFileName();
 
-                final AbstractKey key = AbstractKey.key(AbstractChatterBox.namespace, fileName.equalsIgnoreCase("messages.yml") ? "default" : fileName.toLowerCase());
+                final Key key = Key.key(AbstractChatterBox.namespace, fileName.equalsIgnoreCase("messages.yml") ? "default" : fileName.toLowerCase());
 
                 final CommentedConfigurationNode configuration = file.getConfiguration();
 
@@ -88,7 +82,9 @@ public class MessageRegistry implements IMessageRegistry<Message> {
                         "<green>You can change this message in the messages.yml or the locale folder.",
                         "<gray>------------------------------------"
                 )), "messages", "motd"));
-            }, () -> this.logger.atWarning().log("Path %s not found in cache.".formatted(path)));
+            }, () -> {
+                //this.logger.atWarning().log("Path %s not found in cache.".formatted(path))
+            });
         }
     }
 }

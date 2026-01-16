@@ -2,9 +2,9 @@ package com.ryderbelserion.chatterbox.users;
 
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.rydderbelserion.chatterbox.ChatterBoxPlugin;
+import com.rydderbelserion.chatterbox.common.enums.Configs;
 import com.ryderbelserion.chatterbox.ChatterBox;
-import com.ryderbelserion.chatterbox.api.ChatterBoxPlugin;
-import com.ryderbelserion.chatterbox.api.enums.Configs;
 import com.ryderbelserion.chatterbox.users.objects.User;
 import com.ryderbelserion.chatterbox.api.users.IUserManager;
 import com.ryderbelserion.fusion.files.FileManager;

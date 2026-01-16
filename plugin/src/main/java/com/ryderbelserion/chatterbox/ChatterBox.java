@@ -3,9 +3,10 @@ package com.ryderbelserion.chatterbox;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
-import com.ryderbelserion.chatterbox.api.ChatterBoxPlugin;
-import com.ryderbelserion.chatterbox.commands.ReloadCommand;
+import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.listeners.PostConnectListener;
+import com.ryderbelserion.chatterbox.listeners.chat.ChatListener;
 import com.ryderbelserion.chatterbox.messages.MessageRegistry;
 import com.ryderbelserion.chatterbox.users.UserManager;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
@@ -23,7 +24,7 @@ public class ChatterBox extends JavaPlugin {
         instance = this;
     }
 
-    private ChatterBoxPlugin plugin;
+    private ChatterBoxPlatform plugin;
     private MessageRegistry messageRegistry;
     private UserManager userManager;
 
@@ -31,7 +32,7 @@ public class ChatterBox extends JavaPlugin {
     protected void setup() {
         super.setup();
 
-        this.plugin = new ChatterBoxPlugin(getDataDirectory(), getFile());
+        this.plugin = new ChatterBoxPlatform(getDataDirectory(), getFile());
         this.plugin.init();
 
         this.messageRegistry = new MessageRegistry();
@@ -43,10 +44,13 @@ public class ChatterBox extends JavaPlugin {
         final EventRegistry registry = getEventRegistry();
 
         List.of(
-                new PostConnectListener()
+                new PostConnectListener(),
+
+                // chat listeners
+                new ChatListener()
         ).forEach(listener -> listener.init(registry));
 
-        getCommandRegistry().registerCommand(new ReloadCommand());
+        getCommandRegistry().registerCommand(new BaseCommand());
     }
 
     public void reload() {
@@ -55,7 +59,7 @@ public class ChatterBox extends JavaPlugin {
         this.messageRegistry.init();
     }
 
-    public @NotNull final ChatterBoxPlugin getPlugin() {
+    public @NotNull final ChatterBoxPlatform getPlugin() {
         return this.plugin;
     }
 

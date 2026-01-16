@@ -1,4 +1,4 @@
-package com.ryderbelserion.chatterbox.commands;
+package com.ryderbelserion.chatterbox.commands.subs;
 
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.CommandSender;
@@ -15,7 +15,9 @@ public class ReloadCommand extends CommandBase {
     private final MessageRegistry registry = this.instance.getMessageRegistry();
 
     public ReloadCommand() {
-        super("chatterbox", "Reloads the plugin", false);
+        super("reload", "Reloads the plugin", false);
+
+        requirePermission("chatterbox.command.reload");
     }
 
     @Override
@@ -27,7 +29,6 @@ public class ReloadCommand extends CommandBase {
 
             return;
         }
-
 
         this.instance.reload();
 

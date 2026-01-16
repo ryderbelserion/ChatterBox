@@ -1,7 +1,7 @@
-package com.ryderbelserion.chatterbox.api.enums;
+package com.rydderbelserion.chatterbox.common.enums;
 
-import com.ryderbelserion.chatterbox.ChatterBox;
-import com.ryderbelserion.chatterbox.api.ChatterBoxPlugin;
+import com.rydderbelserion.chatterbox.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.ChatterBoxProvider;
 import com.ryderbelserion.fusion.files.FileException;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
@@ -15,12 +15,11 @@ import java.util.Optional;
 public enum Configs {
 
     config("config.yml"),
+    chat("chat.yml"),
 
     server("server.json");
 
-    private final ChatterBox instance = ChatterBox.getInstance();
-
-    private final ChatterBoxPlugin plugin = this.instance.getPlugin();
+    private final ChatterBoxPlugin plugin = (ChatterBoxPlugin) ChatterBoxProvider.getInstance();
 
     private final FileManager fileManager = this.plugin.getFileManager();
 

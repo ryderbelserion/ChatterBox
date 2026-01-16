@@ -1,7 +1,8 @@
-package com.ryderbelserion.chatterbox.api;
+package com.rydderbelserion.chatterbox;
 
-import com.hypixel.hytale.server.core.universe.Universe;
-import com.ryderbelserion.chatterbox.api.enums.Configs;
+import com.rydderbelserion.chatterbox.common.enums.Configs;
+import com.ryderbelserion.chatterbox.ChatterBoxProvider;
+import com.ryderbelserion.chatterbox.api.AbstractChatterBox;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
 import org.spongepowered.configurate.BasicConfigurationNode;
@@ -11,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class ChatterBoxPlugin extends AbstractChatterBox {
+public abstract class ChatterBoxPlugin<S> extends AbstractChatterBox<S> {
 
     /**
      * Builds the plugin class
@@ -25,6 +26,8 @@ public class ChatterBoxPlugin extends AbstractChatterBox {
 
     @Override
     public void init() {
+        ChatterBoxProvider.register(this);
+
         final Path dataPath = getDataPath();
 
         if (Files.notExists(dataPath)) {
@@ -39,7 +42,8 @@ public class ChatterBoxPlugin extends AbstractChatterBox {
                 "server.json",
 
                 "messages.yml",
-                "config.yml"
+                "config.yml",
+                "chat.yml"
         ).forEach(file -> {
             final String extension = file.split("\\.")[1];
 
@@ -76,6 +80,6 @@ public class ChatterBoxPlugin extends AbstractChatterBox {
 
     @Override
     public final int getServerUsers() {
-        return this.fileManager.getFiles(Universe.get().getPath(), "json", 1).size();
+        return this.fileManager.getFiles(getServerUsersFolder(), "json", 1).size();
     }
 }

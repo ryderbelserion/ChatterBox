@@ -1,21 +1,25 @@
 package com.ryderbelserion.chatterbox.messages.objects;
 
-import com.hypixel.hytale.server.core.command.system.CommandSender;
-import com.hypixel.hytale.server.core.universe.PlayerRef;
-import com.ryderbelserion.chatterbox.api.enums.Configs;
+import com.rydderbelserion.chatterbox.common.enums.Configs;
+import com.ryderbelserion.chatterbox.ChatterBox;
+import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.messages.objects.IMessage;
+import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.ryderbelserion.chatterbox.api.utils.StringUtils;
-import com.ryderbelserion.chatterbox.utils.ColorUtils;
 import com.ryderbelserion.fusion.files.FileException;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Message implements IMessage<PlayerRef, CommandSender> {
+public class Message implements IMessage<IMessageReceiver> {
+
+    private final ChatterBox instance = ChatterBox.getInstance();
+
+    private final ChatterBoxPlatform platform = this.instance.getPlugin();
 
     private final CommentedConfigurationNode customFile = Configs.config.getYamlConfig();
     private final String defaultValue;
@@ -30,7 +34,7 @@ public class Message implements IMessage<PlayerRef, CommandSender> {
     }
 
     @Override
-    public void sendPlayer(@NonNull final PlayerRef player, @NotNull final Map<String, String> placeholders) {
+    public void send(@NotNull final IMessageReceiver player, @NotNull final Map<String, String> placeholders) {
         final Map<String, String> map = new HashMap<>(placeholders);
 
         final String prefix = this.customFile.node("root", "prefix").getString(" <gold>ChatterBox <reset>");
@@ -39,20 +43,7 @@ public class Message implements IMessage<PlayerRef, CommandSender> {
             map.putIfAbsent("{prefix}", prefix);
         }
 
-        player.sendMessage(ColorUtils.parse(StringUtils.replacePlaceholders(this.value, map)));
-    }
-
-    @Override
-    public void send(@NonNull final CommandSender player, @NotNull final Map<String, String> placeholders) {
-        final Map<String, String> map = new HashMap<>(placeholders);
-
-        final String prefix = this.customFile.node("root", "prefix").getString(" <gold>ChatterBox <reset>");
-
-        if (!prefix.isEmpty()) {
-            map.putIfAbsent("{prefix}", prefix);
-        }
-
-        player.sendMessage(ColorUtils.parse(StringUtils.replacePlaceholders(this.value, map)));
+        this.platform.sendMessage(player, MiniMessage.miniMessage().deserialize(StringUtils.replacePlaceholders(this.value, map)));
     }
 
     private @NotNull List<String> getStringList(@NotNull final CommentedConfigurationNode node) {
