@@ -6,7 +6,7 @@ hytale = "1.0.0" # https://hytale.com
 adventure = "4.26.1" # https://github.com/KyoriPowered/adventure
 
 ## Other
-fusion = "3.4.3" # https://github.com/ryderbelserion/Fusion
+fusion = "3.4.4" # https://github.com/ryderbelserion/Fusion
 
 ## Gradle Plugins
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
