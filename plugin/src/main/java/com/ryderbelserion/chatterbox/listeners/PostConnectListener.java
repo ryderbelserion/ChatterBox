@@ -3,21 +3,25 @@ package com.ryderbelserion.chatterbox.listeners;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.event.events.player.AddPlayerToWorldEvent;
-import com.hypixel.hytale.server.core.event.events.player.DrainPlayerFromWorldEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
-import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
-import com.hypixel.hytale.server.core.universe.world.World;
 import com.rydderbelserion.chatterbox.common.enums.Configs;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
 import com.ryderbelserion.chatterbox.messages.MessageRegistry;
 import com.ryderbelserion.chatterbox.users.UserManager;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.cacheddata.CachedMetaData;
+import net.luckperms.api.model.user.User;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class PostConnectListener implements EventListener<PlayerConnectEvent> {
@@ -34,17 +38,32 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
     public void init(final EventRegistry registry) {
         registry.register(getEvent(), event -> {
             final PlayerRef player = event.getPlayerRef();
+            final UUID uuid = player.getUuid();
             final String playerName = player.getUsername();
 
             this.userManager.addUser(player);
 
             final CommentedConfigurationNode config = Configs.config.getYamlConfig();
 
-            final Map<String, String> placeholders = Map.of(
-                    "{player}", playerName
-            );
-
             if (config.node("root", "motd", "toggle").getBoolean(false)) {
+                final Map<String, String> placeholders = new HashMap<>();
+
+                placeholders.put("{player}", playerName);
+
+                if (Support.luckperms.isEnabled()) {
+                    final LuckPerms luckperms = LuckPermsProvider.get();
+
+                    final User user = luckperms.getPlayerAdapter(PlayerRef.class).getUser(player);
+
+                    final CachedMetaData data = user.getCachedData().getMetaData();
+
+                    final String prefix = data.getPrefix();
+                    final String suffix = data.getSuffix();
+
+                    placeholders.put("{prefix}", prefix == null ? "N/A" : prefix);
+                    placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
+                }
+
                 final int delay = config.node("root", "motd", "delay").getInt(0);
 
                 if (delay > 0) {
@@ -61,6 +80,24 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
             if (config.node("root", "traffic", "join-message", "toggle").getBoolean(true)) {
                 final String output = config.node("root", "traffic", "join-message", "output").getString("<dark_gray>[<green>+</green>]</dark_gray> {player}");
+
+                final Map<String, String> placeholders = new HashMap<>();
+
+                placeholders.put("{player}", playerName);
+
+                if (Support.luckperms.isEnabled()) {
+                    final LuckPerms luckperms = LuckPermsProvider.get();
+
+                    final User user = luckperms.getPlayerAdapter(PlayerRef.class).getUser(player);
+
+                    final CachedMetaData data = user.getCachedData().getMetaData();
+
+                    final String prefix = data.getPrefix();
+                    final String suffix = data.getSuffix();
+
+                    placeholders.put("{prefix}", prefix == null ? "N/A" : prefix);
+                    placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
+                }
 
                 for (final PlayerRef reference : Universe.get().getPlayers()) {
                     this.plugin.sendMessage(reference, output, placeholders);

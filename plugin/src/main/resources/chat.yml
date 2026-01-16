@@ -12,5 +12,5 @@ chat:
     toggle: true
     # The default format, if no per group formats are found.
     #
-    # A list of available placeholders: {player}
+    # A list of available placeholders: {player}, {prefix}, {suffix}
     default: "{player} <gold>-> <reset>{message}"

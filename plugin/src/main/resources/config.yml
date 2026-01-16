@@ -19,12 +19,12 @@ root:
     join-message:
       # Should we override the join message?
       toggle: true
-      # Available Placeholders: {player}
+      # Available Placeholders: {player}, {prefix}, {suffix}
       output: "<dark_gray>[<green>+</green>]</dark_gray> {player}"
     # All settings related to the quit message
     # This currently does not work, as there is no way to disable the existing quit message.
     quit-message:
       # Should we override the quit message?
       toggle: true
-      # Available Placeholders: {player}
+      # Available Placeholders: {player}, {prefix}, {suffix}
       output: "<dark_gray>[<red>-</red>]</dark_gray> {player}"

@@ -1,7 +1,6 @@
 package com.ryderbelserion.chatterbox.api;
 
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
-import com.hypixel.hytale.server.core.universe.Universe;
 import com.rydderbelserion.chatterbox.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.api.utils.StringUtils;
 import com.ryderbelserion.chatterbox.utils.ColorUtils;
@@ -34,10 +33,5 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver> {
     @Override
     public void sendMessage(@NonNull final IMessageReceiver sender, @NotNull final String component, @NotNull final Map<String, String> placeholders) {
         sender.sendMessage(ColorUtils.toHytale(MiniMessage.miniMessage().deserialize(StringUtils.replacePlaceholders(component, placeholders))));
-    }
-
-    @Override
-    public Path getServerUsersFolder() {
-        return Universe.get().getPath();
     }
 }

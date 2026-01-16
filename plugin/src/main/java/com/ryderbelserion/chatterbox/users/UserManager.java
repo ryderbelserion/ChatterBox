@@ -72,10 +72,6 @@ public class UserManager implements IUserManager<PlayerRef, User> {
 
                 if (!hasPlayedBefore) {
                     configuration.node("creation", "date").set(Calendar.getInstance().getTimeInMillis());
-
-                    final BasicConfigurationNode server = Configs.server.getJsonConfig();
-
-                    configuration.node("creation", "number").set(server.node("player_count").getInt(0) + 1);
                 }
             } catch (final SerializationException exception) {
                 throw new RuntimeException(exception);

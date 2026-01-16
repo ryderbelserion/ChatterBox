@@ -1,12 +1,8 @@
 package com.rydderbelserion.chatterbox;
 
-import com.rydderbelserion.chatterbox.common.enums.Configs;
 import com.ryderbelserion.chatterbox.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.AbstractChatterBox;
 import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
-import org.spongepowered.configurate.BasicConfigurationNode;
-import org.spongepowered.configurate.serialize.SerializationException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -59,27 +55,10 @@ public abstract class ChatterBoxPlugin<S> extends AbstractChatterBox<S> {
         });
 
         this.fileManager.addFolder(this.dataPath.resolve("locale"), FileType.YAML);
-
-        final JsonCustomFile customFile = Configs.server.getJsonCustomFile();
-
-        final BasicConfigurationNode configuration = Configs.server.getJsonConfig();
-
-        try {
-            configuration.node("player_count").set(getServerUsers());
-        } catch (final SerializationException exception) {
-            throw new RuntimeException(exception);
-        }
-
-        customFile.save();
     }
 
     @Override
     public void reload() {
         this.fileManager.refresh(false).addFolder(this.dataPath.resolve("locale"), FileType.YAML);
-    }
-
-    @Override
-    public final int getServerUsers() {
-        return this.fileManager.getFiles(getServerUsersFolder(), "json", 1).size();
     }
 }

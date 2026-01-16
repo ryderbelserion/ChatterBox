@@ -1,9 +1,7 @@
 package com.ryderbelserion.chatterbox.api;
 
 import com.ryderbelserion.fusion.files.FileManager;
-import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
-
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,15 +56,6 @@ public abstract class AbstractChatterBox<S> {
      * Reloads the mod
      */
     public abstract void reload();
-
-    /**
-     * Gets the total amount of users in the universe's world folder
-     *
-     * @return the total amount of users
-     */
-    public abstract int getServerUsers();
-
-    public abstract Path getServerUsersFolder();
 
     public final FileManager getFileManager() {
         return this.fileManager;
