@@ -2,6 +2,9 @@
 ## Hytale
 hytale = "1.0.0" # https://hytale.com
 
+## Kyori
+adventure = "4.26.1" # https://github.com/KyoriPowered/adventure
+
 ## Other
 fusion = "3.4.3" # https://github.com/ryderbelserion/Fusion
 
@@ -13,6 +16,8 @@ shadow = "9.3.0" # https://github.com/GradleUp/shadow
 ## Databases
 hikari = "7.0.2" # https://github.com/brettwooldridge/HikariCP
 postgres = "42.7.8" # https://github.com/postgres/postgres
+
+luckperms = "5.4" # https://github.com/LuckPerms/LuckPerms
 
 [plugins]
 # https://github.com/mfnalex/gradle-fix-javadoc-plugin
@@ -33,9 +38,24 @@ hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 
 # https://github.com/ryderbelserion/Fusion
 fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref = "fusion" }
+fusion-files = { module = "com.ryderbelserion.fusion:fusion-files", version.ref = "fusion" }
 fusion-core = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref = "fusion" }
 
+# https://github.com/KyoriPowered/adventure
+kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
+kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
+kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
+
+# https://github.com/LuckPerms/LuckPerms
+luckperms = { module = "net.luckperms:api", version.ref = "luckperms" }
+
 [bundles]
+kyori = [
+    "kyori-logger",
+    "kyori-text",
+    "kyori-api"
+]
+
 build = [
     "feather",
     "shadow"

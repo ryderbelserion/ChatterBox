@@ -7,11 +7,14 @@ repositories {
 }
 
 dependencies {
-    implementation("com.ryderbelserion.fusion", "fusion-files", "3.4.3")
-
-    implementation(project(":chatterbox-api"))
-
     compileOnly(files(System.getenv("HYTALE_SERVER")))
+
+    implementation(project(":chatterbox-common"))
+
+    implementation(libs.bundles.kyori)
+    implementation(libs.fusion.files)
+
+    compileOnly(libs.luckperms)
 }
 
 tasks {
@@ -20,6 +23,8 @@ tasks {
         archiveClassifier.set("")
 
         destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
+
+        relocate("net.kyori.adventure", "com.ryderbelserion.chatterbox.libs.adventure")
     }
 
     processResources {

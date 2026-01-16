@@ -3,5 +3,6 @@ plugins {
 }
 
 dependencies {
-    compileOnly("com.ryderbelserion.fusion", "fusion-files", "3.4.3")
+    compileOnly(libs.bundles.kyori)
+    compileOnly(libs.fusion.files)
 }
