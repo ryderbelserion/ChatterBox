@@ -1,9 +1,11 @@
 package com.ryderbelserion.chatterbox.listeners.chat;
 
 import com.hypixel.hytale.event.EventRegistry;
+import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.rydderbelserion.chatterbox.common.enums.Configs;
+import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
 import com.ryderbelserion.chatterbox.api.utils.StringUtils;
@@ -19,13 +21,18 @@ import java.util.Map;
 
 public class ChatListener implements EventListener<PlayerChatEvent> {
 
+
+    private final ChatterBox plugin = ChatterBox.getInstance();
+
+    private final HytaleLogger logger = this.plugin.getLogger();
+
     @Override
     public void init(final EventRegistry registry) {
         registry.registerGlobal(PlayerChatEvent.class, event -> {
             final CommentedConfigurationNode config = Configs.chat.getYamlConfig();
 
             if (config.node("chat", "format", "toggle").getBoolean(true)) {
-                final String format = config.node("chat", "format", "default").getString("{player} <gold>-> <reset>{message}");
+                String format = config.node("chat", "format", "default").getString("{player} <gold>-> <reset>{message}");
 
                 final Map<String, String> placeholders = new HashMap<>();
 
@@ -39,6 +46,14 @@ public class ChatListener implements EventListener<PlayerChatEvent> {
 
                     final User user = luckperms.getPlayerAdapter(PlayerRef.class).getUser(player);
 
+                    final String primaryGroup = user.getPrimaryGroup();
+
+                    final String group = config.node("chat", "format", "groups", primaryGroup.toLowerCase()).getString("");
+
+                    if (!group.isBlank()) {
+                        format = group;
+                    }
+
                     final CachedMetaData data = user.getCachedData().getMetaData();
 
                     final String prefix = data.getPrefix();
@@ -48,7 +63,9 @@ public class ChatListener implements EventListener<PlayerChatEvent> {
                     placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
                 }
 
-                event.setFormatter((_, _) -> ColorUtils.toHytale(MiniMessage.miniMessage().deserialize(StringUtils.replacePlaceholders(format, placeholders))));
+                final String safeFormat = format;
+
+                event.setFormatter((_, _) -> ColorUtils.toHytale(MiniMessage.miniMessage().deserialize(StringUtils.replacePlaceholders(safeFormat, placeholders))));
             }
         });
     }

@@ -14,3 +14,9 @@ chat:
     #
     # A list of available placeholders: {player}, {prefix}, {suffix}
     default: "{player} <gold>-> <reset>{message}"
+    # Per group formats (requires LuckPerms as we check the group name)
+    groups:
+      # The name of the group must match the "group" in LuckPerms
+      owner: "{player} <red>-> <reset>{message}"
+      # The name of the group must match the "group" in LuckPerms
+      traveler: "{player} <green>-> <reset>{message}"
