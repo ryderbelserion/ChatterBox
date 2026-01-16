@@ -61,6 +61,8 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                     placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
                 }
 
+                final Universe universe = Universe.get();
+
                 final CommentedConfigurationNode title = config.node("root", "traffic", "quit-message", "title");
 
                 if (title.node("toggle").getBoolean(false)) {
@@ -75,8 +77,6 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                             title.node("footer").getString("{player}"),
                             placeholders
                     );
-
-                    final Universe universe = Universe.get();
 
                     final int duration = title.node("delay", "duration").getInt(5);
                     final int fadeIn = title.node("delay", "fade", "in").getInt(1);
@@ -100,7 +100,7 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
                     final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
 
-                    Universe.get().sendMessage(this.plugin.getComponent(player, output, placeholders));
+                    universe.sendMessage(this.plugin.getComponent(player, output, placeholders));
                 }
             }
         });
