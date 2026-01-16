@@ -1,11 +1,9 @@
 package com.ryderbelserion.chatterbox.listeners.chat;
 
 import com.hypixel.hytale.event.EventRegistry;
-import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.rydderbelserion.chatterbox.common.enums.Configs;
-import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
 import com.ryderbelserion.chatterbox.api.utils.StringUtils;
@@ -20,11 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChatListener implements EventListener<PlayerChatEvent> {
-
-
-    private final ChatterBox plugin = ChatterBox.getInstance();
-
-    private final HytaleLogger logger = this.plugin.getLogger();
 
     @Override
     public void init(final EventRegistry registry) {
