@@ -55,10 +55,10 @@ public class MotdCommand extends CommandBase {
             }
 
             this.userManager.getUser(player.getUuid()).ifPresentOrElse(user -> user.sendMessage(Messages.message_of_the_day), () -> this.registry.getMessage(Messages.message_of_the_day).send(sender));
-        } else {
-            this.registry.getMessage(Messages.message_of_the_day).send(sender, placeholders);
+
+            return;
         }
 
-        this.instance.reload();
+        this.registry.getMessage(Messages.message_of_the_day).send(sender, placeholders);
     }
 }
