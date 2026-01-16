@@ -14,7 +14,9 @@
   "Website": "https://www.curseforge.com/hytale/mods/chatterbox",
   "ServerVersion": "*",
   "Dependencies": {},
-  "OptionalDependencies": {},
+  "OptionalDependencies": {
+    "LuckPerms:LuckPerms": "*"
+  },
   "DisabledByDefault": false,
-  "IncludesAssetPack": true
+  "IncludesAssetPack": false
 }
