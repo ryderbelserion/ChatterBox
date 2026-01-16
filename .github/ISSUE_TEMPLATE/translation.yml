@@ -1,0 +1,21 @@
+name: "💡 Locale Translation"
+description: "If you have a translation you wish to be added."
+labels: [ "type: translation" ]
+
+assignees:
+  - ryderbelserion
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please share the translation of the messages.yml through https://bin.bloom.host
+
+  - type: textarea
+    id: translation
+    attributes:
+      label: Translation
+      description: "What language is the translation in?"
+      placeholder: "The translation file, and what language it is in."
+    validations:
+      required: true

@@ -5,6 +5,7 @@ import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.event.events.player.AddPlayerToWorldEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
+import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -22,9 +23,11 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -71,16 +74,10 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
                 final int delay = config.node("root", "motd", "delay").getInt(0);
 
-                if (delay > 0) {
-                    HytaleServer.SCHEDULED_EXECUTOR.schedule(
-                            () -> this.messageRegistry.getMessage(Messages.message_of_the_day).send(player, placeholders),
-                            delay, TimeUnit.SECONDS
-                    );
+                final Optional<com.ryderbelserion.chatterbox.users.objects.User> chattyUser = this.userManager.getUser(player.getUuid());
 
-                    return;
-                }
-
-                this.messageRegistry.getMessage(Messages.message_of_the_day).send(player, placeholders);
+                chattyUser.ifPresentOrElse(action -> execute(player, action.getComponent(Messages.message_of_the_day), placeholders, delay),
+                        () -> execute(player, this.messageRegistry.getMessage(Messages.message_of_the_day), placeholders, delay));
             }
 
             if (config.node("root", "traffic", "join-message", "toggle").getBoolean(true)) {
@@ -158,5 +155,19 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
     @Override
     public Class<PlayerConnectEvent> getEvent() {
         return PlayerConnectEvent.class;
+    }
+
+    private void execute(@NotNull final IMessageReceiver receiver, @NotNull final com.ryderbelserion.chatterbox.messages.objects.Message message, @NotNull final Map<String, String> placeholders, final int delay) {
+        if (delay > 0) {
+            HytaleServer.SCHEDULED_EXECUTOR.schedule(
+                    () -> message.send(receiver, placeholders),
+                    delay, TimeUnit.SECONDS
+            );
+
+
+            return;
+        }
+
+        message.send(receiver, placeholders);
     }
 }

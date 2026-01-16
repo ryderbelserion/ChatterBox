@@ -11,3 +11,5 @@ output:
   - "line 1"
   - "line 2"
 ```
+- Multi-locale support is setup internally, We need more translated files!
+  - It would be much appreciated if people would offer translations for the [messages.yml](https://github.com/ryderbelserion/ChatterBox/blob/main/plugin/src/main/resources/messages.yml)

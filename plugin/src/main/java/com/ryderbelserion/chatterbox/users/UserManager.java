@@ -80,7 +80,7 @@ public class UserManager implements IUserManager<PlayerRef, User> {
             action.save();
         });
 
-        final User user = new User(uuid, username);
+        final User user = new User(player, uuid, username);
 
         user.setLocale(locale);
 
