@@ -1,4 +1,4 @@
-package com.ryderbelserion.chatterbox.commands.subs;
+package com.ryderbelserion.chatterbox.commands.subs.admin;
 
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.CommandSender;
@@ -7,7 +7,6 @@ import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.messages.MessageRegistry;
 import com.ryderbelserion.chatterbox.users.UserManager;
-import com.ryderbelserion.chatterbox.users.objects.User;
 import org.jetbrains.annotations.NotNull;
 
 public class ReloadCommand extends CommandBase {
