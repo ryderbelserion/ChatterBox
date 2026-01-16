@@ -1,4 +1,4 @@
-package com.ryderbelserion.chatterbox.api.objects;
+package com.ryderbelserion.chatterbox.users.objects;
 
 import com.ryderbelserion.chatterbox.api.users.objects.IUser;
 import org.jetbrains.annotations.ApiStatus;

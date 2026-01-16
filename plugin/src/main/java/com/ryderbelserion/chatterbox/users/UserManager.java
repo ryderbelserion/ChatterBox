@@ -5,7 +5,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.api.enums.Configs;
-import com.ryderbelserion.chatterbox.api.objects.User;
+import com.ryderbelserion.chatterbox.users.objects.User;
 import com.ryderbelserion.chatterbox.api.users.IUserManager;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;

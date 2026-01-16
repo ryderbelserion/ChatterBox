@@ -38,6 +38,7 @@ public class ChatterBoxPlugin extends AbstractChatterBox {
         List.of(
                 "server.json",
 
+                "messages.yml",
                 "config.yml"
         ).forEach(file -> {
             final String extension = file.split("\\.")[1];
@@ -53,6 +54,8 @@ public class ChatterBoxPlugin extends AbstractChatterBox {
             this.fileManager.addFile(path, fileType);
         });
 
+        this.fileManager.addFolder(this.dataPath.resolve("locale"), FileType.YAML);
+
         final JsonCustomFile customFile = Configs.server.getJsonCustomFile();
 
         final BasicConfigurationNode configuration = Configs.server.getJsonConfig();
@@ -64,6 +67,11 @@ public class ChatterBoxPlugin extends AbstractChatterBox {
         }
 
         customFile.save();
+    }
+
+    @Override
+    public void reload() {
+        this.fileManager.refresh(false).addFolder(this.dataPath.resolve("locale"), FileType.YAML);
     }
 
     @Override

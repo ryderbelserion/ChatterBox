@@ -1,10 +1,11 @@
 package com.ryderbelserion.chatterbox.api;
 
 import com.ryderbelserion.fusion.files.FileManager;
-
 import java.nio.file.Path;
 
 public abstract class AbstractChatterBox {
+
+    public static final String namespace = "chatterbox";
 
     protected final FileManager fileManager;
 
@@ -21,13 +22,18 @@ public abstract class AbstractChatterBox {
         this.dataPath = dataPath.getParent().resolve(dataPath.getFileName().toString().split("_")[0]);
         this.modPath = modPath;
 
-        this.fileManager = new FileManager(this.dataPath, this.modPath);
+        this.fileManager = new FileManager(this.modPath, this.dataPath);
     }
 
     /**
      * Start the mod
      */
     public abstract void init();
+
+    /**
+     * Reloads the mod
+     */
+    public abstract void reload();
 
     /**
      * Gets the total amount of users in the universe's world folder
