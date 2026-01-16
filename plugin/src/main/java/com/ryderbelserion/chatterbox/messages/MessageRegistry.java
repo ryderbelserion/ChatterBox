@@ -1,8 +1,9 @@
 package com.ryderbelserion.chatterbox.messages;
 
-import com.rydderbelserion.chatterbox.ChatterBoxPlugin;
-import com.ryderbelserion.chatterbox.ChatterBoxProvider;
+import com.hypixel.hytale.logger.HytaleLogger;
+import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.AbstractChatterBox;
+import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.messages.IMessageRegistry;
 import com.ryderbelserion.chatterbox.api.utils.StringUtils;
@@ -18,7 +19,11 @@ import java.util.Map;
 
 public class MessageRegistry implements IMessageRegistry<Message> {
 
-    private final ChatterBoxPlugin plugin = (ChatterBoxPlugin) ChatterBoxProvider.getInstance();
+    private final ChatterBox instance = ChatterBox.getInstance();
+
+    private final HytaleLogger logger = this.instance.getLogger();
+
+    private final ChatterBoxPlatform plugin = this.instance.getPlugin();
 
     private final FileManager fileManager = this.plugin.getFileManager();
 
@@ -28,7 +33,7 @@ public class MessageRegistry implements IMessageRegistry<Message> {
 
     @Override
     public void addMessage(@NotNull final Key locale, @NotNull final Key key, @NotNull final Message message) {
-        //this.logger.atInfo().log("Registering the message @ %s for %s", locale.asString(), key.asString());
+        this.logger.atInfo().log("Registering the message @ %s for %s", locale.asString(), key.asString());
 
         final Map<Key, Message> keys = this.messages.getOrDefault(locale, new HashMap<>());
 
@@ -82,9 +87,7 @@ public class MessageRegistry implements IMessageRegistry<Message> {
                         "<green>You can change this message in the messages.yml or the locale folder.",
                         "<gray>------------------------------------"
                 )), "messages", "motd"));
-            }, () -> {
-                //this.logger.atWarning().log("Path %s not found in cache.".formatted(path))
-            });
+            }, () -> this.logger.atWarning().log("Path %s not found in cache.".formatted(path)));
         }
     }
 }
