@@ -1,0 +1,17 @@
+name: '${artifact}'
+main: '${group}.${artifact}'
+
+version: '${version}'
+api-version: '${minecraft}'
+description: '${description}'
+
+authors: [ ryderbelserion ]
+
+folia-supported: true
+
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: false
+      join-classpath: true
