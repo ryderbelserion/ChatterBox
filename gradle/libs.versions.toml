@@ -2,11 +2,19 @@
 ## Hytale
 hytale = "1.0.0" # https://hytale.com
 
+## Paper
+paperweight = "2.0.0-beta.19" # https://github.com/PaperMC/paperweight
+run-paper = "3.0.2" # https://github.com/jpenilla/run-task
+paper = "1.21.11-R0.1-SNAPSHOT" # https://github.com/PaperMC/Paper
+
+## Minecraft
+minecraft = "1.21.11" # https://minecraft.net
+
 ## Kyori
 adventure = "4.26.1" # https://github.com/KyoriPowered/adventure
 
 ## Other
-fusion = "3.4.4" # https://github.com/ryderbelserion/Fusion
+fusion = "4.0.0-SNAPSHOT" # https://github.com/ryderbelserion/Fusion
 
 ## Gradle Plugins
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
@@ -24,11 +32,17 @@ luckperms = "5.4" # https://github.com/LuckPerms/LuckPerms
 fix-javadoc = { id = "com.jeff-media.fix-javadoc-plugin", version.ref = "fix-javadoc" }
 
 [libraries]
+# https://github.com/PaperMC/paperweight
+paperweight = { module = "io.papermc.paperweight.userdev:io.papermc.paperweight.userdev.gradle.plugin", version.ref = "paperweight" }
+
 # https://github.com/ryderbelserion/Feather
 feather = { module = "com.ryderbelserion.feather.core:com.ryderbelserion.feather.core.gradle.plugin", version.ref = "feather" }
 
 # https://github.com/GradleUp/shadow
 shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
+
+# https://github.com/jpenilla/run-task
+run-paper = { module = "xyz.jpenilla:run-task", version.ref = "run-paper" }
 
 # https://github.com/postgres/postgres
 postgres = { module = "'org.postgresql:postgresql", version.ref = "postgres" }
@@ -59,4 +73,9 @@ kyori = [
 build = [
     "feather",
     "shadow"
+]
+
+paper = [
+    "paperweight",
+    "run-paper"
 ]

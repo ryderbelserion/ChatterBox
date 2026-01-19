@@ -10,4 +10,7 @@ repositories {
 dependencies {
     // Bundled plugins
     implementation(libs.bundles.build)
+
+    // Paper plugins
+    implementation(libs.bundles.paper)
 }
