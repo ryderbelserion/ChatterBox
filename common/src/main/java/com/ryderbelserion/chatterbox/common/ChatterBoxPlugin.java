@@ -1,11 +1,12 @@
-package com.rydderbelserion.chatterbox.common;
+package com.ryderbelserion.chatterbox.common;
 
 import com.ryderbelserion.chatterbox.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.AbstractChatterBox;
+import com.ryderbelserion.chatterbox.api.messages.IMessageRegistry;
+import com.ryderbelserion.chatterbox.api.users.IUserManager;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -57,5 +58,11 @@ public abstract class ChatterBoxPlugin<S, T> extends AbstractChatterBox<S, T> {
     @Override
     public void reload() {
         this.fileManager.refresh(false).addFolder(this.dataPath.resolve("locale"), FileType.YAML);
+
+        getMessageRegistry().init();
     }
+
+    public abstract IMessageRegistry getMessageRegistry();
+
+    public abstract IUserManager getUserManager();
 }

@@ -9,7 +9,6 @@ import com.ryderbelserion.chatterbox.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.listeners.DisconnectListener;
 import com.ryderbelserion.chatterbox.listeners.PostConnectListener;
 import com.ryderbelserion.chatterbox.listeners.chat.ChatListener;
-import com.rydderbelserion.chatterbox.common.messages.MessageRegistry;
 import com.ryderbelserion.chatterbox.users.UserManager;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
@@ -31,8 +30,6 @@ public class ChatterBox extends JavaPlugin {
     private FusionHytale fusion;
 
     private ChatterBoxPlatform plugin;
-    private HytaleMessageRegistry messageRegistry;
-    private UserManager userManager;
 
     @Override
     protected void start() {
@@ -44,12 +41,6 @@ public class ChatterBox extends JavaPlugin {
 
         this.plugin = new ChatterBoxPlatform(this.fusion);
         this.plugin.init();
-
-        this.messageRegistry = new HytaleMessageRegistry();
-        this.messageRegistry.init();
-
-        this.userManager = new UserManager();
-        this.userManager.init();
 
         final EventRegistry registry = getEventRegistry();
 
@@ -69,24 +60,22 @@ public class ChatterBox extends JavaPlugin {
         this.fusion.reload();
 
         this.plugin.reload();
+    }
 
-        this.messageRegistry.init();
+    public @NotNull final HytaleMessageRegistry getMessageRegistry() {
+        return this.plugin.getMessageRegistry();
     }
 
     public @NotNull final ChatterBoxPlatform getPlugin() {
         return this.plugin;
     }
 
+    public @NotNull final UserManager getUserManager() {
+        return this.plugin.getUserManager();
+    }
+
     public @NotNull final FusionHytale getFusion() {
         return this.fusion;
-    }
-
-    public @NotNull final MessageRegistry getMessageRegistry() {
-        return this.messageRegistry;
-    }
-
-    public @NotNull final UserManager getUserManager() {
-        return this.userManager;
     }
 
     @ApiStatus.Internal

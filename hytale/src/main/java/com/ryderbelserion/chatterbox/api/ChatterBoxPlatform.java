@@ -2,7 +2,9 @@ package com.ryderbelserion.chatterbox.api;
 
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
-import com.rydderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.api.registry.HytaleMessageRegistry;
+import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.users.UserManager;
 import com.ryderbelserion.fusion.hytale.utils.ColorUtils;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.text.Component;
@@ -12,8 +14,32 @@ import java.util.Map;
 
 public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver, Message> {
 
+    private HytaleMessageRegistry messageRegistry;
+    private UserManager userManager;
+
     public ChatterBoxPlatform(@NotNull final FusionKyori<IMessageReceiver> fusion) {
         super(fusion);
+    }
+
+    @Override
+    public void init() {
+        super.init();
+
+        this.messageRegistry = new HytaleMessageRegistry();
+        this.messageRegistry.init();
+
+        this.userManager = new UserManager();
+        this.userManager.init();
+    }
+
+    @Override
+    public @NotNull final HytaleMessageRegistry getMessageRegistry() {
+        return this.messageRegistry;
+    }
+
+    @Override
+    public @NotNull final UserManager getUserManager() {
+        return this.userManager;
     }
 
     /**
