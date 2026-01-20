@@ -81,6 +81,10 @@ public abstract class AbstractChatterBox<S, T> {
         return this.fileManager;
     }
 
+    public final FusionKyori<S> getFusion() {
+        return this.fusion;
+    }
+
     public final Path getDataPath() {
         return this.dataPath;
     }

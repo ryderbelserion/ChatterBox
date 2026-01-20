@@ -6,7 +6,6 @@ import com.ryderbelserion.chatterbox.api.AbstractChatterBox;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.messages.IMessageRegistry;
 import com.rydderbelserion.chatterbox.common.messages.objects.Message;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.files.FileManager;
@@ -23,7 +22,7 @@ public class MessageRegistry<S> implements IMessageRegistry<Message<S>> {
 
     private final ChatterBoxPlugin plugin = (ChatterBoxPlugin) ChatterBoxProvider.getInstance();
 
-    private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
+    private final FusionKyori fusion = this.plugin.getFusion();
 
     private final FileManager fileManager = this.plugin.getFileManager();
 
