@@ -1,7 +1,12 @@
 package com.ryderbelserion.chatterbox.api;
 
+import com.ryderbelserion.chatterbox.api.messages.IMessageRegistry;
+import com.ryderbelserion.chatterbox.api.messages.objects.IMessage;
+import com.ryderbelserion.chatterbox.api.users.IUserManager;
+import com.ryderbelserion.chatterbox.api.users.objects.IUser;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
+import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -27,6 +32,10 @@ public abstract class AbstractChatterBox<S, T> {
         this.source = this.fileManager.getSource();
     }
 
+    public abstract IMessageRegistry getMessageRegistry();
+
+    public abstract IUserManager getUserManager();
+
     /**
      * Sends a message to the sender
      *
@@ -44,6 +53,10 @@ public abstract class AbstractChatterBox<S, T> {
      */
     public void sendMessage(@NotNull final S sender, @NotNull final String component) {
         sendMessage(sender, component, new HashMap<>());
+    }
+
+    public IMessage getComponent(@NotNull final IUser user, @NotNull final Key key) {
+        return this.getMessageRegistry().getMessage(key);
     }
 
     /**

@@ -10,13 +10,14 @@ import com.ryderbelserion.chatterbox.common.messages.objects.Message;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Map;
 import java.util.UUID;
 
 public class User implements IUser<Message, IMessageReceiver> {
 
     private final ChatterBox instance = ChatterBox.getInstance();
+
+    private final AbstractChatterBox platform = this.instance.getPlugin();
 
     private final MessageRegistry registry = this.instance.getMessageRegistry();
 
@@ -48,7 +49,7 @@ public class User implements IUser<Message, IMessageReceiver> {
 
     @Override
     public void sendMessage(@NotNull final Key key, @NotNull final Map<String, String> placeholders) {
-        getComponent(key).send(this.receiver, placeholders);
+        this.platform.getComponent(this, key).send(this.receiver, placeholders);
     }
 
     @Override
@@ -66,13 +67,12 @@ public class User implements IUser<Message, IMessageReceiver> {
         return this.locale.asString();
     }
 
-    @Override
-    public @NotNull final UUID getUuid() {
-        return this.uuid;
+    public @NotNull final Key getLocaleKey() {
+        return this.locale;
     }
 
     @Override
-    public @NotNull final IMessageReceiver getUser() {
-        return this.receiver;
+    public @NotNull final UUID getUuid() {
+        return this.uuid;
     }
 }

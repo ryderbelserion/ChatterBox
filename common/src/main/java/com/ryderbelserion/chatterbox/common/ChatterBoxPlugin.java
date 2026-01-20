@@ -2,8 +2,6 @@ package com.ryderbelserion.chatterbox.common;
 
 import com.ryderbelserion.chatterbox.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.AbstractChatterBox;
-import com.ryderbelserion.chatterbox.api.messages.IMessageRegistry;
-import com.ryderbelserion.chatterbox.api.users.IUserManager;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
@@ -61,8 +59,4 @@ public abstract class ChatterBoxPlugin<S, T> extends AbstractChatterBox<S, T> {
 
         getMessageRegistry().init();
     }
-
-    public abstract IMessageRegistry getMessageRegistry();
-
-    public abstract IUserManager getUserManager();
 }
