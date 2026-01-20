@@ -5,13 +5,12 @@ import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.AbstractChatterBox;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.users.objects.IUser;
-import com.ryderbelserion.chatterbox.messages.MessageRegistry;
-import com.ryderbelserion.chatterbox.messages.objects.Message;
+import com.rydderbelserion.chatterbox.common.messages.MessageRegistry;
+import com.rydderbelserion.chatterbox.common.messages.objects.Message;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 

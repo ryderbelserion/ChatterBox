@@ -1,8 +1,11 @@
-package com.rydderbelserion.chatterbox;
+package com.rydderbelserion.chatterbox.common;
 
 import com.ryderbelserion.chatterbox.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.AbstractChatterBox;
 import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,14 +13,8 @@ import java.util.List;
 
 public abstract class ChatterBoxPlugin<S, T> extends AbstractChatterBox<S, T> {
 
-    /**
-     * Builds the plugin class
-     *
-     * @param dataPath the plugin folder
-     * @param modPath the location of the .jar file
-     */
-    public ChatterBoxPlugin(final Path dataPath, final Path modPath) {
-        super(dataPath, modPath);
+    public ChatterBoxPlugin(@NotNull final FusionKyori<S> fusion) {
+        super(fusion);
     }
 
     @Override

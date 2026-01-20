@@ -5,7 +5,7 @@ plugins {
 project.group = "${rootProject.group}.paper"
 
 dependencies {
-
+    implementation(libs.fusion.paper)
 }
 
 tasks {

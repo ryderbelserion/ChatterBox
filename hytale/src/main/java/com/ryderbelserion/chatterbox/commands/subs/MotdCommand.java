@@ -7,7 +7,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Support;
-import com.ryderbelserion.chatterbox.messages.MessageRegistry;
+import com.rydderbelserion.chatterbox.common.messages.MessageRegistry;
 import com.ryderbelserion.chatterbox.users.UserManager;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;

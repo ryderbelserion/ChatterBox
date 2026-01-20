@@ -2,17 +2,13 @@ plugins {
     `shadow-plugin`
 }
 
-repositories {
-
-}
-
 dependencies {
     compileOnly(files(System.getenv("HYTALE_SERVER")))
 
     implementation(project(":chatterbox-common"))
 
     implementation(libs.bundles.kyori)
-    implementation(libs.fusion.files)
+    implementation(libs.fusion.kyori)
 
     compileOnly(libs.luckperms)
 }
@@ -25,6 +21,7 @@ tasks {
         destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
 
         listOf(
+            "com.ryderbelserion.fusion",
             "net.kyori.adventure"
         ).forEach {
             relocate(it, "com.ryderbelserion.libs.$it")

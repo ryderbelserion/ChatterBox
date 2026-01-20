@@ -12,8 +12,9 @@ import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
-import com.ryderbelserion.chatterbox.api.utils.StringUtils;
 import com.ryderbelserion.chatterbox.users.UserManager;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.hytale.FusionHytale;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -30,6 +31,8 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
     private final ChatterBox instance = ChatterBox.getInstance();
 
     private final ChatterBoxPlatform plugin = this.instance.getPlugin();
+
+    private final FusionHytale fusion = this.instance.getFusion();
 
     private final UserManager userManager = instance.getUserManager();
 

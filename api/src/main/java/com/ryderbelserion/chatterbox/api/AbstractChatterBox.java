@@ -1,7 +1,7 @@
 package com.ryderbelserion.chatterbox.api;
 
 import com.ryderbelserion.fusion.files.FileManager;
-import net.kyori.adventure.text.Component;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -11,22 +11,20 @@ public abstract class AbstractChatterBox<S, T> {
 
     public static final String namespace = "chatterbox";
 
+    protected final FusionKyori<S> fusion;
     protected final FileManager fileManager;
 
     protected final Path dataPath;
-    protected final Path modPath;
+    protected final Path source;
 
-    /**
-     * The constructor
-     *
-     * @param dataPath the mod folder
-     * @param modPath the location of the .jar file
-     */
-    public AbstractChatterBox(final Path dataPath, final Path modPath) {
-        this.dataPath = dataPath.getParent().resolve(dataPath.getFileName().toString().split("_")[0]);
-        this.modPath = modPath;
+    public AbstractChatterBox(@NotNull final FusionKyori<S> fusion) {
+        this.fusion = fusion;
 
-        this.fileManager = new FileManager(this.modPath, this.dataPath);
+        this.dataPath = this.fusion.getDataPath();
+
+        this.fileManager = this.fusion.getFileManager();
+
+        this.source = this.fileManager.getSource();
     }
 
     /**
@@ -91,7 +89,7 @@ public abstract class AbstractChatterBox<S, T> {
         return this.dataPath.resolve("users");
     }
 
-    public final Path getModPath() {
-        return this.modPath;
+    public final Path getSource() {
+        return this.source;
     }
 }

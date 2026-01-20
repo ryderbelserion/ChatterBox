@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     compileOnly(libs.bundles.kyori)
-    compileOnly(libs.fusion.files)
+    compileOnly(libs.fusion.kyori)
 
     api(project(":chatterbox-api"))
 }

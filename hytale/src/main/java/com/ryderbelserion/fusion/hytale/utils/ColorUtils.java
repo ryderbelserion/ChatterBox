@@ -1,4 +1,4 @@
-package com.ryderbelserion.chatterbox.utils;
+package com.ryderbelserion.fusion.hytale.utils;
 
 import com.hypixel.hytale.server.core.Message;
 import net.kyori.adventure.text.Component;

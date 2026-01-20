@@ -2,26 +2,18 @@ package com.ryderbelserion.chatterbox.api;
 
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
-import com.rydderbelserion.chatterbox.ChatterBoxPlugin;
-import com.ryderbelserion.chatterbox.api.utils.StringUtils;
-import com.ryderbelserion.chatterbox.utils.ColorUtils;
+import com.rydderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.fusion.hytale.utils.ColorUtils;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
-import java.nio.file.Path;
 import java.util.Map;
 
 public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver, Message> {
 
-    /**
-     * Builds the plugin class
-     *
-     * @param dataPath the plugin folder
-     * @param modPath  the location of the .jar file
-     */
-    public ChatterBoxPlatform(final Path dataPath, final Path modPath) {
-        super(dataPath, modPath);
+    public ChatterBoxPlatform(@NotNull final FusionKyori<IMessageReceiver> fusion) {
+        super(fusion);
     }
 
     /**
@@ -45,7 +37,7 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver, Messa
      * @return {@link Message}
      */
     @Override
-    public Message getComponent(@NonNull IMessageReceiver sender, @NotNull String component, @NotNull Map<String, String> placeholders) {
-        return ColorUtils.toHytale(MiniMessage.miniMessage().deserialize(StringUtils.replacePlaceholders(component, placeholders)));
+    public Message getComponent(@NonNull final IMessageReceiver sender, @NotNull final String component, @NotNull final Map<String, String> placeholders) {
+        return ColorUtils.toHytale(this.fusion.asComponent(sender, component, placeholders));
     }
 }
