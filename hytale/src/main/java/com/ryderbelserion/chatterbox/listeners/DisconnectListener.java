@@ -7,7 +7,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
-import com.rydderbelserion.chatterbox.common.enums.Configs;
+import com.ryderbelserion.chatterbox.common.enums.Configs;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.enums.Support;

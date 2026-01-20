@@ -1,6 +1,6 @@
-package com.rydderbelserion.chatterbox.common.enums;
+package com.ryderbelserion.chatterbox.common.enums;
 
-import com.rydderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.ChatterBoxProvider;
 import com.ryderbelserion.fusion.files.FileException;
 import com.ryderbelserion.fusion.files.FileManager;

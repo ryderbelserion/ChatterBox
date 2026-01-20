@@ -1,11 +1,11 @@
-package com.rydderbelserion.chatterbox.common.messages;
+package com.ryderbelserion.chatterbox.common.messages;
 
-import com.rydderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.AbstractChatterBox;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.messages.IMessageRegistry;
-import com.rydderbelserion.chatterbox.common.messages.objects.Message;
+import com.ryderbelserion.chatterbox.common.messages.objects.Message;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.files.FileManager;

@@ -5,7 +5,7 @@ import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
-import com.rydderbelserion.chatterbox.common.messages.MessageRegistry;
+import com.ryderbelserion.chatterbox.common.messages.MessageRegistry;
 import com.ryderbelserion.chatterbox.users.UserManager;
 import org.jetbrains.annotations.NotNull;
 

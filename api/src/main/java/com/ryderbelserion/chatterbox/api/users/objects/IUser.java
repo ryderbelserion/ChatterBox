@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public interface IUser<C, PR> {
+public interface IUser<C, U> {
 
     void sendMessage(@NotNull final Key key, @NotNull final Map<String, String> placeholders);
 
@@ -22,6 +22,6 @@ public interface IUser<C, PR> {
 
     UUID getUuid();
 
-    PR getUser();
+    U getUser();
 
 }

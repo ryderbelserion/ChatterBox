@@ -1,7 +1,7 @@
-package com.rydderbelserion.chatterbox.common.messages.objects;
+package com.ryderbelserion.chatterbox.common.messages.objects;
 
-import com.rydderbelserion.chatterbox.common.ChatterBoxPlugin;
-import com.rydderbelserion.chatterbox.common.enums.Configs;
+import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.common.enums.Configs;
 import com.ryderbelserion.chatterbox.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.messages.objects.IMessage;
 import com.ryderbelserion.fusion.core.utils.StringUtils;

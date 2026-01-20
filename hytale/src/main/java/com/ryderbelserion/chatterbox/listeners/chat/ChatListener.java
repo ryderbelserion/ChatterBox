@@ -3,7 +3,7 @@ package com.ryderbelserion.chatterbox.listeners.chat;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import com.rydderbelserion.chatterbox.common.enums.Configs;
+import com.ryderbelserion.chatterbox.common.enums.Configs;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.enums.Support;

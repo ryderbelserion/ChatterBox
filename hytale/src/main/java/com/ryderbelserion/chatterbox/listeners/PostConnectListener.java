@@ -10,13 +10,13 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
-import com.rydderbelserion.chatterbox.common.enums.Configs;
+import com.ryderbelserion.chatterbox.common.enums.Configs;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
-import com.rydderbelserion.chatterbox.common.messages.MessageRegistry;
+import com.ryderbelserion.chatterbox.common.messages.MessageRegistry;
 import com.ryderbelserion.chatterbox.users.UserManager;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import net.luckperms.api.LuckPerms;
@@ -161,7 +161,7 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
         return PlayerConnectEvent.class;
     }
 
-    private void execute(@NotNull final IMessageReceiver receiver, @NotNull final com.rydderbelserion.chatterbox.common.messages.objects.Message message, @NotNull final Map<String, String> placeholders, final int delay) {
+    private void execute(@NotNull final IMessageReceiver receiver, @NotNull final com.ryderbelserion.chatterbox.common.messages.objects.Message message, @NotNull final Map<String, String> placeholders, final int delay) {
         if (delay > 0) {
             HytaleServer.SCHEDULED_EXECUTOR.schedule(
                     () -> message.send(receiver, placeholders),
