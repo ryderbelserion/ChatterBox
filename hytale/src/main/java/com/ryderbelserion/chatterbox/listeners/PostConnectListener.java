@@ -10,15 +10,17 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
+import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.registry.HytaleUserRegistry;
+import com.ryderbelserion.chatterbox.api.registry.adapters.HytaleSenderAdapter;
 import com.ryderbelserion.chatterbox.common.enums.Configs;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
-import com.ryderbelserion.chatterbox.common.messages.MessageRegistry;
-import com.ryderbelserion.chatterbox.users.UserManager;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.hytale.FusionHytale;
+import net.kyori.adventure.key.Key;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -27,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -37,11 +38,13 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final ChatterBoxPlatform plugin = this.instance.getPlugin();
+    private final ChatterBoxPlatform platform = this.instance.getPlugin();
 
-    private final MessageRegistry messageRegistry = this.instance.getMessageRegistry();
+    private final HytaleSenderAdapter adapter = this.platform.getSenderAdapter();
 
-    private final UserManager userManager = this.instance.getUserManager();
+    private final HytaleUserRegistry userRegistry = this.platform.getUserRegistry();
+
+    private final FusionHytale fusion = this.instance.getFusion();
 
     @Override
     public void init(final EventRegistry registry) {
@@ -49,7 +52,7 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
             final PlayerRef player = event.getPlayerRef();
             final String playerName = player.getUsername();
 
-            this.userManager.addUser(player);
+            this.userRegistry.addUser(player);
 
             final CommentedConfigurationNode config = Configs.config.getYamlConfig();
 
@@ -72,12 +75,7 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
                     placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
                 }
 
-                final int delay = config.node("root", "motd", "delay").getInt(0);
-
-                final Optional<com.ryderbelserion.chatterbox.users.objects.User> chattyUser = this.userManager.getUser(player.getUuid());
-
-                chattyUser.ifPresentOrElse(action -> execute(player, action.getComponent(Messages.message_of_the_day), placeholders, delay),
-                        () -> execute(player, this.messageRegistry.getMessage(Messages.message_of_the_day), placeholders, delay));
+                execute(player, Messages.message_of_the_day, placeholders, config.node("root", "motd", "delay").getInt(0));
             }
 
             String primaryGroup = "";
@@ -105,20 +103,20 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
                 final CommentedConfigurationNode title = primaryGroup.isBlank() ? config.node("root", "traffic", "join-message", "title") : config.node("root", "traffic", "join-message", "groups", primaryGroup, "title");
 
+                final Universe universe = Universe.get();
+
                 if (title.node("toggle").getBoolean(false)) {
-                    final Message header = this.plugin.getComponent(
+                    final Message header = this.fusion.asMessage(
                             player,
                             title.node("header").getString("Player has joined!"),
                             placeholders
                     );
 
-                    final Message footer = this.plugin.getComponent(
+                    final Message footer = this.fusion.asMessage(
                             player,
                             title.node("footer").getString("{player}"),
                             placeholders
                     );
-
-                    final Universe universe = Universe.get();
 
                     final int duration = title.node("delay", "duration").getInt(5);
                     final int fadeIn = title.node("delay", "fade", "in").getInt(1);
@@ -142,7 +140,7 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
                     final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
 
-                    Universe.get().sendMessage(this.plugin.getComponent(player, output, placeholders));
+                    universe.sendMessage(this.fusion.asMessage(player, output, placeholders));
                 }
             }
         });
@@ -161,10 +159,10 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
         return PlayerConnectEvent.class;
     }
 
-    private void execute(@NotNull final IMessageReceiver receiver, @NotNull final com.ryderbelserion.chatterbox.common.messages.objects.Message message, @NotNull final Map<String, String> placeholders, final int delay) {
+    private void execute(@NotNull final IMessageReceiver receiver, @NotNull final Key key, @NotNull final Map<String, String> placeholders, final int delay) {
         if (delay > 0) {
             HytaleServer.SCHEDULED_EXECUTOR.schedule(
-                    () -> message.send(receiver, placeholders),
+                    () -> this.adapter.sendMessage(receiver, key, placeholders),
                     delay, TimeUnit.SECONDS
             );
 
@@ -172,6 +170,6 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
             return;
         }
 
-        message.send(receiver, placeholders);
+        this.adapter.sendMessage(receiver, key, placeholders);
     }
 }

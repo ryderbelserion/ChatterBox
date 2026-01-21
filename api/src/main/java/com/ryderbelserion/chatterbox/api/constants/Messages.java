@@ -1,7 +1,7 @@
 package com.ryderbelserion.chatterbox.api.constants;
 
 import net.kyori.adventure.key.Key;
-import static com.ryderbelserion.chatterbox.api.AbstractChatterBox.namespace;
+import static com.ryderbelserion.chatterbox.api.ChatterBox.namespace;
 
 public class Messages {
 

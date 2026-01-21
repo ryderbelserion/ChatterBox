@@ -1,11 +1,11 @@
-package com.ryderbelserion.chatterbox.api.messages;
+package com.ryderbelserion.chatterbox.api.registry;
 
-import com.ryderbelserion.chatterbox.api.messages.objects.IMessage;
+import com.ryderbelserion.chatterbox.api.adapters.IMessageAdapter;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-public interface IMessageRegistry<M extends IMessage> {
+public interface IMessageRegistry<M extends IMessageAdapter> {
 
     void addMessage(@NotNull final Key locale, @NotNull final Key key, @NotNull final M message);
 
@@ -16,6 +16,5 @@ public interface IMessageRegistry<M extends IMessage> {
     M getMessage(@NotNull final Key key);
 
     @ApiStatus.Internal
-    void init();
-
+    IMessageRegistry init();
 }

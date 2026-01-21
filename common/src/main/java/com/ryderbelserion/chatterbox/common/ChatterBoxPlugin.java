@@ -1,7 +1,10 @@
 package com.ryderbelserion.chatterbox.common;
 
-import com.ryderbelserion.chatterbox.ChatterBoxProvider;
-import com.ryderbelserion.chatterbox.api.AbstractChatterBox;
+import com.ryderbelserion.chatterbox.api.ChatterBoxProvider;
+import com.ryderbelserion.chatterbox.api.ChatterBox;
+import com.ryderbelserion.chatterbox.api.adapters.IPlayerAdapter;
+import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
+import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
@@ -9,12 +12,21 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.UUID;
 
-public abstract class ChatterBoxPlugin<S, T> extends AbstractChatterBox<S, T> {
+public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
 
-    public ChatterBoxPlugin(@NotNull final FusionKyori<S> fusion) {
+    public static final UUID CONSOLE_UUID = new UUID(0, 0);
+
+    public static final String CONSOLE_NAME = "Console";
+
+    private IPlayerAdapter<?> adapter;
+
+    public ChatterBoxPlugin(@NotNull final FusionKyori fusion) {
         super(fusion);
     }
+
+    public abstract ISenderAdapter getSenderAdapter();
 
     @Override
     public void init() {
@@ -54,9 +66,19 @@ public abstract class ChatterBoxPlugin<S, T> extends AbstractChatterBox<S, T> {
     }
 
     @Override
+    public void post() {
+        this.adapter = new PlayerAdapter<>(getUserRegistry(), getContextRegistry());
+    }
+
+    @Override
     public void reload() {
         this.fileManager.refresh(false).addFolder(this.dataPath.resolve("locale"), FileType.YAML);
 
         getMessageRegistry().init();
+    }
+
+    @Override
+    public @NotNull <C> IPlayerAdapter<C> getPlayerAdapter(@NotNull final Class<C> object) {
+        return (IPlayerAdapter<C>) this.adapter;
     }
 }

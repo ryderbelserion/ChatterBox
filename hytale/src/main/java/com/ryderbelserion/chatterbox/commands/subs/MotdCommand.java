@@ -5,10 +5,11 @@ import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.ryderbelserion.chatterbox.ChatterBox;
+import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Support;
-import com.ryderbelserion.chatterbox.common.messages.MessageRegistry;
-import com.ryderbelserion.chatterbox.users.UserManager;
+import com.ryderbelserion.chatterbox.api.registry.adapters.HytaleSenderAdapter;
+import com.ryderbelserion.chatterbox.common.api.registry.MessageRegistry;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -21,9 +22,11 @@ public class MotdCommand extends CommandBase {
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final MessageRegistry registry = this.instance.getMessageRegistry();
+    private final ChatterBoxPlatform platform = this.instance.getPlugin();
 
-    private final UserManager userManager = this.instance.getUserManager();
+    private final HytaleSenderAdapter adapter = this.platform.getSenderAdapter();
+
+    private final MessageRegistry messageRegistry = this.platform.getMessageRegistry();
 
     public MotdCommand() {
         super("motd", "Shows the message of the day!", false);
@@ -53,12 +56,8 @@ public class MotdCommand extends CommandBase {
                 placeholders.put("{prefix}", prefix == null ? "N/A" : prefix);
                 placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
             }
-
-            this.userManager.getUser(player.getUuid()).ifPresentOrElse(user -> user.sendMessage(Messages.message_of_the_day), () -> this.registry.getMessage(Messages.message_of_the_day).send(sender));
-
-            return;
         }
 
-        this.registry.getMessage(Messages.message_of_the_day).send(sender, placeholders);
+        this.adapter.sendMessage(sender, Messages.message_of_the_day, placeholders);
     }
 }

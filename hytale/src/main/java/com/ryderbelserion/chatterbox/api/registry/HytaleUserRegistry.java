@@ -1,15 +1,17 @@
-package com.ryderbelserion.chatterbox.users;
+package com.ryderbelserion.chatterbox.api.registry;
 
-import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
-import com.ryderbelserion.chatterbox.api.users.IUserManager;
-import com.ryderbelserion.chatterbox.users.objects.User;
+import com.ryderbelserion.chatterbox.api.user.IUser;
+import com.ryderbelserion.chatterbox.api.registry.adapters.HytaleUserAdapter;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import java.io.IOException;
@@ -17,32 +19,33 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class UserManager implements IUserManager<PlayerRef, User> {
+public class HytaleUserRegistry implements com.ryderbelserion.chatterbox.api.registry.IUserRegistry<PlayerRef> {
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final HytaleLogger logger = this.instance.getLogger();
+    private final FusionHytale fusion = this.instance.getFusion();
 
-    private final ChatterBoxPlugin plugin = this.instance.getPlugin();
+    private final FileManager fileManager = this.fusion.getFileManager();
 
-    private final FileManager fileManager = this.plugin.getFileManager();
+    private final Path userPath = this.instance.getPlugin().getUserPath();
 
-    private final Path userPath = this.plugin.getUserPath();
+    private final Map<UUID, HytaleUserAdapter> users = new HashMap<>();
 
-    private final Map<UUID, User> users = new HashMap<>();
-
+    @Override
     public void init() {
         if (Files.notExists(this.userPath)) {
             try {
                 Files.createDirectory(this.userPath);
             } catch (final IOException exception) {
-                this.logger.atWarning().log("Could not create %s directory.".formatted(this.userPath));
+                this.fusion.log(Level.WARNING, "Could not create %s directory".formatted(this.userPath));
             }
         }
+
+        this.users.put(ChatterBoxPlugin.CONSOLE_UUID, new HytaleUserAdapter());
     }
 
     @Override
-    public void addUser(@NotNull final PlayerRef player) {
+    public void addUser(@NonNull final PlayerRef player) {
         final String username = player.getUsername();
         final String locale = player.getLanguage();
         final UUID uuid = player.getUuid();
@@ -55,7 +58,7 @@ public class UserManager implements IUserManager<PlayerRef, User> {
             try {
                 Files.createFile(file);
             } catch (final IOException exception) {
-                this.logger.atWarning().log("Could not create %s directory.".formatted(file));
+                this.fusion.log(Level.WARNING, "Could not create %s directory".formatted(file));
             }
         }
 
@@ -79,13 +82,14 @@ public class UserManager implements IUserManager<PlayerRef, User> {
             action.save();
         });
 
-        final User user = new User(player, uuid, username);
+        final HytaleUserAdapter user = new HytaleUserAdapter(player);
 
         user.setLocale(locale);
 
-        this.users.put(uuid, user);
+        this.users.putIfAbsent(uuid, user);
     }
 
+    @Override
     public void removeUser(@NotNull final UUID uuid) {
         this.fileManager.removeFile(this.userPath.resolve("%s.json".formatted(uuid)));
 
@@ -93,7 +97,12 @@ public class UserManager implements IUserManager<PlayerRef, User> {
     }
 
     @Override
-    public Optional<User> getUser(@NotNull final UUID uuid) {
+    public Optional<HytaleUserAdapter> getUser(@NotNull UUID uuid) {
         return Optional.of(this.users.get(uuid));
+    }
+
+    @Override
+    public @NotNull final IUser getConsole() {
+        return this.users.get(ChatterBoxPlugin.CONSOLE_UUID);
     }
 }

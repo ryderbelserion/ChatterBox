@@ -7,12 +7,12 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
+import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.common.enums.Configs;
 import com.ryderbelserion.chatterbox.ChatterBox;
-import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
-import com.ryderbelserion.chatterbox.users.UserManager;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
 import net.luckperms.api.LuckPerms;
@@ -30,18 +30,18 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final ChatterBoxPlatform plugin = this.instance.getPlugin();
+    private final ChatterBoxPlatform platform = this.instance.getPlugin();
+
+    private final HytaleUserRegistry registry = this.platform.getUserRegistry();
 
     private final FusionHytale fusion = this.instance.getFusion();
-
-    private final UserManager userManager = instance.getUserManager();
 
     @Override
     public void init(EventRegistry registry) {
         registry.register(getEvent(), event -> {
             final PlayerRef player = event.getPlayerRef();
 
-            this.userManager.removeUser(player.getUuid());
+            this.registry.removeUser(player.getUuid());
 
             final CommentedConfigurationNode config = Configs.config.getYamlConfig();
 
@@ -73,13 +73,12 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                 final CommentedConfigurationNode title = primaryGroup.isBlank() ? config.node("root", "traffic", "quit-message", "title") : config.node("root", "traffic", "quit-message", "groups", primaryGroup, "title");
 
                 if (title.node("toggle").getBoolean(false)) {
-                    final Message header = this.plugin.getComponent(
-                            player,
-                            title.node("header").getString("Player has joined!"),
+                    final Message header = this.fusion.asMessage(player,
+                            title.node("header").getString("Player has quit!"),
                             placeholders
                     );
 
-                    final Message footer = this.plugin.getComponent(
+                    final Message footer = this.fusion.asMessage(
                             player,
                             title.node("footer").getString("{player}"),
                             placeholders
@@ -107,7 +106,7 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
                     final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
 
-                    universe.sendMessage(this.plugin.getComponent(player, output, placeholders));
+                    universe.sendMessage(this.fusion.asMessage(player, output, placeholders));
                 }
             }
         });

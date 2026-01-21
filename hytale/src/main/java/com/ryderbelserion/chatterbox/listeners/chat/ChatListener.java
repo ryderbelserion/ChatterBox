@@ -3,11 +3,11 @@ package com.ryderbelserion.chatterbox.listeners.chat;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import com.ryderbelserion.chatterbox.common.enums.Configs;
 import com.ryderbelserion.chatterbox.ChatterBox;
-import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.common.enums.Configs;
 import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
+import com.ryderbelserion.fusion.hytale.FusionHytale;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -18,7 +18,9 @@ import java.util.Map;
 
 public class ChatListener implements EventListener<PlayerChatEvent> {
 
-    private final ChatterBoxPlatform instance = ChatterBox.getInstance().getPlugin();
+    private final ChatterBox instance = ChatterBox.getInstance();
+
+    private final FusionHytale fusion = this.instance.getFusion();
 
     @Override
     public void init(final EventRegistry registry) {
@@ -59,7 +61,7 @@ public class ChatListener implements EventListener<PlayerChatEvent> {
 
                 final String safeFormat = format;
 
-                event.setFormatter((_, _) -> this.instance.getComponent(player, safeFormat, placeholders));
+                event.setFormatter((_, _) -> this.fusion.asMessage(player, safeFormat, placeholders));
             }
         });
     }

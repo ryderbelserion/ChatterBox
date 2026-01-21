@@ -4,12 +4,10 @@ import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
-import com.ryderbelserion.chatterbox.api.registry.HytaleMessageRegistry;
 import com.ryderbelserion.chatterbox.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.listeners.DisconnectListener;
 import com.ryderbelserion.chatterbox.listeners.PostConnectListener;
 import com.ryderbelserion.chatterbox.listeners.chat.ChatListener;
-import com.ryderbelserion.chatterbox.users.UserManager;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.jetbrains.annotations.ApiStatus;
@@ -62,16 +60,8 @@ public class ChatterBox extends JavaPlugin {
         this.plugin.reload();
     }
 
-    public @NotNull final HytaleMessageRegistry getMessageRegistry() {
-        return this.plugin.getMessageRegistry();
-    }
-
     public @NotNull final ChatterBoxPlatform getPlugin() {
         return this.plugin;
-    }
-
-    public @NotNull final UserManager getUserManager() {
-        return this.plugin.getUserManager();
     }
 
     public @NotNull final FusionHytale getFusion() {

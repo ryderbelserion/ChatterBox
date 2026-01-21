@@ -1,6 +1,11 @@
 package com.ryderbelserion.chatterbox.api.registry;
 
-import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
-import com.ryderbelserion.chatterbox.common.messages.MessageRegistry;
+import com.ryderbelserion.chatterbox.common.api.registry.MessageRegistry;
 
-public class HytaleMessageRegistry extends MessageRegistry<IMessageReceiver> { }
+public class HytaleMessageRegistry extends MessageRegistry {
+
+    @Override
+    public HytaleMessageRegistry init() {
+        return (HytaleMessageRegistry) super.init();
+    }
+}

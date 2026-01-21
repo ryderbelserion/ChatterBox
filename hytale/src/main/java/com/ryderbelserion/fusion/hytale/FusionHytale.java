@@ -1,12 +1,15 @@
 package com.ryderbelserion.fusion.hytale;
 
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.hytale.utils.ColorUtils;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Map;
 
 public class FusionHytale extends FusionKyori<IMessageReceiver> {
@@ -17,6 +20,14 @@ public class FusionHytale extends FusionKyori<IMessageReceiver> {
         super(source, path);
 
         this.logger = logger;
+    }
+
+    public Message asMessage(@NotNull final IMessageReceiver receiver, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
+        return ColorUtils.toHytale(asComponent(receiver, message, placeholders));
+    }
+
+    public Message asMessage(@NotNull final IMessageReceiver receiver, @NotNull final String message) {
+        return asMessage(receiver, message, new HashMap<>());
     }
 
     @Override
