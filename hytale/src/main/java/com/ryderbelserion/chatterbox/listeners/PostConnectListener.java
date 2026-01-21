@@ -20,7 +20,6 @@ import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
-import net.kyori.adventure.key.Key;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -75,10 +74,10 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
                     placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
                 }
 
-                execute(player, Messages.message_of_the_day, placeholders, config.node("root", "motd", "delay").getInt(0));
+                execute(player, placeholders, config.node("root", "motd", "delay").getInt(0));
             }
 
-            String primaryGroup = "";
+            String group = "";
 
             if (config.node("root", "traffic", "join-message", "toggle").getBoolean(true)) {
                 final Map<String, String> placeholders = new HashMap<>();
@@ -90,7 +89,7 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
                     final User user = luckperms.getPlayerAdapter(PlayerRef.class).getUser(player);
 
-                    primaryGroup = user.getPrimaryGroup().toLowerCase();
+                    group = user.getPrimaryGroup().toLowerCase();
 
                     final CachedMetaData data = user.getCachedData().getMetaData();
 
@@ -101,47 +100,39 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
                     placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
                 }
 
-                final CommentedConfigurationNode title = primaryGroup.isBlank() ? config.node("root", "traffic", "join-message", "title") : config.node("root", "traffic", "join-message", "groups", primaryGroup, "title");
-
                 final Universe universe = Universe.get();
 
-                if (title.node("toggle").getBoolean(false)) {
-                    final Message header = this.fusion.asMessage(
-                            player,
-                            title.node("header").getString("Player has joined!"),
-                            placeholders
-                    );
+                if (!config.hasChild("root", "traffic", "join-message", "groups", group, "title")) {
+                    final CommentedConfigurationNode configuration = config.node("root", "traffic", "join-message", "title");
 
-                    final Message footer = this.fusion.asMessage(
-                            player,
-                            title.node("footer").getString("{player}"),
-                            placeholders
-                    );
+                    if (configuration.node("toggle").getBoolean(false)) {
+                        sendTitle(player, configuration, placeholders);
 
-                    final int duration = title.node("delay", "duration").getInt(5);
-                    final int fadeIn = title.node("delay", "fade", "in").getInt(1);
-                    final int fadeOut = title.node("delay", "fade", "out").getInt(1);
+                        return;
+                    }
 
-                    universe.getPlayers().forEach(reference -> {
-                        final UUID uuid = reference.getWorldUuid();
-
-                        if (uuid != null) {
-                            final World world = universe.getWorld(uuid);
-
-                            if (world != null) {
-                                world.execute(() -> EventTitleUtil.showEventTitleToPlayer(reference, header, footer, true, null, duration,
-                                        fadeIn,
-                                        fadeOut));
-                            }
-                        }
-                    });
-                } else {
-                    final CommentedConfigurationNode node = primaryGroup.isBlank() ? config.node("root", "traffic", "join-message", "output") : config.node("root", "traffic", "join-message", "groups", primaryGroup, "output");
+                    final CommentedConfigurationNode node = config.node("root", "traffic", "join-message", "output");
 
                     final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
 
                     universe.sendMessage(this.fusion.asMessage(player, output, placeholders));
+
+                    return;
                 }
+
+                final CommentedConfigurationNode configuration = config.node("root", "traffic", "join-message", "groups", group, "title");
+
+                if (config.node("root", "traffic", "join-message", "title", "toggle").getBoolean(false)) {
+                    sendTitle(player, configuration, placeholders);
+
+                    return;
+                }
+
+                final CommentedConfigurationNode node = config.node("root", "traffic", "join-message", "groups", group, "output");
+
+                final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
+
+                universe.sendMessage(this.fusion.asMessage(player, output, placeholders));
             }
         });
 
@@ -159,10 +150,10 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
         return PlayerConnectEvent.class;
     }
 
-    private void execute(@NotNull final IMessageReceiver receiver, @NotNull final Key key, @NotNull final Map<String, String> placeholders, final int delay) {
+    private void execute(@NotNull final IMessageReceiver receiver, @NotNull final Map<String, String> placeholders, final int delay) {
         if (delay > 0) {
             HytaleServer.SCHEDULED_EXECUTOR.schedule(
-                    () -> this.adapter.sendMessage(receiver, key, placeholders),
+                    () -> this.adapter.sendMessage(receiver, Messages.message_of_the_day, placeholders),
                     delay, TimeUnit.SECONDS
             );
 
@@ -170,6 +161,39 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
             return;
         }
 
-        this.adapter.sendMessage(receiver, key, placeholders);
+        this.adapter.sendMessage(receiver, Messages.message_of_the_day, placeholders);
+    }
+
+    private void sendTitle(@NotNull final PlayerRef player, @NotNull final CommentedConfigurationNode title, @NotNull final Map<String, String> placeholders) {
+        final Universe universe = Universe.get();
+
+        final Message header = this.fusion.asMessage(player,
+                title.node("header").getString("Player has joined!"),
+                placeholders
+        );
+
+        final Message footer = this.fusion.asMessage(
+                player,
+                title.node("footer").getString("{player}"),
+                placeholders
+        );
+
+        final int duration = title.node("delay", "duration").getInt(5);
+        final int fadeIn = title.node("delay", "fade", "in").getInt(1);
+        final int fadeOut = title.node("delay", "fade", "out").getInt(1);
+
+        universe.getPlayers().forEach(reference -> {
+            final UUID uuid = reference.getWorldUuid();
+
+            if (uuid != null) {
+                final World world = universe.getWorld(uuid);
+
+                if (world != null) {
+                    world.execute(() -> EventTitleUtil.showEventTitleToPlayer(reference, header, footer, true, null, duration,
+                            fadeIn,
+                            fadeOut));
+                }
+            }
+        });
     }
 }

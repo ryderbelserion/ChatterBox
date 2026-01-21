@@ -1,4 +1,1 @@
-- Added per group support (requires LuckPerms) to the chat formatting, and join/quit messages 
-  - [config.yml example](https://github.com/ryderbelserion/ChatterBox/blob/838fcf44dc6d3f1349c7290573e3f60baaf1a057/plugin/src/main/resources/config.yml#L44l)
-  - [chat.yml example](https://github.com/ryderbelserion/ChatterBox/blob/838fcf44dc6d3f1349c7290573e3f60baaf1a057/plugin/src/main/resources/chat.yml#L18)
-- Cleaned up internals
+- Fixed a bug with incorrect configuration check, which caused per group format defaults to be used instead.
