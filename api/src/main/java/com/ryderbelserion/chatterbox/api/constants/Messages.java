@@ -10,6 +10,8 @@ public class Messages {
     public static final Key reload_plugin = Key.key(namespace, "reload_plugin");
     public static final Key no_permission = Key.key(namespace, "no_permission");
 
+    public static final Key must_be_player = Key.key(namespace, "must_be_player");
+
     public static final Key message_of_the_day = Key.key(namespace, "message_of_the_day");
 
 }

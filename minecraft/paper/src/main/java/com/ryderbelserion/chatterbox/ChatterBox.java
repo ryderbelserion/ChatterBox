@@ -3,13 +3,15 @@ package com.ryderbelserion.chatterbox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 public class ChatterBox extends JavaPlugin {
 
-    private FusionPaper fusion;
+    private static ChatterBox instance;
 
     private ChatterBoxPlatform platform;
+    private FusionPaper fusion;
 
     @Override
     public void onEnable() {
@@ -18,6 +20,8 @@ public class ChatterBox extends JavaPlugin {
 
         this.platform = new ChatterBoxPlatform(this.fusion);
         this.platform.init();
+
+        instance = this;
     }
 
     @Override
@@ -31,5 +35,10 @@ public class ChatterBox extends JavaPlugin {
 
     public @NotNull final FusionPaper getFusion() {
         return this.fusion;
+    }
+
+    @ApiStatus.Internal
+    public static ChatterBox getInstance() {
+        return instance;
     }
 }

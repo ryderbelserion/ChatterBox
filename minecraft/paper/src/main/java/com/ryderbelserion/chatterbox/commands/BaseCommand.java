@@ -1,5 +1,9 @@
 package com.ryderbelserion.chatterbox.commands;
 
+import com.ryderbelserion.chatterbox.ChatterBox;
+import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.registry.adapters.PaperSenderAdapter;
 import com.ryderbelserion.chatterbox.commands.admin.CommandReload;
 import com.ryderbelserion.chatterbox.commands.player.CommandMotd;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -13,11 +17,11 @@ import java.util.List;
 
 public class BaseCommand {
 
-    //protected final ChatManager plugin = ChatManager.get();
+    protected final ChatterBox instance = ChatterBox.getInstance();
 
-    //protected final ChatManagerPlatform platform = this.plugin.getPlatform();
+    protected final ChatterBoxPlatform platform = this.instance.getPlatform();
 
-    //protected final MessageRegistry registry = this.platform.getMessageRegistry();
+    protected final PaperSenderAdapter adapter = this.platform.getSenderAdapter();
 
     private final AnnotationParser<CommandSourceStack> parser;
 
@@ -32,7 +36,7 @@ public class BaseCommand {
                 return player;
             }
 
-            //this.registry.getMessage(Messages.must_be_player).send(sender);
+            this.adapter.sendMessage(sender, Messages.must_be_player);
 
             return null;
         });

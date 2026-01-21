@@ -1,16 +1,16 @@
 package com.ryderbelserion.chatterbox.api.registry;
 
-import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
-import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.api.registry.adapters.PaperUserAdapter;
 import com.ryderbelserion.chatterbox.api.user.IUser;
-import com.ryderbelserion.chatterbox.api.registry.adapters.HytaleUserAdapter;
+import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.hytale.FusionHytale;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
@@ -20,19 +20,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class HytaleUserRegistry implements com.ryderbelserion.chatterbox.api.registry.IUserRegistry<PlayerRef> {
+public class PaperUserRegistry implements IUserRegistry<Player> {
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
     private final ChatterBoxPlatform platform = this.instance.getPlatform();
 
-    private final FusionHytale fusion = this.instance.getFusion();
+    private final FusionPaper fusion = this.instance.getFusion();
 
     private final FileManager fileManager = this.fusion.getFileManager();
 
     private final Path userPath = this.platform.getUserPath();
 
-    private final Map<UUID, HytaleUserAdapter> users = new HashMap<>();
+    private final Map<UUID, PaperUserAdapter> users = new HashMap<>();
 
     @Override
     public void init() {
@@ -44,14 +44,17 @@ public class HytaleUserRegistry implements com.ryderbelserion.chatterbox.api.reg
             }
         }
 
-        this.users.put(ChatterBoxPlugin.CONSOLE_UUID, new HytaleUserAdapter());
+        this.users.put(ChatterBoxPlugin.CONSOLE_UUID, new PaperUserAdapter());
     }
 
     @Override
-    public void addUser(@NonNull final PlayerRef player) {
-        final String username = player.getUsername();
-        final String locale = player.getLanguage();
-        final UUID uuid = player.getUuid();
+    public void addUser(@NonNull final Player player) {
+        final String username = player.getName();
+        final String locale = player.locale().toString();
+
+        this.fusion.log(Level.WARNING, "Locale %s".formatted(locale));
+
+        final UUID uuid = player.getUniqueId();
 
         final Path file = this.userPath.resolve("%s.json".formatted(uuid));
 
@@ -85,7 +88,7 @@ public class HytaleUserRegistry implements com.ryderbelserion.chatterbox.api.reg
             action.save();
         });
 
-        final HytaleUserAdapter user = new HytaleUserAdapter(player);
+        final PaperUserAdapter user = new PaperUserAdapter(player);
 
         user.setLocale(locale);
 
@@ -100,7 +103,7 @@ public class HytaleUserRegistry implements com.ryderbelserion.chatterbox.api.reg
     }
 
     @Override
-    public Optional<HytaleUserAdapter> getUser(@NotNull UUID uuid) {
+    public Optional<PaperUserAdapter> getUser(@NotNull UUID uuid) {
         return Optional.of(this.users.get(uuid));
     }
 

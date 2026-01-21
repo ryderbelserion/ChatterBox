@@ -47,7 +47,7 @@ public abstract class ChatterBox<S, T> {
         return this.fileManager;
     }
 
-    public final FusionKyori<S> getFusion() {
+    public final FusionKyori getFusion() {
         return this.fusion;
     }
 

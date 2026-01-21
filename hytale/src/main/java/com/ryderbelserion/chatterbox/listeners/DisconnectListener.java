@@ -31,7 +31,7 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final ChatterBoxPlatform platform = this.instance.getPlugin();
+    private final ChatterBoxPlatform platform = this.instance.getPlatform();
 
     private final HytaleUserRegistry registry = this.platform.getUserRegistry();
 

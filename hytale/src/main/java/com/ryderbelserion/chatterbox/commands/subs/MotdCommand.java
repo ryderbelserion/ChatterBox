@@ -9,7 +9,6 @@ import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.registry.adapters.HytaleSenderAdapter;
-import com.ryderbelserion.chatterbox.common.api.registry.MessageRegistry;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -22,11 +21,9 @@ public class MotdCommand extends CommandBase {
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final ChatterBoxPlatform platform = this.instance.getPlugin();
+    private final ChatterBoxPlatform platform = this.instance.getPlatform();
 
     private final HytaleSenderAdapter adapter = this.platform.getSenderAdapter();
-
-    private final MessageRegistry messageRegistry = this.platform.getMessageRegistry();
 
     public MotdCommand() {
         super("motd", "Shows the message of the day!", false);

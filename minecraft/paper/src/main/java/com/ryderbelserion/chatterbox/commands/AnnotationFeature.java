@@ -1,17 +1,24 @@
 package com.ryderbelserion.chatterbox.commands;
 
+import com.ryderbelserion.chatterbox.ChatterBox;
+import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.registry.IAnnotationRegistry;
+import com.ryderbelserion.chatterbox.api.registry.IMessageRegistry;
+import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
+import com.ryderbelserion.chatterbox.api.registry.adapters.PaperSenderAdapter;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.incendo.cloud.annotations.AnnotationParser;
 
 public abstract class AnnotationFeature implements IAnnotationRegistry<AnnotationParser<CommandSourceStack>> {
 
-    /*protected final ChatManager plugin = ChatManager.get();
+    protected final ChatterBox instance = ChatterBox.getInstance();
 
-    protected final ChatManagerPlatform platform = this.plugin.getPlatform();
+    protected final ChatterBoxPlatform platform = this.instance.getPlatform();
 
-    protected final MessageRegistry registry = this.platform.getMessageRegistry();
+    protected final PaperSenderAdapter adapter = this.platform.getSenderAdapter();
 
-    protected final UserRegistry userRegistry = this.platform.getUserRegistry();*/
+    protected final IMessageRegistry messageRegistry = this.platform.getMessageRegistry();
+
+    protected final IUserRegistry userRegistry = this.platform.getUserRegistry();
 
 }

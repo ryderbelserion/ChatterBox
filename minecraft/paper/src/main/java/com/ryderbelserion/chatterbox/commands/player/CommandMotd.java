@@ -1,5 +1,6 @@
 package com.ryderbelserion.chatterbox.commands.player;
 
+import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.commands.AnnotationFeature;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.CommandSender;
@@ -8,6 +9,7 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
 import org.jetbrains.annotations.NotNull;
+import java.util.Map;
 
 public class CommandMotd extends AnnotationFeature {
 
@@ -20,16 +22,8 @@ public class CommandMotd extends AnnotationFeature {
     @CommandDescription("Shows the message of the day!")
     @Permission(value = "chatmanager.motd", mode = Permission.Mode.ALL_OF)
     public void motd(final CommandSender sender) {
-        /*final CommentedConfigurationNode config = Files.config.getYamlConfig();
-
-        if (config.node("root", "motd", "toggle").getBoolean(false)) {
-            this.registry.getMessage(Messages.message_of_the_day).send(sender, Map.of(
-                    "{player}", sender.getName()
-            ));
-
-            return;
-        }
-
-        this.registry.getMessage(Messages.feature_disabled).send(sender);*/
+        this.adapter.sendMessage(sender, Messages.message_of_the_day, Map.of(
+                "{player}", sender.getName()
+        ));
     }
 }

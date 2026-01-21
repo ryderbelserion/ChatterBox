@@ -60,7 +60,7 @@ public class ChatterBox extends JavaPlugin {
         this.plugin.reload();
     }
 
-    public @NotNull final ChatterBoxPlatform getPlugin() {
+    public @NotNull final ChatterBoxPlatform getPlatform() {
         return this.plugin;
     }
 

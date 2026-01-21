@@ -12,7 +12,7 @@ public class ReloadCommand extends CommandBase {
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final ChatterBoxPlatform platform = this.instance.getPlugin();
+    private final ChatterBoxPlatform platform = this.instance.getPlatform();
 
     private final HytaleSenderAdapter adapter = this.platform.getSenderAdapter();
 

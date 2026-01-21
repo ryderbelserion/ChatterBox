@@ -3,7 +3,7 @@ rootProject.name = "ChatterBox"
 listOf(
     "hytale" to "hytale",
 
-    //"minecraft/paper" to "paper",
+    "minecraft/paper" to "paper",
 
     "common" to "common",
     "api" to "api"
