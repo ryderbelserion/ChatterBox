@@ -5,7 +5,11 @@ plugins {
 project.group = "${rootProject.group}.paper"
 
 dependencies {
+    implementation(libs.bundles.cloud.paper)
+
     implementation(libs.fusion.paper)
+
+    implementation(project(":chatterbox-common"))
 }
 
 tasks {
