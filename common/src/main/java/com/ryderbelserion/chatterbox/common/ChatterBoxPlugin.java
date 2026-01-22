@@ -74,6 +74,8 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
     public void reload() {
         this.fileManager.refresh(false).addFolder(this.dataPath.resolve("locale"), FileType.YAML);
 
+        this.fusion.reload();
+
         getMessageRegistry().init();
     }
 

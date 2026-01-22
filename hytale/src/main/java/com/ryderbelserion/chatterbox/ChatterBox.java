@@ -54,12 +54,6 @@ public class ChatterBox extends JavaPlugin {
         getCommandRegistry().registerCommand(new BaseCommand());
     }
 
-    public void reload() {
-        this.fusion.reload();
-
-        this.plugin.reload();
-    }
-
     public @NotNull final ChatterBoxPlatform getPlatform() {
         return this.plugin;
     }
