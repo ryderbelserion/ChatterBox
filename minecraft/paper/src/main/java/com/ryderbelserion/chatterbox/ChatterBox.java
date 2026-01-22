@@ -1,10 +1,14 @@
 package com.ryderbelserion.chatterbox;
 
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.listeners.CacheListener;
+import com.ryderbelserion.chatterbox.listeners.chat.ChatListener;
 import com.ryderbelserion.fusion.paper.FusionPaper;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
 
 public class ChatterBox extends JavaPlugin {
 
@@ -22,6 +26,14 @@ public class ChatterBox extends JavaPlugin {
 
         this.platform = new ChatterBoxPlatform(this, this.fusion);
         this.platform.init();
+
+        final PluginManager pluginManager = getServer().getPluginManager();
+
+        List.of(
+                new CacheListener(),
+
+                new ChatListener()
+        ).forEach(event -> pluginManager.registerEvents(event, this));
     }
 
     @Override
