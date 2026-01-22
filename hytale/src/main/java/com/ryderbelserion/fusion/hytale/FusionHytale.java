@@ -1,8 +1,12 @@
 package com.ryderbelserion.fusion.hytale;
 
+import com.hypixel.hytale.common.plugin.PluginIdentifier;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.plugin.PluginBase;
+import com.hypixel.hytale.server.core.plugin.PluginManager;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.hytale.utils.ColorUtils;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
@@ -46,5 +50,12 @@ public class FusionHytale extends FusionKyori<IMessageReceiver> {
             case ERROR -> this.logger.atSevere().log(safeMessage);
             case INFO -> this.logger.atInfo().log(safeMessage);
         }
+    }
+
+    @Override
+    public boolean isModReady(@NotNull final FusionKey key) {
+        final PluginBase plugin = PluginManager.get().getPlugin(PluginIdentifier.fromString(key.asString()));
+
+        return plugin != null && plugin.isEnabled();
     }
 }
