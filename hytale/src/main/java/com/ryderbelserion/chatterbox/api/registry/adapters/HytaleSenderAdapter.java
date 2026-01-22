@@ -1,5 +1,6 @@
 package com.ryderbelserion.chatterbox.api.registry.adapters;
 
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.console.ConsoleSender;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -15,9 +16,10 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
-public class HytaleSenderAdapter extends ISenderAdapter<ChatterBoxPlatform, IMessageReceiver> {
+public class HytaleSenderAdapter extends ISenderAdapter<ChatterBoxPlatform, Message, IMessageReceiver> {
 
     private final HytaleMessageRegistry messageRegistry;
     private final HytaleUserRegistry userRegistry;
@@ -52,6 +54,11 @@ public class HytaleSenderAdapter extends ISenderAdapter<ChatterBoxPlatform, IMes
 
     @Override
     public void sendMessage(@NotNull final IMessageReceiver sender, @NotNull final Key id, @NotNull final Map<String, String> placeholders) {
+        sender.sendMessage(getComponent(sender, id, placeholders));
+    }
+
+    @Override
+    public Message getComponent(@NotNull final IMessageReceiver sender, @NotNull final Key id, @NotNull final Map<String, String> placeholders) {
         final Map<String, String> map = new HashMap<>(placeholders);
 
         final CommentedConfigurationNode configuration = FileKeys.config.getYamlConfig();
@@ -63,14 +70,16 @@ public class HytaleSenderAdapter extends ISenderAdapter<ChatterBoxPlatform, IMes
         }
 
         if (!(sender instanceof PlayerRef player)) {
-            sender.sendMessage(this.fusion.asMessage(sender, this.messageRegistry.getMessage(id).getValue(), map));
-
-            return;
+            return this.fusion.asMessage(sender, this.messageRegistry.getMessage(id).getValue(), map);
         }
 
-        final UUID uuid = player.getUuid();
+        final Optional<HytaleUserAdapter> optional = this.userRegistry.getUser(player.getUuid());
 
-        this.userRegistry.getUser(uuid).ifPresent(user -> sender.sendMessage(this.fusion.asMessage(player, this.messageRegistry.getMessageByLocale(user.getLocaleKey(), id).getValue(), map)));
+        if (optional.isEmpty()) return this.fusion.asMessage(sender, this.messageRegistry.getMessage(id).getValue(), map);
+
+        final HytaleUserAdapter user = optional.get();
+
+        return this.fusion.asMessage(player, this.messageRegistry.getMessageByLocale(user.getLocaleKey(), id).getValue(), map);
     }
 
     @Override

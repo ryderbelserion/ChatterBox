@@ -8,6 +8,7 @@ import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -15,9 +16,10 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
-public class PaperSenderAdapter extends ISenderAdapter<ChatterBoxPlatform, CommandSender> {
+public class PaperSenderAdapter extends ISenderAdapter<ChatterBoxPlatform, Component, CommandSender> {
 
     private final PaperMessageRegistry messageRegistry;
     private final PaperUserRegistry userRegistry;
@@ -52,6 +54,11 @@ public class PaperSenderAdapter extends ISenderAdapter<ChatterBoxPlatform, Comma
 
     @Override
     public void sendMessage(@NotNull final CommandSender sender, @NotNull final Key id, @NotNull final Map<String, String> placeholders) {
+        sender.sendMessage(getComponent(sender, id, placeholders));
+    }
+
+    @Override
+    public Component getComponent(@NotNull final CommandSender sender, @NotNull final Key id, @NotNull final Map<String, String> placeholders) {
         final Map<String, String> map = new HashMap<>(placeholders);
 
         final CommentedConfigurationNode configuration = FileKeys.config.getYamlConfig();
@@ -63,14 +70,16 @@ public class PaperSenderAdapter extends ISenderAdapter<ChatterBoxPlatform, Comma
         }
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(this.fusion.asComponent(sender, this.messageRegistry.getMessage(id).getValue(), map));
-
-            return;
+            return this.fusion.asComponent(sender, this.messageRegistry.getMessage(id).getValue(), map);
         }
 
-        final UUID uuid = player.getUniqueId();
+        final Optional<PaperUserAdapter> optional = this.userRegistry.getUser(player.getUniqueId());
 
-        this.userRegistry.getUser(uuid).ifPresent(user -> sender.sendMessage(this.fusion.asComponent(player, this.messageRegistry.getMessageByLocale(user.getLocaleKey(), id).getValue(), map)));
+        if (optional.isEmpty()) return this.fusion.asComponent(player, this.messageRegistry.getMessage(id).getValue(), map);
+
+        final PaperUserAdapter user = optional.get();
+
+        return this.fusion.asComponent(player, this.messageRegistry.getMessageByLocale(user.getLocaleKey(), id).getValue(), map);
     }
 
     @Override
