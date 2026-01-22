@@ -54,12 +54,12 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver, Messa
     }
 
     @Override
-    public @NotNull final HytaleUserRegistry getUserRegistry() {
-        return this.userRegistry;
+    public @NotNull final HytaleSenderAdapter getSenderAdapter() {
+        return this.userAdapter;
     }
 
     @Override
-    public @NotNull final HytaleSenderAdapter getSenderAdapter() {
-        return this.userAdapter;
+    public @NotNull final HytaleUserRegistry getUserRegistry() {
+        return this.userRegistry;
     }
 }

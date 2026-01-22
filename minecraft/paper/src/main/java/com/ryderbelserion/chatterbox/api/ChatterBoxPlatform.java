@@ -1,17 +1,25 @@
 package com.ryderbelserion.chatterbox.api;
 
+import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.registry.*;
 import com.ryderbelserion.chatterbox.api.registry.adapters.PaperSenderAdapter;
+import com.ryderbelserion.chatterbox.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
+import org.incendo.cloud.execution.ExecutionCoordinator;
+import org.incendo.cloud.paper.PaperCommandManager;
 import org.jetbrains.annotations.NotNull;
 
 public class ChatterBoxPlatform extends ChatterBoxPlugin<CommandSender, Component> {
 
-    public ChatterBoxPlatform(@NotNull final FusionPaper fusion) {
+    private final ChatterBox plugin;
+
+    public ChatterBoxPlatform(@NotNull final ChatterBox plugin, @NotNull final FusionPaper fusion) {
         super(fusion);
+
+        this.plugin = plugin;
     }
 
     private PaperMessageRegistry messageRegistry;
@@ -39,6 +47,10 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<CommandSender, Componen
     @Override
     public void post() {
         super.post();
+
+        new BaseCommand(PaperCommandManager.builder()
+                .executionCoordinator(ExecutionCoordinator.simpleCoordinator())
+                .buildOnEnable(this.plugin));
     }
 
     @Override
@@ -52,12 +64,12 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<CommandSender, Componen
     }
 
     @Override
-    public @NotNull final PaperUserRegistry getUserRegistry() {
-        return this.userRegistry;
+    public @NotNull final PaperSenderAdapter getSenderAdapter() {
+        return this.userAdapter;
     }
 
     @Override
-    public @NotNull final PaperSenderAdapter getSenderAdapter() {
-        return this.userAdapter;
+    public @NotNull final PaperUserRegistry getUserRegistry() {
+        return this.userRegistry;
     }
 }
