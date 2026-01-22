@@ -50,6 +50,16 @@ public class MessageRegistry implements IMessageRegistry<MessageAdapter> {
 
                 addMessage(key, Messages.no_permission, new MessageAdapter(configuration, "{prefix}<red>You do not have permission to use that command!", "messages", "player", "no-permission"));
 
+                addMessage(key, Messages.must_be_player, new MessageAdapter(configuration, "{prefix}<red>You must be a player to use this command.", "messages", "player", "requirements", "must-be-player"));
+
+                addMessage(key, Messages.must_be_console_sender, new MessageAdapter(configuration, "{prefix}<red>You must be using console to use this command.", "messages", "player", "requirements", "must-be-console-sender"));
+
+                addMessage(key, Messages.target_not_online, new MessageAdapter(configuration, "{prefix}<red>{player} <gray>is not online.", "messages", "player", "target-not-online"));
+
+                addMessage(key, Messages.target_same_player, new MessageAdapter(configuration, "{prefix}<red>You cannot use this command on yourself.", "messages", "player", "target-same-player"));
+
+                addMessage(key, Messages.inventory_not_empty, new MessageAdapter(configuration, "{prefix}<red>Inventory is not empty, Please clear up some room.", "messages", "player", "inventory-not-empty"));
+
                 addMessage(key, Messages.message_of_the_day, new MessageAdapter(configuration, StringUtils.toString(List.of(
                         "<gray>------------------------------------",
                         "",
