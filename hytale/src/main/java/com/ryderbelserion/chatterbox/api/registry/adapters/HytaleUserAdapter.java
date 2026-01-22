@@ -15,7 +15,7 @@ public class HytaleUserAdapter implements IUser {
 
     protected PlayerRef player;
 
-    protected Key locale;
+    protected Key locale = Messages.default_locale;
 
     public HytaleUserAdapter(@Nullable final IMessageReceiver sender) {
         if (sender instanceof PlayerRef reference) {
