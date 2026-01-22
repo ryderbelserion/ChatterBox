@@ -36,8 +36,9 @@ tasks {
         inputs.properties(
             "group" to rootProject.group.toString(),
             "artifact" to rootProject.name,
-            "version" to rootProject.version,
+            "version" to project.version,
             "description" to rootProject.description.toString(),
+            "minecraft" to libs.findVersion("minecraft").get(),
         )
 
         with(copySpec {

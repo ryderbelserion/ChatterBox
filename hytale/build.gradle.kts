@@ -2,6 +2,8 @@ plugins {
     `shadow-plugin`
 }
 
+project.version = rootProject.version
+
 dependencies {
     compileOnly(files(System.getenv("HYTALE_SERVER")))
 
@@ -15,7 +17,7 @@ dependencies {
 
 tasks {
     shadowJar {
-        archiveBaseName.set("${rootProject.name}-${rootProject.version}")
+        archiveBaseName.set("${rootProject.name}-Hytale-${rootProject.version}")
         archiveClassifier.set("")
 
         destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
