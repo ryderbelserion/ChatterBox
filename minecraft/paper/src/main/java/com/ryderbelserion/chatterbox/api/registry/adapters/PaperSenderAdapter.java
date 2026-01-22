@@ -5,7 +5,7 @@ import com.ryderbelserion.chatterbox.api.registry.PaperMessageRegistry;
 import com.ryderbelserion.chatterbox.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
-import com.ryderbelserion.chatterbox.common.enums.Configs;
+import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import net.kyori.adventure.key.Key;
 import org.bukkit.command.CommandSender;
@@ -54,7 +54,7 @@ public class PaperSenderAdapter extends ISenderAdapter<ChatterBoxPlatform, Comma
     public void sendMessage(@NotNull final CommandSender sender, @NotNull final Key id, @NotNull final Map<String, String> placeholders) {
         final Map<String, String> map = new HashMap<>(placeholders);
 
-        final CommentedConfigurationNode configuration = Configs.config.getYamlConfig();
+        final CommentedConfigurationNode configuration = FileKeys.config.getYamlConfig();
 
         final String prefix = configuration.node("root", "prefix").getString(" <gold>ChatterBox <reset>");
 

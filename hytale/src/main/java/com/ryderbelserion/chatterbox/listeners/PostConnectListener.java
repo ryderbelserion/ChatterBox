@@ -13,7 +13,7 @@ import com.hypixel.hytale.server.core.util.EventTitleUtil;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.api.registry.adapters.HytaleSenderAdapter;
-import com.ryderbelserion.chatterbox.common.enums.Configs;
+import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.enums.Support;
@@ -53,7 +53,7 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
             this.userRegistry.addUser(player);
 
-            final CommentedConfigurationNode config = Configs.config.getYamlConfig();
+            final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
 
             if (config.node("root", "motd", "toggle").getBoolean(false)) {
                 final Map<String, String> placeholders = new HashMap<>();
@@ -137,7 +137,7 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
         });
 
         registry.registerGlobal(AddPlayerToWorldEvent.class, event -> {
-            final CommentedConfigurationNode config = Configs.config.getYamlConfig();
+            final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
 
             if (config.node("root", "traffic", "join-message", "toggle").getBoolean(true)) {
                 event.setBroadcastJoinMessage(false);

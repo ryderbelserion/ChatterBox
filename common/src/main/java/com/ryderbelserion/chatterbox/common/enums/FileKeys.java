@@ -12,7 +12,7 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.nio.file.Path;
 import java.util.Optional;
 
-public enum Configs {
+public enum FileKeys {
 
     config("config.yml"),
     chat("chat.yml"),
@@ -25,7 +25,7 @@ public enum Configs {
 
     private final Path path;
 
-    Configs(@NotNull final String name) {
+    FileKeys(@NotNull final String name) {
         this.path = this.plugin.getDataPath().resolve(name);
     }
 

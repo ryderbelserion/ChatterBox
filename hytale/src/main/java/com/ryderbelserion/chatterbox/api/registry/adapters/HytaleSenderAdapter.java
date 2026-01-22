@@ -8,7 +8,7 @@ import com.ryderbelserion.chatterbox.api.registry.HytaleMessageRegistry;
 import com.ryderbelserion.chatterbox.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
-import com.ryderbelserion.chatterbox.common.enums.Configs;
+import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
@@ -54,7 +54,7 @@ public class HytaleSenderAdapter extends ISenderAdapter<ChatterBoxPlatform, IMes
     public void sendMessage(@NotNull final IMessageReceiver sender, @NotNull final Key id, @NotNull final Map<String, String> placeholders) {
         final Map<String, String> map = new HashMap<>(placeholders);
 
-        final CommentedConfigurationNode configuration = Configs.config.getYamlConfig();
+        final CommentedConfigurationNode configuration = FileKeys.config.getYamlConfig();
 
         final String prefix = configuration.node("root", "prefix").getString(" <gold>ChatterBox <reset>");
 

@@ -4,7 +4,7 @@ import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.ryderbelserion.chatterbox.ChatterBox;
-import com.ryderbelserion.chatterbox.common.enums.Configs;
+import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
@@ -25,7 +25,7 @@ public class ChatListener implements EventListener<PlayerChatEvent> {
     @Override
     public void init(final EventRegistry registry) {
         registry.registerGlobal(PlayerChatEvent.class, event -> {
-            final CommentedConfigurationNode config = Configs.chat.getYamlConfig();
+            final CommentedConfigurationNode config = FileKeys.chat.getYamlConfig();
 
             if (config.node("chat", "format", "toggle").getBoolean(true)) {
                 String format = config.node("chat", "format", "default").getString("{player} <gold>-> <reset>{message}");

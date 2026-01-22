@@ -9,7 +9,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.registry.HytaleUserRegistry;
-import com.ryderbelserion.chatterbox.common.enums.Configs;
+import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
@@ -44,7 +44,7 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
             this.registry.removeUser(player.getUuid());
 
-            final CommentedConfigurationNode config = Configs.config.getYamlConfig();
+            final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
 
             String group = "";
 
