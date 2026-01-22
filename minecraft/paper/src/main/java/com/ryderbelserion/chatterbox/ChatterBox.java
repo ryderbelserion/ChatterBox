@@ -15,13 +15,13 @@ public class ChatterBox extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
+
         this.fusion = new FusionPaper(this, getFile().toPath());
         this.fusion.init();
 
         this.platform = new ChatterBoxPlatform(this, this.fusion);
         this.platform.init();
-
-        instance = this;
     }
 
     @Override
