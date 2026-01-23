@@ -7,6 +7,8 @@ paperweight = "2.0.0-beta.19" # https://github.com/PaperMC/paperweight
 run-paper = "3.0.2" # https://github.com/jpenilla/run-task
 paper = "1.21.11-R0.1-SNAPSHOT" # https://github.com/PaperMC/Paper
 
+velocity = "3.4.0-SNAPSHOT" # https://docs.papermc.io/velocity/dev/creating-your-first-plugin/
+
 ## Minecraft
 minecraft = "1.21.11" # https://minecraft.net
 
@@ -85,6 +87,9 @@ fusion-core = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref =
 kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
 kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
+
+# https://docs.papermc.io/velocity/dev/creating-your-first-plugin/
+velocity = { module = "com.velocitypowered:velocity-api", version.ref = "velocity" }
 
 # https://github.com/LuckPerms/LuckPerms
 luckperms = { module = "net.luckperms:api", version.ref = "luckperms" }
