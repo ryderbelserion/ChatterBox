@@ -1,6 +1,7 @@
 package com.ryderbelserion.chatterbox.api;
 
 import com.ryderbelserion.chatterbox.ChatterBox;
+import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.api.registry.*;
 import com.ryderbelserion.chatterbox.api.registry.adapters.PaperSenderAdapter;
 import com.ryderbelserion.chatterbox.commands.BaseCommand;
@@ -71,5 +72,10 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<CommandSender, Componen
     @Override
     public @NotNull final PaperUserRegistry getUserRegistry() {
         return this.userRegistry;
+    }
+
+    @Override
+    public @NotNull final Platform getPlatform() {
+        return Platform.MINECRAFT;
     }
 }

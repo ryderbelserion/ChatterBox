@@ -2,8 +2,14 @@ package com.ryderbelserion.chatterbox.api.registry.adapters;
 
 import com.ryderbelserion.chatterbox.api.ChatterBox;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.constants.Support;
 import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
+import com.ryderbelserion.fusion.core.api.FusionProvider;
+import com.ryderbelserion.fusion.core.api.objects.Mod;
+import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import net.kyori.adventure.key.Key;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,6 +18,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class PaperUserAdapter implements IUser {
+
+    private final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
+
+    private final ModRegistry registry = this.fusion.getModRegistry();
 
     protected Player player;
 
@@ -28,18 +38,29 @@ public class PaperUserAdapter implements IUser {
     }
 
     @Override
-    public @NotNull UUID getUniqueId() {
+    public @NotNull final UUID getUniqueId() {
         return this.player == null ? ChatterBoxPlugin.CONSOLE_UUID : this.player.getUniqueId();
     }
 
     @Override
-    public @NotNull String getUsername() {
+    public @NotNull final String getUsername() {
         return this.player == null ? ChatterBoxPlugin.CONSOLE_NAME : this.player.getName();
     }
 
     @Override
-    public @NotNull Key getLocaleKey() {
+    public @NotNull final Key getLocaleKey() {
         return this.player == null ? Messages.default_locale : this.locale;
+    }
+
+    @Override
+    public @Nullable final GroupAdapter getGroupAdapter() {
+        final Mod mod = (Mod) this.registry.getMod(Support.luckperms_minecraft);
+
+        if (!mod.isEnabled()) {
+            return null;
+        }
+
+        return new GroupAdapter(getUniqueId());
     }
 
     @Override
