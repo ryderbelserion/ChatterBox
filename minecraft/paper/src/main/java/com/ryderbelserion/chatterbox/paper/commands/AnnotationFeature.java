@@ -3,8 +3,8 @@ package com.ryderbelserion.chatterbox.paper.commands;
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.registry.IAnnotationRegistry;
-import com.ryderbelserion.chatterbox.api.registry.IMessageRegistry;
-import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
+import com.ryderbelserion.chatterbox.paper.api.registry.PaperMessageRegistry;
+import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.incendo.cloud.annotations.AnnotationParser;
@@ -17,8 +17,8 @@ public abstract class AnnotationFeature implements IAnnotationRegistry<Annotatio
 
     protected final PaperSenderAdapter adapter = this.platform.getSenderAdapter();
 
-    protected final IMessageRegistry messageRegistry = this.platform.getMessageRegistry();
+    protected final PaperMessageRegistry messageRegistry = this.platform.getMessageRegistry();
 
-    protected final IUserRegistry userRegistry = this.platform.getUserRegistry();
+    protected final PaperUserRegistry userRegistry = this.platform.getUserRegistry();
 
 }

@@ -1,5 +1,6 @@
 package com.ryderbelserion.chatterbox.paper.api.registry;
 
+import com.ryderbelserion.chatterbox.api.registry.IContextRegistry;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import java.util.UUID;

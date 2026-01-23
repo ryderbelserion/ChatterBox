@@ -1,5 +1,6 @@
 package com.ryderbelserion.chatterbox.paper.api.registry;
 
+import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperUserAdapter;
