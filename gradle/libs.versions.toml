@@ -18,7 +18,10 @@ fusion = "4.0.0-SNAPSHOT" # https://github.com/ryderbelserion/Fusion
 
 ## Gradle Plugins
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
+curseforge = "1.1.26" # https://github.com/Darkhax/CurseForgeGradle
+minotaur = "2.8.10" # https://github.com/modrinth/minotaur
 feather = "0.4.0" # https://github.com/ryderbelserion/Feather
+hangar = "0.1.4" # https://github.com/HangarMC/hangar-publish-plugin
 shadow = "9.3.0" # https://github.com/GradleUp/shadow
 
 ## Databases
@@ -36,11 +39,20 @@ cloud-beta = "2.0.0-beta.14" # https://cloud.incendo.org/minecraft/paper/
 fix-javadoc = { id = "com.jeff-media.fix-javadoc-plugin", version.ref = "fix-javadoc" }
 
 [libraries]
+# https://github.com/Darkhax/CurseForgeGradle
+curseforge = { group = "net.darkhax.curseforgegradle", name = "net.darkhax.curseforgegradle.gradle.plugin", version.ref = "curseforge" }
+
 # https://github.com/PaperMC/paperweight
 paperweight = { module = "io.papermc.paperweight.userdev:io.papermc.paperweight.userdev.gradle.plugin", version.ref = "paperweight" }
 
 # https://github.com/ryderbelserion/Feather
 feather = { module = "com.ryderbelserion.feather.core:com.ryderbelserion.feather.core.gradle.plugin", version.ref = "feather" }
+
+# https://github.com/HangarMC/hangar-publish-plugin
+hangar = { module = "io.papermc.hangar-publish-plugin:io.papermc.hangar-publish-plugin.gradle.plugin", version.ref = "hangar" }
+
+# https://github.com/modrinth/minotaur
+minotaur = { module = "com.modrinth.minotaur:com.modrinth.minotaur.gradle.plugin", version.ref = "minotaur" }
 
 # https://github.com/GradleUp/shadow
 shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
@@ -91,7 +103,10 @@ kyori = [
 ]
 
 build = [
+    "curseforge",
+    "minotaur",
     "feather",
+    "hangar",
     "shadow"
 ]
 
