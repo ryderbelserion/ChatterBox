@@ -53,11 +53,11 @@ public class PaperUserAdapter implements IUser {
     }
 
     @Override
-    public @Nullable final GroupAdapter getGroupAdapter() {
+    public @NotNull final GroupAdapter getGroupAdapter() {
         final Mod mod = (Mod) this.registry.getMod(Support.luckperms_minecraft);
 
         if (!mod.isEnabled()) {
-            return null;
+            return new GroupAdapter();
         }
 
         return new GroupAdapter(getUniqueId());

@@ -17,11 +17,11 @@ import java.util.List;
 
 public class BaseCommand {
 
-    protected final ChatterBox instance = ChatterBox.getInstance();
+    private final ChatterBox instance = ChatterBox.getInstance();
 
-    protected final ChatterBoxPlatform platform = this.instance.getPlatform();
+    private final ChatterBoxPlatform platform = this.instance.getPlatform();
 
-    protected final PaperSenderAdapter adapter = this.platform.getSenderAdapter();
+    private final PaperSenderAdapter adapter = this.platform.getSenderAdapter();
 
     private final AnnotationParser<CommandSourceStack> parser;
 
