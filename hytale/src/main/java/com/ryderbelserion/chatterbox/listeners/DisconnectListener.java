@@ -61,7 +61,7 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                         placeholders.putAll(map);
                     }
 
-                    reference.set(adapter.getPrimaryGroup());
+                    reference.set(adapter.getPrimaryGroup().toLowerCase());
                 });
 
                 final Universe universe = Universe.get();

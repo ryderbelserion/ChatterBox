@@ -86,7 +86,7 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
                         placeholders.putAll(map);
                     }
 
-                    reference.set(adapter.getPrimaryGroup());
+                    reference.set(adapter.getPrimaryGroup().toLowerCase());
                 });
 
                 final Universe universe = Universe.get();
