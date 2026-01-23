@@ -7,4 +7,6 @@ dependencies {
     compileOnly(libs.fusion.kyori)
 
     api(project(":chatterbox-api"))
+
+    compileOnly(libs.luckperms)
 }

@@ -4,21 +4,25 @@ import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.ryderbelserion.chatterbox.ChatterBox;
+import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.api.registry.HytaleUserRegistry;
+import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
-import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.cacheddata.CachedMetaData;
-import net.luckperms.api.model.user.User;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ChatListener implements EventListener<PlayerChatEvent> {
 
     private final ChatterBox instance = ChatterBox.getInstance();
+
+    private final ChatterBoxPlatform platform = this.instance.getPlatform();
+
+    private final HytaleUserRegistry userRegistry = this.platform.getUserRegistry();
 
     private final FusionHytale fusion = this.instance.getFusion();
 
@@ -28,40 +32,34 @@ public class ChatListener implements EventListener<PlayerChatEvent> {
             final CommentedConfigurationNode config = FileKeys.chat.getYamlConfig();
 
             if (config.node("chat", "format", "toggle").getBoolean(true)) {
-                String format = config.node("chat", "format", "default").getString("{player} <gold>-> <reset>{message}");
+                final AtomicReference<String> reference = new AtomicReference<>(config.node("chat", "format", "default").getString("{player} <gold>-> <reset>{message}"));
 
                 final Map<String, String> placeholders = new HashMap<>();
 
                 final PlayerRef player = event.getSender();
 
+                final UUID uuid = player.getUuid();
+
                 placeholders.put("{player}", player.getUsername());
                 placeholders.put("{message}", event.getContent());
 
-                if (Support.luckperms.isEnabled()) {
-                    final LuckPerms luckperms = LuckPermsProvider.get();
+                this.userRegistry.getUser(uuid).ifPresent(user -> {
+                    final GroupAdapter adapter = user.getGroupAdapter();
 
-                    final User user = luckperms.getPlayerAdapter(PlayerRef.class).getUser(player);
+                    final Map<String, String> map = adapter.getPlaceholders();
 
-                    final String primaryGroup = user.getPrimaryGroup();
-
-                    final String group = config.node("chat", "format", "groups", primaryGroup.toLowerCase()).getString("");
-
-                    if (!group.isBlank()) {
-                        format = group;
+                    if (!map.isEmpty()) {
+                        placeholders.putAll(map);
                     }
 
-                    final CachedMetaData data = user.getCachedData().getMetaData();
+                    final String groupFormat = config.node("chat", "format", "groups", adapter.getPrimaryGroup().toLowerCase()).getString("");
 
-                    final String prefix = data.getPrefix();
-                    final String suffix = data.getSuffix();
+                    if (!groupFormat.isBlank()) {
+                        reference.set(groupFormat);
+                    }
+                });
 
-                    placeholders.put("{prefix}", prefix == null ? "N/A" : prefix);
-                    placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
-                }
-
-                final String safeFormat = format;
-
-                event.setFormatter((_, _) -> this.fusion.asMessage(player, safeFormat, placeholders));
+                event.setFormatter((_, _) -> this.fusion.asMessage(player, reference.get(), placeholders));
             }
         });
     }

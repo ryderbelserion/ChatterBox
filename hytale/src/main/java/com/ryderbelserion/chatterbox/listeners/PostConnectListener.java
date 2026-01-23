@@ -13,23 +13,20 @@ import com.hypixel.hytale.server.core.util.EventTitleUtil;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.api.registry.adapters.HytaleSenderAdapter;
+import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
-import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.cacheddata.CachedMetaData;
-import net.luckperms.api.model.user.User;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
@@ -60,47 +57,41 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
                 placeholders.put("{player}", playerName);
 
-                if (Support.luckperms.isEnabled()) {
-                    final LuckPerms luckperms = LuckPermsProvider.get();
+                this.userRegistry.getUser(player.getUuid()).ifPresent(user -> {
+                    final GroupAdapter adapter = user.getGroupAdapter();
 
-                    final User user = luckperms.getPlayerAdapter(PlayerRef.class).getUser(player);
+                    final Map<String, String> map = adapter.getPlaceholders();
 
-                    final CachedMetaData data = user.getCachedData().getMetaData();
-
-                    final String prefix = data.getPrefix();
-                    final String suffix = data.getSuffix();
-
-                    placeholders.put("{prefix}", prefix == null ? "N/A" : prefix);
-                    placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
-                }
+                    if (!map.isEmpty()) {
+                        placeholders.putAll(map);
+                    }
+                });
 
                 execute(player, placeholders, config.node("root", "motd", "delay").getInt(0));
             }
 
-            String group = "";
+            final AtomicReference<String> reference = new AtomicReference<>("");
 
             if (config.node("root", "traffic", "join-message", "toggle").getBoolean(true)) {
                 final Map<String, String> placeholders = new HashMap<>();
 
                 placeholders.put("{player}", playerName);
 
-                if (Support.luckperms.isEnabled()) {
-                    final LuckPerms luckperms = LuckPermsProvider.get();
+                this.userRegistry.getUser(player.getUuid()).ifPresent(user -> {
+                    final GroupAdapter adapter = user.getGroupAdapter();
 
-                    final User user = luckperms.getPlayerAdapter(PlayerRef.class).getUser(player);
+                    final Map<String, String> map = adapter.getPlaceholders();
 
-                    group = user.getPrimaryGroup().toLowerCase();
+                    if (!map.isEmpty()) {
+                        placeholders.putAll(map);
+                    }
 
-                    final CachedMetaData data = user.getCachedData().getMetaData();
-
-                    final String prefix = data.getPrefix();
-                    final String suffix = data.getSuffix();
-
-                    placeholders.put("{prefix}", prefix == null ? "N/A" : prefix);
-                    placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
-                }
+                    reference.set(adapter.getPrimaryGroup());
+                });
 
                 final Universe universe = Universe.get();
+
+                final String group = reference.get();
 
                 if (!config.hasChild("root", "traffic", "join-message", "groups", group, "title")) {
                     final CommentedConfigurationNode configuration = config.node("root", "traffic", "join-message", "title");

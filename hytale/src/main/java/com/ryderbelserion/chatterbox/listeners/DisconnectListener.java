@@ -9,21 +9,18 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.registry.HytaleUserRegistry;
+import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.ChatterBox;
-import com.ryderbelserion.chatterbox.api.enums.Support;
 import com.ryderbelserion.chatterbox.api.listeners.EventListener;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.cacheddata.CachedMetaData;
-import net.luckperms.api.model.user.User;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DisconnectListener implements EventListener<PlayerDisconnectEvent> {
 
@@ -34,6 +31,8 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
     private final ChatterBoxPlatform platform = this.instance.getPlatform();
 
     private final HytaleUserRegistry registry = this.platform.getUserRegistry();
+
+    private final HytaleUserRegistry userRegistry = this.platform.getUserRegistry();
 
     private final FusionHytale fusion = this.instance.getFusion();
 
@@ -46,30 +45,28 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
             final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
 
-            String group = "";
+            final AtomicReference<String> reference = new AtomicReference<>("");
 
             if (config.node("root", "traffic", "quit-message", "toggle").getBoolean(true)) {
                 final Map<String, String> placeholders = new HashMap<>();
 
                 placeholders.put("{player}", player.getUsername());
 
-                if (Support.luckperms.isEnabled()) {
-                    final LuckPerms luckperms = LuckPermsProvider.get();
+                this.userRegistry.getUser(player.getUuid()).ifPresent(user -> {
+                    final GroupAdapter adapter = user.getGroupAdapter();
 
-                    final User user = luckperms.getPlayerAdapter(PlayerRef.class).getUser(player);
+                    final Map<String, String> map = adapter.getPlaceholders();
 
-                    group = user.getPrimaryGroup().toLowerCase();
+                    if (!map.isEmpty()) {
+                        placeholders.putAll(map);
+                    }
 
-                    final CachedMetaData data = user.getCachedData().getMetaData();
-
-                    final String prefix = data.getPrefix();
-                    final String suffix = data.getSuffix();
-
-                    placeholders.put("{prefix}", prefix == null ? "N/A" : prefix);
-                    placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
-                }
+                    reference.set(adapter.getPrimaryGroup());
+                });
 
                 final Universe universe = Universe.get();
+
+                final String group = reference.get();
 
                 if (!config.hasChild("root", "traffic", "quit-message", "groups", group, "title")) {
                     final CommentedConfigurationNode configuration = config.node("root", "traffic", "quit-message", "title");

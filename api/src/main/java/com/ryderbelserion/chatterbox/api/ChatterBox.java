@@ -1,6 +1,7 @@
 package com.ryderbelserion.chatterbox.api;
 
 import com.ryderbelserion.chatterbox.api.adapters.IPlayerAdapter;
+import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.api.registry.IContextRegistry;
 import com.ryderbelserion.chatterbox.api.registry.IMessageRegistry;
 import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
@@ -29,13 +30,15 @@ public abstract class ChatterBox<S, T> {
         this.source = this.fileManager.getSource();
     }
 
+    public abstract <C> @NotNull IPlayerAdapter<C> getPlayerAdapter(@NotNull final Class<C> object);
+
     public abstract IMessageRegistry getMessageRegistry();
 
     public abstract IContextRegistry getContextRegistry();
 
     public abstract IUserRegistry getUserRegistry();
 
-    public abstract <C> @NotNull IPlayerAdapter<C> getPlayerAdapter(@NotNull final Class<C> object);
+    public abstract Platform getPlatform();
 
     public abstract void init();
 

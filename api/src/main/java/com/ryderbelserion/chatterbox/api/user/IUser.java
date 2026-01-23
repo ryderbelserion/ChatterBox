@@ -1,5 +1,6 @@
 package com.ryderbelserion.chatterbox.api.user;
 
+import com.ryderbelserion.chatterbox.api.adapters.IGroupAdapter;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +13,8 @@ public interface IUser {
     @NotNull String getUsername();
 
     @NotNull Key getLocaleKey();
+
+    IGroupAdapter getGroupAdapter();
 
     @ApiStatus.Internal
     void setLocale(@NotNull final String locale);

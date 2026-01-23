@@ -3,8 +3,11 @@ package com.ryderbelserion.chatterbox.common;
 import com.ryderbelserion.chatterbox.api.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.ChatterBox;
 import com.ryderbelserion.chatterbox.api.adapters.IPlayerAdapter;
+import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
+import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
+import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
@@ -63,6 +66,14 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
         });
 
         this.fileManager.addFolder(this.dataPath.resolve("locale"), FileType.YAML);
+
+        final ModRegistry registry = this.fusion.getModRegistry();
+
+        final Platform platform = getPlatform();
+
+        List.of(
+                new LuckPermsSupport(platform)
+        ).forEach(mod -> registry.addMod(mod.getKey(), mod));
     }
 
     @Override

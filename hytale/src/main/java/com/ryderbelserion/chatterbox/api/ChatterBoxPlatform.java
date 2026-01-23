@@ -2,6 +2,7 @@ package com.ryderbelserion.chatterbox.api;
 
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
+import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.api.registry.HytaleContextRegistry;
 import com.ryderbelserion.chatterbox.api.registry.HytaleMessageRegistry;
 import com.ryderbelserion.chatterbox.api.registry.HytaleUserRegistry;
@@ -61,5 +62,10 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver, Messa
     @Override
     public @NotNull final HytaleUserRegistry getUserRegistry() {
         return this.userRegistry;
+    }
+
+    @Override
+    public @NotNull final Platform getPlatform() {
+        return Platform.HYTALE;
     }
 }

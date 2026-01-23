@@ -3,16 +3,12 @@ package com.ryderbelserion.chatterbox.commands.subs;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
-import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.ryderbelserion.chatterbox.ChatterBox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
-import com.ryderbelserion.chatterbox.api.enums.Support;
+import com.ryderbelserion.chatterbox.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.api.registry.adapters.HytaleSenderAdapter;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.cacheddata.CachedMetaData;
-import net.luckperms.api.model.user.User;
+import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +20,8 @@ public class MotdCommand extends CommandBase {
     private final ChatterBoxPlatform platform = this.instance.getPlatform();
 
     private final HytaleSenderAdapter adapter = this.platform.getSenderAdapter();
+
+    private final HytaleUserRegistry userRegistry = this.platform.getUserRegistry();
 
     public MotdCommand() {
         super("motd", "Shows the message of the day!", false);
@@ -39,21 +37,15 @@ public class MotdCommand extends CommandBase {
 
         placeholders.put("{player}", sender.getDisplayName());
 
-        if (sender instanceof PlayerRef player) {
-            if (Support.luckperms.isEnabled()) {
-                final LuckPerms luckperms = LuckPermsProvider.get();
+        this.userRegistry.getUser(sender.getUuid()).ifPresent(user -> {
+            final GroupAdapter adapter = user.getGroupAdapter();
 
-                final User user = luckperms.getPlayerAdapter(PlayerRef.class).getUser(player);
+            final Map<String, String> map = adapter.getPlaceholders();
 
-                final CachedMetaData data = user.getCachedData().getMetaData();
-
-                final String prefix = data.getPrefix();
-                final String suffix = data.getSuffix();
-
-                placeholders.put("{prefix}", prefix == null ? "N/A" : prefix);
-                placeholders.put("{suffix}", suffix == null ? "N/A" : suffix);
+            if (!map.isEmpty()) {
+                placeholders.putAll(map);
             }
-        }
+        });
 
         this.adapter.sendMessage(sender, Messages.message_of_the_day, placeholders);
     }
