@@ -34,7 +34,7 @@ tasks {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
         inputs.properties(
-            "group" to rootProject.group.toString(),
+            "group" to project.group.toString(),
             "artifact" to rootProject.name,
             "version" to project.version,
             "description" to rootProject.description.toString(),

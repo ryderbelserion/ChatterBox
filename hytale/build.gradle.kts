@@ -2,6 +2,7 @@ plugins {
     `shadow-plugin`
 }
 
+project.group = "${rootProject.group}.hytale"
 project.version = rootProject.version
 
 dependencies {
