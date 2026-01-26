@@ -8,7 +8,7 @@ import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleMessageRegistry;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleSenderAdapter;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
-import com.ryderbelserion.fusion.kyori.FusionKyori;
+import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.jetbrains.annotations.NotNull;
 
 public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver, Message> {
@@ -18,7 +18,7 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver, Messa
     private HytaleSenderAdapter userAdapter;
     private HytaleUserRegistry userRegistry;
 
-    public ChatterBoxPlatform(@NotNull final FusionKyori<IMessageReceiver> fusion) {
+    public ChatterBoxPlatform(@NotNull final FusionHytale fusion) {
         super(fusion);
     }
 

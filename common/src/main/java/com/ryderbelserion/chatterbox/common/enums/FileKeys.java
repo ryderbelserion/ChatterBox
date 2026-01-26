@@ -14,10 +14,9 @@ import java.util.Optional;
 
 public enum FileKeys {
 
+    discord("discord.yml"),
     config("config.yml"),
-    chat("chat.yml"),
-
-    server("server.json");
+    chat("chat.yml");
 
     private final ChatterBoxPlugin plugin = (ChatterBoxPlugin) ChatterBoxProvider.getInstance();
 

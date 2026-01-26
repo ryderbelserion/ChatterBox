@@ -46,9 +46,10 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
         }
 
         List.of(
-                "server.json",
-
                 "messages.yml",
+
+                "discord.yml",
+
                 "config.yml",
                 "chat.yml"
         ).forEach(file -> {

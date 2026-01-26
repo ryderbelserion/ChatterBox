@@ -1,0 +1,116 @@
+# Support: https://discord.gg/ktxCyUd7Ny
+# Github: https://github.com/ryderbelserion
+#
+# Issues: https://github.com/ryderbelserion/ChatterBox/issues
+# Features: https://github.com/ryderbelserion/ChatterBox/issues
+root:
+  # The prefix that appears in front of commands!
+  prefix: " <gold>ChatterBox <reset>"
+  # Settings related to the motd.
+  motd:
+    # Should the message of the day be sent?
+    # You can configure the output of these in messages.yml, or the locale folder.
+    toggle: false
+    # The time to wait in seconds before sending the message of the day.
+    delay: 0
+  # All options related to join/quit events.
+  traffic:
+    # All settings related to the join message.
+    join-message:
+      # Should we override the join message?
+      toggle: true
+      # Title Settings
+      title:
+        # Should it be a fancy title?
+        toggle: false
+        # The top text
+        header: "Player has joined!"
+        # The bottom text
+        footer: "{player}"
+        # Handles the delays
+        delay:
+          # How long should it show for?
+          duration: 5
+          # Handles the fade out
+          fade:
+            # How long should it take to fade out?
+            out: 1
+            # How long should it take to fade in?
+            in: 1
+      # Available Placeholders: {player}, {prefix}, {suffix}
+      # If use-titles is true, this is the header.
+      output: "<dark_gray>[<green>+</green>]</dark_gray> {player}"
+      # Per group formats (requires LuckPerms as we check the group name)
+      groups:
+        # The name of the group must match the "group" in LuckPerms
+        owner:
+          # Title Settings
+          title:
+            # The top text
+            header: "The owner has joined!"
+            # The bottom text
+            footer: "{player}"
+            # Handles the delays
+            delay:
+              # How long should it show for?
+              duration: 5
+              # Handles the fade out
+              fade:
+                # How long should it take to fade out?
+                out: 1
+                # How long should it take to fade in?
+                in: 1
+          # Available Placeholders: {player}, {prefix}, {suffix}
+          # If use-titles is true, this is the header.
+          output: "<dark_gray>[<yellow>+</yellow>]</dark_gray> {player}"
+          # If use-titles is true, this is the footer.
+          footer: "{player}"
+    # All settings related to the quit message
+    quit-message:
+      # Should we override the quit message?
+      toggle: true
+      # Title Settings
+      title:
+        # Should it be a fancy title?
+        toggle: false
+        # The top text
+        header: "Player has quit!"
+        # The bottom text
+        footer: "{player}"
+        # Handles the delays
+        delay:
+          # How long should it show for?
+          duration: 5
+          # Handles the fade out
+          fade:
+            # How long should it take to fade out?
+            out: 1
+            # How long should it take to fade in?
+            in: 1
+      # Available Placeholders: {player}, {prefix}, {suffix}
+      output: "<dark_gray>[<red>-</red>]</dark_gray> {player}"
+      # Per group formats (requires LuckPerms as we check the group name)
+      groups:
+        # The name of the group must match the "group" in LuckPerms
+        owner:
+          # Title Settings
+          title:
+            # The top text
+            header: "The owner has left!"
+            # The bottom text
+            footer: "{player}"
+            # Handles the delays
+            delay:
+              # How long should it show for?
+              duration: 5
+              # Handles the fade out
+              fade:
+                # How long should it take to fade out?
+                out: 1
+                # How long should it take to fade in?
+                in: 1
+          # Available Placeholders: {player}, {prefix}, {suffix}
+          # If use-titles is true, this is the header.
+          output: "<dark_gray>[<yellow>-</yellow>]</dark_gray> {player}"
+          # If use-titles is true, this is the footer.
+          footer: "{player}"

@@ -1,6 +1,7 @@
 package com.ryderbelserion.chatterbox.hytale.api.registry;
 
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
 import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
@@ -20,7 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class HytaleUserRegistry implements com.ryderbelserion.chatterbox.api.registry.IUserRegistry<PlayerRef> {
+public class HytaleUserRegistry implements IUserRegistry<PlayerRef> {
 
     private final ChatterBox instance = ChatterBox.getInstance();
 

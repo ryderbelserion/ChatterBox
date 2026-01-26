@@ -1,6 +1,7 @@
 package com.ryderbelserion.chatterbox.hytale.api.registry;
 
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.ryderbelserion.chatterbox.api.registry.IContextRegistry;
 import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
