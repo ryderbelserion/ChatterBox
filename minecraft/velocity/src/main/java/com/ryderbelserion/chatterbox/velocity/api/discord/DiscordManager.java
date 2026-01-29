@@ -1,34 +1,46 @@
-package com.ryderbelserion.chatterbox.velocity.discord;
+package com.ryderbelserion.chatterbox.velocity.api.discord;
 
-import com.ryderbelserion.chatterbox.common.enums.FileKeys;
-import com.ryderbelserion.chatterbox.velocity.discord.objects.DiscordBot;
+import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
+import com.ryderbelserion.chatterbox.velocity.ChatterBox;
+import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.velocity.api.discord.objects.DiscordBot;
+import com.ryderbelserion.discord.configs.DiscordConfig;
 import com.ryderbelserion.fusion.FusionVelocity;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.List;
 
 public class DiscordManager {
 
     private final FusionVelocity fusion;
+    private final ChatterBoxPlatform platform;
+    private final ChatterBox instance;
 
-    public DiscordManager(@NotNull final FusionVelocity fusion) {
+    public DiscordManager(@NotNull final FusionVelocity fusion, @NotNull final ChatterBox instance) {
+        this.platform = instance.getPlatform();
+        this.instance = instance;
         this.fusion = fusion;
     }
 
     private DiscordBot bot;
 
     public void init() {
-        final CommentedConfigurationNode configuration = FileKeys.discord.getYamlConfig();
+        final ConfigManager configManager = this.platform.getConfigManager();
 
-        if (!configuration.node("root", "enable").getBoolean(false)) {
+        final DiscordConfig config = configManager.getDiscord();
+
+        if (!config.isEnabled()) {
+            if (this.bot != null) { // stop the bot just in case
+                this.bot.stop();
+            }
+
             return;
         }
 
-        final String token = configuration.node("root", "token").getString("");
+        final String token = config.getToken();
 
         if (token.isBlank()) {
             this.fusion.log(Level.WARNING, "Bot Token not provided! We are not starting the bot.");
@@ -44,6 +56,7 @@ public class DiscordManager {
 
         this.bot = new DiscordBot(
                 this.fusion,
+                this.instance,
                 // This will never be configurable, gateway intents ensure all features function.
                 List.of(
                         GatewayIntent.MESSAGE_CONTENT,

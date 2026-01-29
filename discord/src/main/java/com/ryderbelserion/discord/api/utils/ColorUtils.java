@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.utils;
+package com.ryderbelserion.discord.api.utils;
 
 import org.jetbrains.annotations.NotNull;
 

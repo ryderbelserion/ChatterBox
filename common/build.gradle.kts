@@ -6,6 +6,7 @@ dependencies {
     compileOnly(libs.bundles.kyori)
     compileOnly(libs.fusion.kyori)
 
+    api(project(":chatterbox-discord"))
     api(project(":chatterbox-api"))
 
     compileOnly(libs.luckperms)

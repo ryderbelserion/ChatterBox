@@ -1,6 +1,6 @@
-package com.ryderbelserion.discord.embeds;
+package com.ryderbelserion.discord.api.embeds;
 
-import com.ryderbelserion.discord.utils.ColorUtils;
+import com.ryderbelserion.discord.api.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;

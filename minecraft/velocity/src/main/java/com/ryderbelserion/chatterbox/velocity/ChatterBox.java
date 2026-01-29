@@ -36,12 +36,16 @@ public class ChatterBox {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        this.platform = new ChatterBoxPlatform(this.fusion);
+        this.platform = new ChatterBoxPlatform(this.fusion, this);
         this.platform.init();
     }
 
     public @NotNull final PluginDescription getDescription() {
         return this.description;
+    }
+
+    public @NotNull final ChatterBoxPlatform getPlatform() {
+        return this.platform;
     }
 
     public @NotNull final FusionVelocity getFusion() {

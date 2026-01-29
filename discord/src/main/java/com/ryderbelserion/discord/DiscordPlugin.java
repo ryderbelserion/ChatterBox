@@ -1,8 +1,8 @@
 package com.ryderbelserion.discord;
 
-import com.ryderbelserion.discord.commands.CommandHandler;
-import com.ryderbelserion.discord.enums.Environment;
-import com.ryderbelserion.discord.listeners.StatusListener;
+import com.ryderbelserion.discord.api.commands.CommandHandler;
+import com.ryderbelserion.discord.api.enums.Environment;
+import com.ryderbelserion.discord.api.listeners.StatusListener;
 import com.ryderbelserion.fusion.core.FusionCore;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public abstract class DiscordPlugin {
 
-    private final FusionCore fusion;
+    protected final FusionCore fusion;
     private final JDA jda;
 
     public DiscordPlugin(
@@ -91,6 +91,12 @@ public abstract class DiscordPlugin {
             }
         } catch (final IOException exception) {
             exception.printStackTrace();
+        }
+    }
+
+    public final void stop() {
+        if (this.jda != null) {
+            this.jda.shutdown();
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.embeds.channels;
+package com.ryderbelserion.discord.api.embeds.channels;
 
 public enum ChannelType {
     

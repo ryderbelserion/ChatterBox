@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.commands;
+package com.ryderbelserion.discord.api.commands;
 
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

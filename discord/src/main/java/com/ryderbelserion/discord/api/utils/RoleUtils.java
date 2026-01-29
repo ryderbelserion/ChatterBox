@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.utils;
+package com.ryderbelserion.discord.api.utils;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;

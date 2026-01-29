@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.enums;
+package com.ryderbelserion.discord.api.enums;
 
 public enum Environment {
 

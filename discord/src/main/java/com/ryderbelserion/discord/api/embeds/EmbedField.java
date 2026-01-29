@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.embeds;
+package com.ryderbelserion.discord.api.embeds;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;

@@ -1,6 +1,6 @@
-package com.ryderbelserion.discord.commands.interfaces;
+package com.ryderbelserion.discord.api.commands.interfaces;
 
-import com.ryderbelserion.discord.commands.CommandContext;
+import com.ryderbelserion.discord.api.commands.CommandContext;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;

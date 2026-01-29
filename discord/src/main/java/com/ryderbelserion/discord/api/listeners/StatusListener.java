@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.listeners;
+package com.ryderbelserion.discord.api.listeners;
 
 import com.ryderbelserion.discord.DiscordPlugin;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;

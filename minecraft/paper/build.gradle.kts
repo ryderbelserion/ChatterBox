@@ -6,11 +6,11 @@ project.group = "${rootProject.group}.paper"
 project.version = "1.0.0"
 
 dependencies {
+    implementation(project(":chatterbox-common"))
+
     implementation(libs.bundles.cloud.paper)
 
     implementation(libs.fusion.paper)
-
-    implementation(project(":chatterbox-common"))
 }
 
 tasks {

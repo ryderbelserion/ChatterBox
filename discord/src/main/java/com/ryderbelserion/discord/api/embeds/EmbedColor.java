@@ -1,6 +1,6 @@
-package com.ryderbelserion.discord.embeds;
+package com.ryderbelserion.discord.api.embeds;
 
-import com.ryderbelserion.discord.utils.ColorUtils;
+import com.ryderbelserion.discord.api.utils.ColorUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;

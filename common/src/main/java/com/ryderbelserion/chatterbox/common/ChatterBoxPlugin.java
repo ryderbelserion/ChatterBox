@@ -7,6 +7,7 @@ import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
 import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
+import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
@@ -23,6 +24,7 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
 
     public static final String CONSOLE_NAME = "Console";
 
+    private ConfigManager configManager;
     private IPlayerAdapter<?> adapter;
 
     public ChatterBoxPlugin(@NotNull final FusionKyori fusion) {
@@ -80,6 +82,9 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
     @Override
     public void post() {
         this.adapter = new PlayerAdapter<>(getUserRegistry(), getContextRegistry());
+
+        this.configManager = new ConfigManager();
+        this.configManager.init();
     }
 
     @Override
@@ -89,10 +94,16 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
         this.fusion.reload();
 
         getMessageRegistry().init();
+
+        this.configManager.reload();
     }
 
     @Override
     public @NotNull <C> IPlayerAdapter<C> getPlayerAdapter(@NotNull final Class<C> object) {
         return (IPlayerAdapter<C>) this.adapter;
+    }
+
+    public @NotNull final ConfigManager getConfigManager() {
+        return this.configManager;
     }
 }
