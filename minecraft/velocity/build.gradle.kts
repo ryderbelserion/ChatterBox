@@ -6,18 +6,14 @@ project.group = "${rootProject.group}.velocity"
 project.version = "1.0.0"
 
 dependencies {
+    implementation(project(":chatterbox-discord"))
+    implementation(project(":chatterbox-common"))
 
+    implementation(libs.fusion.kyori)
 }
 
 tasks {
-    /*runPaper.folia.registerTask()
-
-    runServer {
-        jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
-        jvmArgs("-Dcom.mojang.eula.agree=true")
-
-        defaultCharacterEncoding = Charsets.UTF_8.name()
-
-        minecraftVersion(libs.versions.minecraft.get())
-    }*/
+    runVelocity {
+        velocityVersion(libs.versions.velocity.get())
+    }
 }

@@ -36,6 +36,10 @@ luckperms = "5.4" # https://github.com/LuckPerms/LuckPerms
 cloud-release = "2.0.0" # https://cloud.incendo.org/core/
 cloud-beta = "2.0.0-beta.14" # https://cloud.incendo.org/minecraft/paper/
 
+logback-classic = "1.5.20" # https://github.com/qos-ch/logback
+jopt-simple = "5.0.4" # https://github.com/jopt-simple/jopt-simple
+jda = "6.1.0" # https://github.com/discord-jda/JDA
+
 [plugins]
 # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 fix-javadoc = { id = "com.jeff-media.fix-javadoc-plugin", version.ref = "fix-javadoc" }
@@ -53,14 +57,16 @@ feather = { module = "com.ryderbelserion.feather.core:com.ryderbelserion.feather
 # https://github.com/HangarMC/hangar-publish-plugin
 hangar = { module = "io.papermc.hangar-publish-plugin:io.papermc.hangar-publish-plugin.gradle.plugin", version.ref = "hangar" }
 
+# https://github.com/jpenilla/run-task
+run-velocity = { module = "xyz.jpenilla.run-velocity:xyz.jpenilla.run-velocity.gradle.plugin", version.ref = "run-paper" }
+# https://github.com/jpenilla/run-task
+run-paper = { module = "xyz.jpenilla.run-paper:xyz.jpenilla.run-paper.gradle.plugin", version.ref = "run-paper" }
+
 # https://github.com/modrinth/minotaur
 minotaur = { module = "com.modrinth.minotaur:com.modrinth.minotaur.gradle.plugin", version.ref = "minotaur" }
 
 # https://github.com/GradleUp/shadow
 shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
-
-# https://github.com/jpenilla/run-task
-run-paper = { module = "xyz.jpenilla:run-task", version.ref = "run-paper" }
 
 # https://github.com/postgres/postgres
 postgres = { module = "'org.postgresql:postgresql", version.ref = "postgres" }
@@ -94,6 +100,13 @@ velocity = { module = "com.velocitypowered:velocity-api", version.ref = "velocit
 # https://github.com/LuckPerms/LuckPerms
 luckperms = { module = "net.luckperms:api", version.ref = "luckperms" }
 
+# https://github.com/qos-ch/logback
+classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }
+# https://github.com/jopt-simple/jopt-simple
+jopt = { module = "net.sf.jopt-simple:jopt-simple", version.ref = "jopt-simple" }
+# https://github.com/discord-jda/JDA
+jda = { module = "net.dv8tion:JDA", version.ref = "jda" }
+
 [bundles]
 cloud-paper = [
     "cloud-annotations",
@@ -117,5 +130,7 @@ build = [
 
 paper = [
     "paperweight",
+
+    "run-velocity",
     "run-paper"
 ]

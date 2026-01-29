@@ -1,0 +1,11 @@
+root:
+  # The bot token
+  token: ""
+  # Should the discord bot be enabled?
+  enable: false
+  # Bot Presence Settings
+  presence:
+    # Should this be enabled?
+    toggle: true
+    # Available Placeholders: {count}
+    status: "Watching {count} players"

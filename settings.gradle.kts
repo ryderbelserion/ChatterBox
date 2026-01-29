@@ -6,6 +6,7 @@ listOf(
     "minecraft/velocity" to "velocity",
     "minecraft/paper" to "paper",
 
+    "discord" to "discord",
     "common" to "common",
     "api" to "api"
 ).forEach {

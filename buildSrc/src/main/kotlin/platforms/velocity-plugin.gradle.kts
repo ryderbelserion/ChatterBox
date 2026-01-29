@@ -1,5 +1,5 @@
 plugins {
-    id("xyz.jpenilla.run-paper")
+    id("xyz.jpenilla.run-velocity")
 
     id("shadow-plugin")
 }
@@ -11,5 +11,6 @@ repositories {
 }
 
 dependencies {
+    annotationProcessor(libs.findLibrary("velocity").get())
     compileOnly(libs.findLibrary("velocity").get())
 }
