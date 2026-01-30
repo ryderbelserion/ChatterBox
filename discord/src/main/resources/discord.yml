@@ -9,3 +9,27 @@ root:
     enabled: true
     # Available Placeholders: {count}
     status: "Watching {count} players"
+
+notifications:
+  server_name: # The name of the server
+    channels: # The list of the channels to send status updates like the server is offline, or online now.
+      - ""
+    # Supports anything Discord supports.
+    format: "The server {server} is now online!"
+  server_name_embed: # The name of the server
+    channels: # The list of the channels to send status updates like the server is offline, or online now.
+      - ""
+    # Supports anything Discord supports.
+    # Sends an embed instead.
+    embed:
+      title: "The title of the embed."
+      # The color of the embed, like a hex color.
+      color: "#FFFFFF"
+      # The footer of the embed.
+      footer: "This is a footer."
+      # Media related settings like images
+      media:
+        # The thumbnail, must be a picture url.
+        thumbnail: ""
+        # The image, must be a picture url.
+        image: ""
