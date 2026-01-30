@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class DiscordPlugin {
 
     protected final FusionCore fusion;
-    private final JDA jda;
+    protected final JDA jda;
 
     public DiscordPlugin(
             @NotNull final FusionCore fusion,
@@ -98,5 +98,9 @@ public abstract class DiscordPlugin {
         if (this.jda != null) {
             this.jda.shutdown();
         }
+    }
+
+    public @NotNull final JDA getJDA() {
+        return this.jda;
     }
 }
