@@ -99,6 +99,11 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
     }
 
     @Override
+    public void shutdown() {
+
+    }
+
+    @Override
     public @NotNull <C> IPlayerAdapter<C> getPlayerAdapter(@NotNull final Class<C> object) {
         return (IPlayerAdapter<C>) this.adapter;
     }

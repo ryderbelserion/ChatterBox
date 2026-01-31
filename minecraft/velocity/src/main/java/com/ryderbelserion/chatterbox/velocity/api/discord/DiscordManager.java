@@ -5,6 +5,7 @@ import com.ryderbelserion.chatterbox.velocity.ChatterBox;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.velocity.api.discord.objects.DiscordBot;
 import com.ryderbelserion.discord.configs.DiscordConfig;
+import com.ryderbelserion.discord.configs.features.ServerConfig;
 import com.ryderbelserion.fusion.FusionVelocity;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -70,6 +71,16 @@ public class DiscordManager {
                 ),
                 token
         );
+    }
+
+    public void stop() {
+        final ConfigManager configManager = this.platform.getConfigManager();
+
+        final DiscordConfig config = configManager.getDiscord();
+
+        final ServerConfig serverConfig = config.getDefault();
+
+        serverConfig.sendMessage(this.bot.getJDA(), config.getGuildId(), false);
     }
 
     @ApiStatus.Internal

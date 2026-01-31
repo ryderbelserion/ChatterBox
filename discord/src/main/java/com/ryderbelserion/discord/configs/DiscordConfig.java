@@ -4,6 +4,7 @@ import com.ryderbelserion.discord.configs.features.PresenceConfig;
 import com.ryderbelserion.discord.configs.features.ServerConfig;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,14 +26,19 @@ public class DiscordConfig {
 
     private PresenceConfig presenceConfig;
     private boolean isEnabled;
+    private long guildId;
 
     public void init() {
         this.presenceConfig = new PresenceConfig(this.configuration.node("root", "presence"));
 
         this.isEnabled = this.configuration.node("root", "enabled").getBoolean(false);
 
+        this.guildId = this.configuration.node("root", "guild-id").getLong(0);
+
         if (this.configuration.hasChild("notifications")) {
-            final Map<Object, CommentedConfigurationNode> notifications = this.configuration.node("notifications").childrenMap();
+            this.servers.put("default", new ServerConfig("default", this.configuration.node("notifications", "default")));
+
+            final Map<Object, CommentedConfigurationNode> notifications = this.configuration.node("notifications", "per-server").childrenMap();
 
             for (final Map.Entry<Object, CommentedConfigurationNode> key : notifications.entrySet()) {
                 final String section = key.getKey().toString();
@@ -43,19 +49,27 @@ public class DiscordConfig {
         }
     }
 
+    public @NotNull final Map<String, ServerConfig> getServers() {
+        return Collections.unmodifiableMap(this.servers);
+    }
+
     public @NotNull final PresenceConfig getPresenceConfig() {
         return this.presenceConfig;
+    }
+
+    public @NotNull final ServerConfig getDefault() {
+        return this.servers.get("default");
     }
 
     public @NotNull final String getToken() {
         return this.token;
     }
 
-    public @NotNull final Map<String, ServerConfig> getServers() {
-        return this.servers;
-    }
-
     public final boolean isEnabled() {
         return this.isEnabled;
+    }
+
+    public final long getGuildId() {
+        return this.guildId;
     }
 }

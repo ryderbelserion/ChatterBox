@@ -5,6 +5,7 @@ import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxPlatform;
 import com.ryderbelserion.fusion.FusionVelocity;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
+import com.velocitypowered.api.event.proxy.ProxyPreShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.PluginDescription;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
@@ -38,6 +39,12 @@ public class ChatterBox {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         this.platform = new ChatterBoxPlatform(this.fusion, this);
         this.platform.init();
+    }
+
+
+    @Subscribe
+    public void onProxyShutDown(ProxyPreShutdownEvent event) {
+        this.platform.shutdown();
     }
 
     public @NotNull final PluginDescription getDescription() {

@@ -50,6 +50,13 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<Audience, Object> {
     }
 
     @Override
+    public void shutdown() {
+        super.shutdown();
+
+        this.discordManager.stop();
+    }
+
+    @Override
     public @NotNull final IMessageRegistry getMessageRegistry() {
         return null;
     }

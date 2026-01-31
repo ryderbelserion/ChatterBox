@@ -2,6 +2,9 @@ package com.ryderbelserion.discord.configs.features;
 
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -83,6 +86,50 @@ public class ServerConfig {
         }
 
         return embed;
+    }
+
+    public void sendMessage(@NotNull final JDA jda, final long guildId, final boolean isStartUp) {
+        final Guild guild = jda.getGuildById(guildId);
+
+        if (guild == null) {
+            return;
+        }
+
+        if (this.channels.isEmpty()) {
+            return;
+        }
+
+        for (final String id : this.channels) {
+            final TextChannel channel = guild.getTextChannelById(id);
+
+            if (channel == null) {
+                continue;
+            }
+
+            if (isStartUp) {
+                if (!this.onlineText.isBlank()) {
+                    channel.sendMessage(this.onlineText).queue();
+
+                    continue;
+                }
+
+                if (this.onlineEmbed != null) {
+                    channel.sendMessageEmbeds(this.onlineEmbed.build()).queue();
+                }
+
+                return;
+            }
+
+            if (!this.offlineText.isBlank()) {
+                channel.sendMessage(this.offlineText).queue();
+
+                continue;
+            }
+
+            if (this.offlineEmbed != null) {
+                channel.sendMessageEmbeds(this.offlineEmbed.build()).queue();
+            }
+        }
     }
 
     public @NotNull final String getServer() {

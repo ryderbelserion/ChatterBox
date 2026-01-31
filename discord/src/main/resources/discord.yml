@@ -1,35 +1,62 @@
 root:
   # The bot token
   token: ""
+  # Supply the guild id of your discord server.
+  # This allows our features to work internally.
+  guild-id: ""
   # Should the discord bot be enabled?
-  enabled: false
+  enabled: true
   # Bot Presence Settings
   presence:
     # Should this be enabled?
-    enabled: true
+    enabled: false
     # Available Placeholders: {count}
     status: "Watching {count} players"
 
-notifications:
-  server_name: # The name of the server
-    channels: # The list of the channels to send status updates like the server is offline, or online now.
-      - ""
+notifications: # Status notifications sent when a server is online/offline
+  default: # The default, if no server is present. i.e. it's a proxy server.
+    channels: []
     # Supports anything Discord supports.
-    format: "The server {server} is now online!"
-  server_name_embed: # The name of the server
-    channels: # The list of the channels to send status updates like the server is offline, or online now.
-      - ""
-    # Supports anything Discord supports.
-    # Sends an embed instead.
-    embed:
-      title: "The title of the embed."
-      # The color of the embed, like a hex color.
-      color: "#FFFFFF"
-      # The footer of the embed.
-      footer: "This is a footer."
-      # Media related settings like images
-      media:
-        # The thumbnail, must be a picture url.
-        thumbnail: ""
-        # The image, must be a picture url.
-        image: ""
+    online: "The server {server} is now online!"
+    offline: "The server {server} is now offline!"
+  per-server: # per server configurations.
+    factions: # The name of the server
+      # The list of the channels to send status updates like the server is offline, or online now.
+      channels: []
+      # Supports anything Discord supports.
+      online: "The server {server} is now online!"
+      offline: "The server {server} is now offline!"
+    survival: # The name of the server
+      # The list of the channels to send status updates like the server is offline, or online now.
+      channels: []
+      # Supports anything Discord supports.
+      # Sends an embed instead.
+      embed:
+        online:
+          title: "The server has started!"
+          # The color of the embed, like a hex color.
+          color: "#0eeb6a"
+          # The footer of the embed.
+          footer: "{timestamp}"
+          # Media related settings like images
+          media:
+            # The thumbnail, must be a picture url.
+            # If empty, or not present. this does nothing.
+            thumbnail: ""
+            # The image, must be a picture url.
+            # If empty, or not present. this does nothing.
+            image: ""
+        offline:
+          title: "The server has stopped!"
+          # The color of the embed, like a hex color.
+          color: "#e0240b"
+          # The footer of the embed.
+          footer: "{timestamp}"
+          # Media related settings like images
+          media:
+            # The thumbnail, must be a picture url.
+            # If empty, or not present. this does nothing.
+            thumbnail: ""
+            # The image, must be a picture url.
+            # If empty, or not present. this does nothing.
+            image: ""

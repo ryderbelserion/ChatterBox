@@ -46,6 +46,8 @@ public abstract class ChatterBox<S, T> {
 
     public abstract void post();
 
+    public abstract void shutdown();
+
     public final FileManager getFileManager() {
         return this.fileManager;
     }

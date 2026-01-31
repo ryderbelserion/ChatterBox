@@ -5,13 +5,14 @@ import com.ryderbelserion.chatterbox.velocity.ChatterBox;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxPlatform;
 import com.ryderbelserion.discord.DiscordPlugin;
 import com.ryderbelserion.discord.api.enums.Environment;
+import com.ryderbelserion.discord.configs.DiscordConfig;
 import com.ryderbelserion.discord.configs.features.PresenceConfig;
+import com.ryderbelserion.discord.configs.features.ServerConfig;
 import com.ryderbelserion.fusion.FusionVelocity;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import net.dv8tion.jda.api.managers.Presence;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
@@ -61,11 +62,11 @@ public class DiscordBot extends DiscordPlugin {
 
     @Override
     public void onGuildReady(@NotNull final Guild guild) {
-        final TextChannel channel = guild.getTextChannelById("1466260557513490658");
+        final DiscordConfig config = this.configManager.getDiscord();
 
-        if (channel == null) return;
+        final ServerConfig serverConfig = config.getDefault();
 
-        channel.sendMessage("CoreCraft Proxy is now online.").queue();
+        serverConfig.sendMessage(getJDA(), config.getGuildId(), true);
     } // no multi guild support yet.
 
     @Override
