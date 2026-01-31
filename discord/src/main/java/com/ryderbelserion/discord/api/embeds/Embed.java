@@ -50,6 +50,16 @@ public class Embed {
     }
 
     /**
+     * Sets the footer using text/icon
+     *
+     * @param text the text in the footer.
+     * @return the embed class with updated information.
+     */
+    public Embed footer(@NotNull final String text) {
+        return this.footer(text, null);
+    }
+
+    /**
      * Sets the footer using the user object.
      *
      * @param user the user in the footer.
@@ -111,6 +121,8 @@ public class Embed {
      * @return the embed class with updated information.
      */
     public Embed thumbnail(@NotNull final String url) {
+        if (url.isBlank()) return this;
+
         this.builder.setThumbnail(url);
 
         return this;
@@ -147,6 +159,8 @@ public class Embed {
      * @return the embed class with updated information.
      */
     public Embed image(@NotNull final String url) {
+        if (url.isBlank()) return this;
+
         this.builder.setImage(url);
 
         return this;

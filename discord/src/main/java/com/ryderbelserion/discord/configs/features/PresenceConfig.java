@@ -22,6 +22,6 @@ public class PresenceConfig {
     }
 
     public final boolean isEnabled() {
-        return this.isEnabled;
+        return this.isEnabled && !this.status.isBlank();
     }
 }
