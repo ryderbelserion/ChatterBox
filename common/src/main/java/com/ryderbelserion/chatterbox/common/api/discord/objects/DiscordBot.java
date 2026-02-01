@@ -1,11 +1,12 @@
 package com.ryderbelserion.chatterbox.common.api.discord.objects;
 
-import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
+import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.common.configs.discord.features.PresenceConfig;
+import com.ryderbelserion.chatterbox.common.configs.discord.features.ServerConfig;
+import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.discord.DiscordPlugin;
 import com.ryderbelserion.discord.api.enums.Environment;
-import com.ryderbelserion.discord.configs.DiscordConfig;
-import com.ryderbelserion.discord.configs.features.PresenceConfig;
-import com.ryderbelserion.discord.configs.features.ServerConfig;
+import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;

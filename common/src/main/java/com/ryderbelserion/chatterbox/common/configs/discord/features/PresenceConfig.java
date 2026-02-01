@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.configs.features;
+package com.ryderbelserion.chatterbox.common.configs.discord.features;
 
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;

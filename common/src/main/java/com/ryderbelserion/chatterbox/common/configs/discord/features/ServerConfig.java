@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.configs.features;
+package com.ryderbelserion.chatterbox.common.configs.discord.features;
 
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.enums.Environment;
@@ -57,7 +57,10 @@ public class ServerConfig {
     public Embed buildEmbed(@NotNull final CommentedConfigurationNode configuration, @NotNull final Environment environment, @NotNull final Map<String, String> placeholders) {
         final Embed embed = new Embed();
 
-        embed.title(this.fusion.replacePlaceholders(configuration.node("title").getString(environment == Environment.INITIALIZED ? "The server {server} is now online." : "The server {server} is now offline."), placeholders));
+        embed.title(this.fusion.replacePlaceholders(
+                configuration.node("title").getString(environment == Environment.INITIALIZED ? "The server {server} is now online." : "The server {server} is now offline."), placeholders)
+        );
+
         embed.color(configuration.node("color").getString("#0eeb6a"));
 
         if (configuration.hasChild("footer")) {

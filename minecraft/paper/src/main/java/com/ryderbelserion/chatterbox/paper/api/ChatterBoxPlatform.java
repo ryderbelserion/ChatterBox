@@ -80,4 +80,9 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<CommandSender, Componen
     public @NotNull final Platform getPlatform() {
         return Platform.MINECRAFT;
     }
+
+    @Override
+    public final int getPlayerCount() {
+        return this.plugin.getServer().getOnlinePlayers().size();
+    }
 }

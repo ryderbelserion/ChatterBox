@@ -1,7 +1,7 @@
 package com.ryderbelserion.chatterbox.common.managers;
 
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
-import com.ryderbelserion.discord.configs.DiscordConfig;
+import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 

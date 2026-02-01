@@ -9,7 +9,7 @@ import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
 import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
-import com.ryderbelserion.discord.configs.DiscordConfig;
+import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
 import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
@@ -153,5 +153,9 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
 
     public @NotNull final ConfigManager getConfigManager() {
         return this.configManager;
+    }
+
+    public @NotNull final DiscordManager getDiscordManager() {
+        return this.discordManager;
     }
 }

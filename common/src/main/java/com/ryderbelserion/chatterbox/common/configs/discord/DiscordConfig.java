@@ -1,12 +1,13 @@
-package com.ryderbelserion.discord.configs;
+package com.ryderbelserion.chatterbox.common.configs.discord;
 
-import com.ryderbelserion.discord.configs.features.PresenceConfig;
-import com.ryderbelserion.discord.configs.features.ServerConfig;
+import com.ryderbelserion.chatterbox.common.configs.discord.features.PresenceConfig;
+import com.ryderbelserion.chatterbox.common.configs.discord.features.ServerConfig;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class DiscordConfig {
 
@@ -63,6 +64,10 @@ public class DiscordConfig {
 
     public @NotNull final ServerConfig getDefault() {
         return this.servers.get("default");
+    }
+
+    public @NotNull final Optional<ServerConfig> getServer(@NotNull final String name) {
+        return Optional.ofNullable(this.servers.get(name));
     }
 
     public @NotNull final String getToken() {
