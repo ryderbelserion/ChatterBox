@@ -5,7 +5,7 @@ root:
   # This allows our features to work internally.
   guild-id: ""
   # Should the discord bot be enabled?
-  enabled: true
+  enabled: false
   # Bot Presence Settings
   presence:
     # Should this be enabled?
