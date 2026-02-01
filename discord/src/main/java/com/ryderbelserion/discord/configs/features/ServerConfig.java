@@ -1,76 +1,67 @@
 package com.ryderbelserion.discord.configs.features;
 
 import com.ryderbelserion.discord.api.embeds.Embed;
+import com.ryderbelserion.discord.api.enums.Environment;
+import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import org.apache.commons.collections4.map.HashedMap;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
+import java.util.Map;
 
 public class ServerConfig {
 
+    private final FusionCore fusion = FusionProvider.getInstance();
+
+    private final CommentedConfigurationNode configuration;
+
     private final List<String> channels;
-
+    private final String offlineText;
+    private final String onlineText;
     private final String server;
+    private final String timezone;
 
-    private String offlineText = "The server {server} is now offline!";
-    private String onlineText = "The server {server} is now online!";
-
-    private Embed offlineEmbed = null;
-    private Embed onlineEmbed = null;
-
-    public ServerConfig(@NotNull final String server, @NotNull final CommentedConfigurationNode configuration) {
+    public ServerConfig(@NotNull final String timezone, @NotNull final String server, @NotNull final CommentedConfigurationNode configuration) {
         this.channels = StringUtils.getStringList(configuration.node("channels"), List.of());
+        this.timezone = timezone;
         this.server = server;
 
-        if (configuration.hasChild("online")) {
-            this.onlineText = configuration.node("online").getString("The server {server} is now online!");
-        }
+        this.onlineText = configuration.node("online").getString("");
+        this.offlineText = configuration.node("offline").getString("");
 
-        if (configuration.hasChild("offline")) {
-            this.offlineText = configuration.node("offline").getString("The server {server} is now offline!");
-        }
-
-        if (configuration.hasChild("offline")) {
-            this.offlineEmbed = buildEmbed(configuration.node("offline"));
-        }
-
-        if (configuration.hasChild("online")) {
-            this.onlineEmbed = buildEmbed(configuration.node("online"));
-        }
+        this.configuration = configuration;
     }
 
     public @NotNull final List<String> getChannels() {
         return this.channels;
     }
 
-    public @Nullable final Embed getOfflineEmbed() {
-        return this.offlineEmbed;
-    }
-
     public @NotNull final String getOfflineText() {
         return this.offlineText;
-    }
-
-    public @Nullable final Embed getOnlineEmbed() {
-        return this.onlineEmbed;
     }
 
     public @NotNull final String getOnlineText() {
         return this.onlineText;
     }
 
-    public Embed buildEmbed(@NotNull final CommentedConfigurationNode configuration) {
+    public Embed buildEmbed(@NotNull final CommentedConfigurationNode configuration, @NotNull final Environment environment, @NotNull final Map<String, String> placeholders) {
         final Embed embed = new Embed();
 
-        embed.title(configuration.node("title").getString("The server {server} status has changed."));
+        embed.title(this.fusion.replacePlaceholders(configuration.node("title").getString(environment == Environment.INITIALIZED ? "The server {server} is now online." : "The server {server} is now offline."), placeholders));
         embed.color(configuration.node("color").getString("#0eeb6a"));
 
         if (configuration.hasChild("footer")) {
-            embed.footer(configuration.node("footer").getString("{timestamp}"));
+            embed.footer(this.fusion.replacePlaceholders(configuration.node("footer").getString("{timestamp}"), placeholders));
         }
 
         if (configuration.hasChild("media")) {
@@ -88,7 +79,7 @@ public class ServerConfig {
         return embed;
     }
 
-    public void sendMessage(@NotNull final JDA jda, final long guildId, final boolean isStartUp) {
+    public void sendMessage(@NotNull final JDA jda, final long guildId, @NotNull final Environment environment, @NotNull final Map<String, String> placeholders) {
         final Guild guild = jda.getGuildById(guildId);
 
         if (guild == null) {
@@ -99,6 +90,12 @@ public class ServerConfig {
             return;
         }
 
+        final Map<String, String> copy = new HashedMap<>(placeholders);
+
+        final ZonedDateTime time = LocalDateTime.now().atZone(ZoneId.of(this.timezone));
+
+        copy.putIfAbsent("{timestamp}", time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)));
+
         for (final String id : this.channels) {
             final TextChannel channel = guild.getTextChannelById(id);
 
@@ -106,30 +103,40 @@ public class ServerConfig {
                 continue;
             }
 
-            if (isStartUp) {
-                if (!this.onlineText.isBlank()) {
-                    channel.sendMessage(this.onlineText).queue();
+            switch (environment) {
+                case SHUTDOWN -> {
+                    if (!this.offlineText.isBlank()) {
+                        channel.sendMessage(this.fusion.replacePlaceholders(this.offlineText, copy)).queue();
 
-                    continue;
+                        continue;
+                    }
+
+                    if (this.configuration.hasChild("embed", "offline")) {
+                        final Embed embed = buildEmbed(this.configuration.node("embed", "offline"), environment, copy);
+
+                        channel.sendMessageEmbeds(embed.build()).queue();
+                    }
                 }
 
-                if (this.onlineEmbed != null) {
-                    channel.sendMessageEmbeds(this.onlineEmbed.build()).queue();
+                case INITIALIZED -> {
+                    if (!this.onlineText.isBlank()) {
+                        channel.sendMessage(this.fusion.replacePlaceholders(this.onlineText, copy)).queue();
+
+                        continue;
+                    }
+
+                    if (this.configuration.hasChild("embed", "online")) {
+                        final Embed embed = buildEmbed(this.configuration.node("embed", "online"), environment, copy);
+
+                        channel.sendMessageEmbeds(embed.build()).queue();
+                    }
                 }
-
-                return;
-            }
-
-            if (!this.offlineText.isBlank()) {
-                channel.sendMessage(this.offlineText).queue();
-
-                continue;
-            }
-
-            if (this.offlineEmbed != null) {
-                channel.sendMessageEmbeds(this.offlineEmbed.build()).queue();
             }
         }
+    }
+
+    public void sendMessage(@NotNull final JDA jda, final long guildId, final Environment environment) {
+        sendMessage(jda, guildId, environment, Map.of());
     }
 
     public @NotNull final String getServer() {

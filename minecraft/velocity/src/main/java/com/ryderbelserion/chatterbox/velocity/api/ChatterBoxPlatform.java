@@ -9,7 +9,6 @@ import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.velocity.ChatterBox;
 import com.ryderbelserion.chatterbox.velocity.api.discord.DiscordManager;
 import com.ryderbelserion.fusion.FusionVelocity;
-import com.ryderbelserion.fusion.files.enums.FileType;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,8 +27,6 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<Audience, Object> {
     @Override
     public void init() {
         super.init();
-
-        this.fileManager.addFile(this.dataPath.resolve("discord.yml"), FileType.YAML);
 
         post();
     }

@@ -1,0 +1,10 @@
+# Support: https://discord.gg/ktxCyUd7Ny
+# Github: https://github.com/ryderbelserion
+#
+# Issues: https://github.com/ryderbelserion/ChatterBox/issues
+# Features: https://github.com/ryderbelserion/ChatterBox/issues
+root:
+  # The prefix that appears in front of commands!
+  prefix: " <gold>ChatterBox <reset>"
+  # The name of the server.
+  server-name: "global"

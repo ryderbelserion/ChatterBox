@@ -8,14 +8,17 @@ import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
 import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
+import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
@@ -37,42 +40,65 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
     public void init() {
         ChatterBoxProvider.register(this);
 
-        final Path dataPath = getDataPath();
+        try {
+            Files.createDirectories(this.dataPath);
+        } catch (final IOException ignored) {}
 
-        if (Files.notExists(dataPath)) {
-            try {
-                java.nio.file.Files.createDirectory(dataPath);
-            } catch (final IOException exception) {
-                exception.printStackTrace();
+        Map.of( // map internal files to external output
+                "/discord.yml", "discord;config.yml"
+        ).forEach((input, output) -> {
+            final String[] splitter = output.split(";");
+            final String folder = splitter[0];
+            final String name = splitter[1];
+
+            final Path path = this.dataPath.resolve(folder).resolve(name);
+
+            this.fileManager.extractFile(input, path);
+
+            this.fileManager.addFile(path, FileType.YAML, action -> action.addAction(FileAction.ALREADY_EXTRACTED));
+        });
+
+        final Platform platform = getPlatform();
+
+        switch (platform) {
+            case VELOCITY -> {
+                List.of(
+                        "config.yml"
+                ).forEach(file -> {
+                    final String extension = file.split("\\.")[1];
+
+                    final FileType fileType = switch (extension) {
+                        case "json" -> FileType.JSON;
+                        case "yml" -> FileType.YAML;
+                        default -> throw new IllegalStateException("Unexpected value: " + extension);
+                    };
+
+                    this.fileManager.addFile(this.dataPath.resolve(file), fileType);
+                });
+            }
+
+            case HYTALE, MINECRAFT -> {
+                List.of(
+                        "messages.yml",
+                        "config.yml",
+                        "chat.yml"
+                ).forEach(file -> {
+                    final String extension = file.split("\\.")[1];
+
+                    final FileType fileType = switch (extension) {
+                        case "json" -> FileType.JSON;
+                        case "yml" -> FileType.YAML;
+                        default -> throw new IllegalStateException("Unexpected value: " + extension);
+                    };
+
+                    this.fileManager.addFile(this.dataPath.resolve(file), fileType);
+                });
+
+                this.fileManager.addFolder(this.dataPath.resolve("locale"), FileType.YAML);
             }
         }
 
-        List.of(
-                "messages.yml",
-
-                "discord.yml",
-
-                "config.yml",
-                "chat.yml"
-        ).forEach(file -> {
-            final String extension = file.split("\\.")[1];
-
-            final FileType fileType = switch (extension) {
-                case "json" -> FileType.JSON;
-                case "yml" -> FileType.YAML;
-                default -> throw new IllegalStateException("Unexpected value: " + extension);
-            };
-
-            final Path path = dataPath.resolve(file);
-
-            this.fileManager.addFile(path, fileType);
-        });
-
-        this.fileManager.addFolder(this.dataPath.resolve("locale"), FileType.YAML);
-
         final ModRegistry registry = this.fusion.getModRegistry();
-
-        final Platform platform = getPlatform();
 
         List.of(
                 new LuckPermsSupport(platform)

@@ -9,7 +9,6 @@ import com.ryderbelserion.discord.configs.DiscordConfig;
 import com.ryderbelserion.discord.configs.features.PresenceConfig;
 import com.ryderbelserion.discord.configs.features.ServerConfig;
 import com.ryderbelserion.fusion.FusionVelocity;
-import com.ryderbelserion.fusion.core.api.enums.Level;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
@@ -21,8 +20,8 @@ import java.util.Map;
 
 public class DiscordBot extends DiscordPlugin {
 
-    private final ChatterBox instance;
     private final ConfigManager configManager;
+    private final ChatterBox instance;
 
     public DiscordBot(@NotNull final FusionVelocity fusion,
                       @NotNull final ChatterBox instance, @NotNull final List<GatewayIntent> intents,
@@ -61,13 +60,15 @@ public class DiscordBot extends DiscordPlugin {
     }
 
     @Override
-    public void onGuildReady(@NotNull final Guild guild) {
+    public void onGuildReady(@NotNull final Guild guild) { // no multi guild support yet.
         final DiscordConfig config = this.configManager.getDiscord();
 
         final ServerConfig serverConfig = config.getDefault();
 
-        serverConfig.sendMessage(getJDA(), config.getGuildId(), true);
-    } // no multi guild support yet.
+        serverConfig.sendMessage(getJDA(), config.getGuildId(), this.environment, Map.of(
+                "{server}", this.configManager.getServerName()
+        ));
+    }
 
     @Override
     public void onReload(@NotNull final JDA jda) {

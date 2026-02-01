@@ -6,6 +6,8 @@
 root:
   # The prefix that appears in front of commands!
   prefix: " <gold>ChatterBox <reset>"
+  # The name of the server.
+  server-name: "global"
   # Settings related to the motd.
   motd:
     # Should the message of the day be sent?

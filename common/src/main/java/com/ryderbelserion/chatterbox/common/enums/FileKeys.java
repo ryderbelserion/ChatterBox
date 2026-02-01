@@ -14,18 +14,27 @@ import java.util.Optional;
 
 public enum FileKeys {
 
-    discord("discord.yml"),
+    discord("config.yml", "discord"),
+
     config("config.yml"),
     chat("chat.yml");
 
     private final ChatterBoxPlugin plugin = (ChatterBoxPlugin) ChatterBoxProvider.getInstance();
 
     private final FileManager fileManager = this.plugin.getFileManager();
+    private final Path path = this.plugin.getDataPath();
 
-    private final Path path;
+    private final Path location; // the file location
+    private final Path folder;
+
+    FileKeys(@NotNull final String fileName, @NotNull final String folder) {
+        this.folder = this.path.resolve(folder);
+        this.location = this.folder.resolve(fileName);
+    }
 
     FileKeys(@NotNull final String name) {
-        this.path = this.plugin.getDataPath().resolve(name);
+        this.location = this.path.resolve(name);
+        this.folder = this.path;
     }
 
     public @NotNull final BasicConfigurationNode getJsonConfig() {
@@ -33,10 +42,10 @@ public enum FileKeys {
     }
 
     public JsonCustomFile getJsonCustomFile() {
-        @NotNull final Optional<JsonCustomFile> customFile = this.fileManager.getJsonFile(this.path);
+        @NotNull final Optional<JsonCustomFile> customFile = this.fileManager.getJsonFile(this.location);
 
         if (customFile.isEmpty()) {
-            throw new FileException("Could not find custom file for " + this.path);
+            throw new FileException("Could not find custom file for " + this.location);
         }
 
         return customFile.get();
@@ -47,16 +56,16 @@ public enum FileKeys {
     }
 
     public @NotNull final YamlCustomFile getYamlCustomFile() {
-        @NotNull final Optional<YamlCustomFile> customFile = this.fileManager.getYamlFile(this.path);
+        @NotNull final Optional<YamlCustomFile> customFile = this.fileManager.getYamlFile(this.location);
 
         if (customFile.isEmpty()) {
-            throw new FileException("Could not find custom file for " + this.path);
+            throw new FileException("Could not find custom file for " + this.location);
         }
 
         return customFile.get();
     }
 
     public @NotNull final Path getPath() {
-        return this.path;
+        return this.location;
     }
 }

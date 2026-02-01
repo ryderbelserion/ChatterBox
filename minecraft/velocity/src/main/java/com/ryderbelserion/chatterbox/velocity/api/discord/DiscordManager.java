@@ -4,6 +4,7 @@ import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.velocity.ChatterBox;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.velocity.api.discord.objects.DiscordBot;
+import com.ryderbelserion.discord.api.enums.Environment;
 import com.ryderbelserion.discord.configs.DiscordConfig;
 import com.ryderbelserion.discord.configs.features.ServerConfig;
 import com.ryderbelserion.fusion.FusionVelocity;
@@ -13,6 +14,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
+import java.util.Map;
 
 public class DiscordManager {
 
@@ -71,6 +73,8 @@ public class DiscordManager {
                 ),
                 token
         );
+
+        this.bot.init();
     }
 
     public void stop() {
@@ -80,7 +84,9 @@ public class DiscordManager {
 
         final ServerConfig serverConfig = config.getDefault();
 
-        serverConfig.sendMessage(this.bot.getJDA(), config.getGuildId(), false);
+        serverConfig.sendMessage(this.bot.getJDA(), config.getGuildId(), Environment.SHUTDOWN, Map.of(
+                "{server}", configManager.getServerName()
+        ));
     }
 
     @ApiStatus.Internal

@@ -41,7 +41,6 @@ public class ChatterBox {
         this.platform.init();
     }
 
-
     @Subscribe
     public void onProxyShutDown(ProxyPreShutdownEvent event) {
         this.platform.shutdown();
