@@ -11,7 +11,3 @@ dependencies {
 
     api(libs.jda)
 }
-
-tasks {
-
-}

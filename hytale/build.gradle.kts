@@ -18,7 +18,7 @@ dependencies {
 
 tasks {
     shadowJar {
-        archiveBaseName.set("${rootProject.name}-Hytale-${rootProject.version}")
+        archiveBaseName.set("${rootProject.name}-Hytale")
         archiveClassifier.set("")
 
         destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))

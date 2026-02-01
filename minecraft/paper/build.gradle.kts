@@ -26,7 +26,7 @@ tasks {
     }
 
     shadowJar {
-        archiveBaseName.set("${rootProject.name}-Paper-${rootProject.version}")
+        archiveBaseName.set("${rootProject.name}-Paper")
         archiveClassifier.set("")
 
         destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
