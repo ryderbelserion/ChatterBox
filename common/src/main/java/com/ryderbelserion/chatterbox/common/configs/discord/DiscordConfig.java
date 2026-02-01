@@ -15,12 +15,14 @@ public class DiscordConfig {
 
     private final CommentedConfigurationNode configuration;
 
+    private final boolean sendServerStatus;
     private final String timezone;
     private final String token;
 
     public DiscordConfig(@NotNull final String timezone, @NotNull final CommentedConfigurationNode configuration) {
         this.configuration = configuration;
 
+        this.sendServerStatus = this.configuration.node("root", "notifications", "server-status").getBoolean(true);
         this.token = this.configuration.node("root", "token").getString("");
         this.timezone = timezone;
 
@@ -40,7 +42,7 @@ public class DiscordConfig {
 
         this.servers.clear();
 
-        if (this.configuration.hasChild("notifications")) {
+        if (this.configuration.hasChild("notifications") && this.sendServerStatus) {
             this.servers.put("default", new ServerConfig(this.timezone, "default", this.configuration.node("notifications", "default")));
 
             final Map<Object, CommentedConfigurationNode> notifications = this.configuration.node("notifications", "per-server").childrenMap();
@@ -72,6 +74,10 @@ public class DiscordConfig {
 
     public @NotNull final String getToken() {
         return this.token;
+    }
+
+    public final boolean isSendServerStatus() {
+        return this.sendServerStatus;
     }
 
     public final boolean isEnabled() {

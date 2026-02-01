@@ -78,11 +78,13 @@ public class DiscordManager {
 
         final DiscordConfig config = configManager.getDiscord();
 
-        final ServerConfig serverConfig = config.getDefault();
+        if (config.isSendServerStatus()) {
+            final ServerConfig serverConfig = config.getDefault();
 
-        serverConfig.sendMessage(this.bot.getJDA(), config.getGuildId(), Environment.SHUTDOWN, Map.of(
-                "{server}", configManager.getServerName()
-        ));
+            serverConfig.sendMessage(this.bot.getJDA(), config.getGuildId(), Environment.SHUTDOWN, Map.of(
+                    "{server}", configManager.getServerName()
+            ));
+        }
     }
 
     @ApiStatus.Internal
