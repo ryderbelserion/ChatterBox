@@ -33,8 +33,17 @@ public class GroupAdapter implements IGroupAdapter {
 
         final CachedMetaData data = user.getCachedData().getMetaData();
 
-        this.prefix = data.getPrefix();
-        this.suffix = data.getSuffix();
+        final String prefix = data.getPrefix();
+
+        if (prefix != null) {
+            this.prefix = data.getPrefix();
+        }
+
+        final String suffix = data.getSuffix();
+
+        if (suffix != null) {
+            this.suffix = data.getSuffix();
+        }
     }
 
     public GroupAdapter() {

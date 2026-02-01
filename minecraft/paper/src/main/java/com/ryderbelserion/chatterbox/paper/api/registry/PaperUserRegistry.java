@@ -97,10 +97,10 @@ public class PaperUserRegistry implements IUserRegistry<Player> {
     }
 
     @Override
-    public void removeUser(@NotNull final UUID uuid) {
+    public PaperUserAdapter removeUser(@NotNull final UUID uuid) {
         this.fileManager.removeFile(this.userPath.resolve("%s.json".formatted(uuid)));
 
-        this.users.remove(uuid);
+        return this.users.remove(uuid);
     }
 
     @Override

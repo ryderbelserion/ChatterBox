@@ -1,1 +1,3 @@
-- Fixed a bug with LuckPerms mod check not being correct
+- Fixed a null pointer when a player disconnects.
+- Fixed a null pointer when a player joins, while LuckPerms is on the server.
+  - `getPrefix` & `getSuffix` returns nullable, so a null check was added.

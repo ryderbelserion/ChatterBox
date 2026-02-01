@@ -13,6 +13,7 @@ import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
 import com.ryderbelserion.chatterbox.hytale.api.listeners.EventListener;
+import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleUserAdapter;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.jetbrains.annotations.NotNull;
@@ -32,8 +33,6 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
     private final HytaleUserRegistry registry = this.platform.getUserRegistry();
 
-    private final HytaleUserRegistry userRegistry = this.platform.getUserRegistry();
-
     private final FusionHytale fusion = this.instance.getFusion();
 
     @Override
@@ -41,7 +40,7 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
         registry.register(getEvent(), event -> {
             final PlayerRef player = event.getPlayerRef();
 
-            this.registry.removeUser(player.getUuid());
+            final HytaleUserAdapter user = this.registry.removeUser(player.getUuid());
 
             final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
 
@@ -52,7 +51,7 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
                 placeholders.put("{player}", player.getUsername());
 
-                this.userRegistry.getUser(player.getUuid()).ifPresent(user -> {
+                if (user != null) {
                     final GroupAdapter adapter = user.getGroupAdapter();
 
                     final Map<String, String> map = adapter.getPlaceholders();
@@ -62,7 +61,7 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                     }
 
                     reference.set(adapter.getPrimaryGroup().toLowerCase());
-                });
+                }
 
                 final Universe universe = Universe.get();
 

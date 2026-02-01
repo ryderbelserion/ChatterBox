@@ -11,7 +11,7 @@ public interface IUserRegistry<S> {
 
     void addUser(@NotNull final S player);
 
-    void removeUser(@NotNull final UUID uuid);
+    IUser removeUser(@NotNull final UUID uuid);
 
     Optional<? extends IUser> getUser(@NotNull final UUID uuid);
 

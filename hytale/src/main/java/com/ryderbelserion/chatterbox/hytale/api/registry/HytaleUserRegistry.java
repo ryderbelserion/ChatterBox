@@ -94,15 +94,15 @@ public class HytaleUserRegistry implements IUserRegistry<PlayerRef> {
     }
 
     @Override
-    public void removeUser(@NotNull final UUID uuid) {
+    public HytaleUserAdapter removeUser(@NotNull final UUID uuid) {
         this.fileManager.removeFile(this.userPath.resolve("%s.json".formatted(uuid)));
 
-        this.users.remove(uuid);
+        return this.users.remove(uuid);
     }
 
     @Override
-    public Optional<HytaleUserAdapter> getUser(@NotNull UUID uuid) {
-        return Optional.of(this.users.get(uuid));
+    public Optional<HytaleUserAdapter> getUser(@NotNull final UUID uuid) {
+        return Optional.ofNullable(this.users.get(uuid));
     }
 
     @Override
