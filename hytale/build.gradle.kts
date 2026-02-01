@@ -8,7 +8,10 @@ project.version = rootProject.version
 dependencies {
     compileOnly(files(System.getenv("HYTALE_SERVER")))
 
-    implementation(project(":chatterbox-common"))
+    implementation(project(":chatterbox-common")) {
+        exclude(group = "ch.qos.logback", module = "logback-classic")
+        exclude(group = "net.dv8tion", module = "JDA")
+    }
 
     implementation(libs.bundles.kyori)
     implementation(libs.fusion.kyori)

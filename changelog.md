@@ -1,1 +1,1 @@
-- Fixed a bug with incorrect configuration check, which caused per group format defaults to be used instead.
+- Fixed a bug with LuckPerms mod check not being correct

@@ -8,7 +8,6 @@ import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
 import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
-import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;

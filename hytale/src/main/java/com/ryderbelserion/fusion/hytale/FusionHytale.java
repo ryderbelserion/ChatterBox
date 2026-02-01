@@ -54,7 +54,7 @@ public class FusionHytale extends FusionKyori<IMessageReceiver> {
 
     @Override
     public boolean isModReady(@NotNull final FusionKey key) {
-        final PluginBase plugin = PluginManager.get().getPlugin(PluginIdentifier.fromString(key.asString()));
+        final PluginBase plugin = PluginManager.get().getPlugin(PluginIdentifier.fromString(key.getValue()));
 
         return plugin != null && plugin.isEnabled();
     }
