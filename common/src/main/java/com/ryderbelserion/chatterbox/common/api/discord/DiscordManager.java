@@ -1,15 +1,13 @@
-package com.ryderbelserion.chatterbox.velocity.api.discord;
+package com.ryderbelserion.chatterbox.common.api.discord;
 
+import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
-import com.ryderbelserion.chatterbox.velocity.ChatterBox;
-import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxPlatform;
-import com.ryderbelserion.chatterbox.velocity.api.discord.objects.DiscordBot;
+import com.ryderbelserion.chatterbox.common.api.discord.objects.DiscordBot;
 import com.ryderbelserion.discord.api.enums.Environment;
 import com.ryderbelserion.discord.configs.DiscordConfig;
 import com.ryderbelserion.discord.configs.features.ServerConfig;
-import com.ryderbelserion.fusion.FusionVelocity;
 import com.ryderbelserion.fusion.core.api.enums.Level;
-import net.dv8tion.jda.api.requests.GatewayIntent;
+import com.ryderbelserion.fusion.kyori.FusionKyori;import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -18,12 +16,10 @@ import java.util.Map;
 
 public class DiscordManager {
 
-    private final FusionVelocity fusion;
-    private final ChatterBoxPlatform platform;
-    private final ChatterBox instance;
+    private final ChatterBoxPlugin instance;
+    private final FusionKyori fusion;
 
-    public DiscordManager(@NotNull final FusionVelocity fusion, @NotNull final ChatterBox instance) {
-        this.platform = instance.getPlatform();
+    public DiscordManager(@NotNull final FusionKyori fusion, @NotNull final ChatterBoxPlugin instance) {
         this.instance = instance;
         this.fusion = fusion;
     }
@@ -31,7 +27,7 @@ public class DiscordManager {
     private DiscordBot bot;
 
     public void init() {
-        final ConfigManager configManager = this.platform.getConfigManager();
+        final ConfigManager configManager = this.instance.getConfigManager();
 
         final DiscordConfig config = configManager.getDiscord();
 
@@ -78,7 +74,7 @@ public class DiscordManager {
     }
 
     public void stop() {
-        final ConfigManager configManager = this.platform.getConfigManager();
+        final ConfigManager configManager = this.instance.getConfigManager();
 
         final DiscordConfig config = configManager.getDiscord();
 

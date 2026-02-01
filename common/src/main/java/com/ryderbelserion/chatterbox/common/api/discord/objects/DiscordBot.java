@@ -1,14 +1,12 @@
-package com.ryderbelserion.chatterbox.velocity.api.discord.objects;
+package com.ryderbelserion.chatterbox.common.api.discord.objects;
 
-import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
-import com.ryderbelserion.chatterbox.velocity.ChatterBox;
-import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.discord.DiscordPlugin;
 import com.ryderbelserion.discord.api.enums.Environment;
 import com.ryderbelserion.discord.configs.DiscordConfig;
 import com.ryderbelserion.discord.configs.features.PresenceConfig;
 import com.ryderbelserion.discord.configs.features.ServerConfig;
-import com.ryderbelserion.fusion.FusionVelocity;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
@@ -21,10 +19,10 @@ import java.util.Map;
 public class DiscordBot extends DiscordPlugin {
 
     private final ConfigManager configManager;
-    private final ChatterBox instance;
+    private final ChatterBoxPlugin instance;
 
-    public DiscordBot(@NotNull final FusionVelocity fusion,
-                      @NotNull final ChatterBox instance, @NotNull final List<GatewayIntent> intents,
+    public DiscordBot(@NotNull final FusionKyori fusion,
+                      @NotNull final ChatterBoxPlugin instance, @NotNull final List<GatewayIntent> intents,
                       @NotNull final List<CacheFlag> flags,
                       @NotNull final String token
     ) {
@@ -32,9 +30,7 @@ public class DiscordBot extends DiscordPlugin {
 
         this.instance = instance;
 
-        final ChatterBoxPlatform platform = this.instance.getPlatform();
-
-        this.configManager = platform.getConfigManager();
+        this.configManager = this.instance.getConfigManager();
     }
 
     @Override
@@ -49,7 +45,7 @@ public class DiscordBot extends DiscordPlugin {
         final PresenceConfig config = this.configManager.getDiscord().getPresenceConfig();
 
         if (config.isEnabled()) {
-            final int count = this.instance.getServer().getPlayerCount();
+            final int count = this.instance.getPlayerCount();
 
             final Activity customStatus = Activity.customStatus(this.fusion.replacePlaceholders(config.getStatus(), Map.of(
                     "{count}", String.valueOf(count)

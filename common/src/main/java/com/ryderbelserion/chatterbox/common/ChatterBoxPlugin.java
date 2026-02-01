@@ -6,8 +6,10 @@ import com.ryderbelserion.chatterbox.api.adapters.IPlayerAdapter;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
+import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
 import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
+import com.ryderbelserion.discord.configs.DiscordConfig;
 import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
@@ -27,6 +29,7 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
     public static final String CONSOLE_NAME = "Console";
 
     private ConfigManager configManager;
+    private DiscordManager discordManager;
     private IPlayerAdapter<?> adapter;
 
     public ChatterBoxPlugin(@NotNull final FusionKyori fusion) {
@@ -34,6 +37,8 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
     }
 
     public abstract ISenderAdapter getSenderAdapter();
+
+    public abstract int getPlayerCount();
 
     @Override
     public void init() {
@@ -110,6 +115,13 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
 
         this.configManager = new ConfigManager();
         this.configManager.init();
+
+        final DiscordConfig config = this.configManager.getDiscord();
+
+        if (config.isEnabled()) {
+            this.discordManager = new DiscordManager(this.fusion, this);
+            this.discordManager.init();
+        }
     }
 
     @Override
@@ -121,11 +133,17 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
         getMessageRegistry().init();
 
         this.configManager.reload();
+
+        if (this.discordManager != null) {
+            this.discordManager.init();
+        }
     }
 
     @Override
     public void shutdown() {
-
+        if (this.discordManager != null) {
+            this.discordManager.stop();
+        }
     }
 
     @Override
