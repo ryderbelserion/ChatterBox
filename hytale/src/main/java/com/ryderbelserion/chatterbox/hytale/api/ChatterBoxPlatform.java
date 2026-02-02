@@ -2,6 +2,7 @@ package com.ryderbelserion.chatterbox.hytale.api;
 
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
+import com.hypixel.hytale.server.core.universe.Universe;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleContextRegistry;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleMessageRegistry;
@@ -57,6 +58,11 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver, Messa
     @Override
     public @NotNull final HytaleSenderAdapter getSenderAdapter() {
         return this.userAdapter;
+    }
+
+    @Override
+    public final int getPlayerCount() {
+        return Universe.get().getPlayerCount();
     }
 
     @Override
