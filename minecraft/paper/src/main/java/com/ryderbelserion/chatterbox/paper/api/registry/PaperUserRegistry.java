@@ -2,7 +2,7 @@ package com.ryderbelserion.chatterbox.paper.api.registry;
 
 import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
-import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperUserAdapter;
 import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
@@ -25,7 +25,7 @@ public class PaperUserRegistry implements IUserRegistry<Player> {
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final ChatterBoxPlatform platform = this.instance.getPlatform();
+    private final ChatterBoxPaper platform = this.instance.getPlatform();
 
     private final FusionPaper fusion = this.instance.getFusion();
 

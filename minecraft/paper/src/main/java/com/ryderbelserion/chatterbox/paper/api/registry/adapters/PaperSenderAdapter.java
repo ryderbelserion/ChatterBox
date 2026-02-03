@@ -1,6 +1,6 @@
 package com.ryderbelserion.chatterbox.paper.api.registry.adapters;
 
-import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperMessageRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
@@ -19,13 +19,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class PaperSenderAdapter extends ISenderAdapter<ChatterBoxPlatform, Component, CommandSender> {
+public class PaperSenderAdapter extends ISenderAdapter<ChatterBoxPaper, Component, CommandSender> {
 
     private final PaperMessageRegistry messageRegistry;
     private final PaperUserRegistry userRegistry;
     private final FusionPaper fusion;
 
-    public PaperSenderAdapter(@NotNull final ChatterBoxPlatform platform) {
+    public PaperSenderAdapter(@NotNull final ChatterBoxPaper platform) {
         super();
 
         this.messageRegistry = platform.getMessageRegistry();

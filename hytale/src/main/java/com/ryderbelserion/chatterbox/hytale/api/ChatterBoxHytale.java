@@ -17,14 +17,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.UUID;
 
-public class ChatterBoxPlatform extends ChatterBoxPlugin<IMessageReceiver, Message> {
+public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Message> {
 
     private HytaleMessageRegistry messageRegistry;
     private HytaleContextRegistry contextRegistry;
     private HytaleSenderAdapter userAdapter;
     private HytaleUserRegistry userRegistry;
 
-    public ChatterBoxPlatform(@NotNull final FusionHytale fusion) {
+    public ChatterBoxHytale(@NotNull final FusionHytale fusion) {
         super(fusion);
     }
 

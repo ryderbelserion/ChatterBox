@@ -4,7 +4,7 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.console.ConsoleSender;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleMessageRegistry;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
@@ -19,13 +19,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class HytaleSenderAdapter extends ISenderAdapter<ChatterBoxPlatform, Message, IMessageReceiver> {
+public class HytaleSenderAdapter extends ISenderAdapter<ChatterBoxHytale, Message, IMessageReceiver> {
 
     private final HytaleMessageRegistry messageRegistry;
     private final HytaleUserRegistry userRegistry;
     private final FusionHytale fusion;
 
-    public HytaleSenderAdapter(@NotNull final ChatterBoxPlatform platform) {
+    public HytaleSenderAdapter(@NotNull final ChatterBoxHytale platform) {
         super();
 
         this.messageRegistry = platform.getMessageRegistry();

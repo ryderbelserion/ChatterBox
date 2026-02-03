@@ -4,7 +4,7 @@ import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
-import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
@@ -20,7 +20,7 @@ public class ChatListener implements EventListener<PlayerChatEvent> {
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final ChatterBoxPlatform platform = this.instance.getPlatform();
+    private final ChatterBoxHytale platform = this.instance.getPlatform();
 
     private final HytaleUserRegistry userRegistry = this.platform.getUserRegistry();
 

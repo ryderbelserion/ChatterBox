@@ -3,7 +3,7 @@ package com.ryderbelserion.chatterbox.hytale.api.registry;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
-import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleUserAdapter;
@@ -25,7 +25,7 @@ public class HytaleUserRegistry implements IUserRegistry<PlayerRef> {
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final ChatterBoxPlatform platform = this.instance.getPlatform();
+    private final ChatterBoxHytale platform = this.instance.getPlatform();
 
     private final FusionHytale fusion = this.instance.getFusion();
 

@@ -1,7 +1,7 @@
 package com.ryderbelserion.chatterbox.paper.listeners;
 
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
-import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
@@ -21,7 +21,7 @@ public class CacheListener implements Listener {
 
     private final ChatterBox plugin = ChatterBox.getInstance();
 
-    private final ChatterBoxPlatform platform = this.plugin.getPlatform();
+    private final ChatterBoxPaper platform = this.plugin.getPlatform();
 
     private final PaperUserRegistry userRegistry = this.platform.getUserRegistry();
 

@@ -3,7 +3,7 @@ package com.ryderbelserion.chatterbox.hytale;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
-import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.hytale.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.hytale.listeners.DisconnectListener;
 import com.ryderbelserion.chatterbox.hytale.listeners.PostConnectListener;
@@ -27,7 +27,7 @@ public class ChatterBox extends JavaPlugin {
 
     private FusionHytale fusion;
 
-    private ChatterBoxPlatform plugin;
+    private ChatterBoxHytale plugin;
 
     @Override
     protected void start() {
@@ -37,7 +37,7 @@ public class ChatterBox extends JavaPlugin {
         this.fusion = new FusionHytale(getLogger(), source, dataPath.getParent().resolve(dataPath.getFileName().toString().split("_")[0]));
         this.fusion.init();
 
-        this.plugin = new ChatterBoxPlatform(this.fusion);
+        this.plugin = new ChatterBoxHytale(this.fusion);
         this.plugin.init();
 
         final EventRegistry registry = getEventRegistry();
@@ -54,7 +54,7 @@ public class ChatterBox extends JavaPlugin {
         getCommandRegistry().registerCommand(new BaseCommand());
     }
 
-    public @NotNull final ChatterBoxPlatform getPlatform() {
+    public @NotNull final ChatterBoxHytale getPlatform() {
         return this.plugin;
     }
 

@@ -1,7 +1,7 @@
 package com.ryderbelserion.chatterbox.paper.commands;
 
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
-import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import com.ryderbelserion.chatterbox.api.registry.IAnnotationRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperMessageRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
@@ -13,7 +13,7 @@ public abstract class AnnotationFeature implements IAnnotationRegistry<Annotatio
 
     protected final ChatterBox instance = ChatterBox.getInstance();
 
-    protected final ChatterBoxPlatform platform = this.instance.getPlatform();
+    protected final ChatterBoxPaper platform = this.instance.getPlatform();
 
     protected final PaperSenderAdapter adapter = this.platform.getSenderAdapter();
 

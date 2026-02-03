@@ -1,7 +1,7 @@
 package com.ryderbelserion.chatterbox.paper.listeners.chat;
 
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
-import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
@@ -23,7 +23,7 @@ public class ChatListener implements Listener {
 
     private final FusionPaper fusion = this.plugin.getFusion();
 
-    private final ChatterBoxPlatform platform = this.plugin.getPlatform();
+    private final ChatterBoxPaper platform = this.plugin.getPlatform();
 
     private final PaperUserRegistry userRegistry = this.platform.getUserRegistry();
 

@@ -1,6 +1,6 @@
 package com.ryderbelserion.chatterbox.paper;
 
-import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import com.ryderbelserion.chatterbox.paper.listeners.CacheListener;
 import com.ryderbelserion.chatterbox.paper.listeners.chat.ChatListener;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -14,7 +14,7 @@ public class ChatterBox extends JavaPlugin {
 
     private static ChatterBox instance;
 
-    private ChatterBoxPlatform platform;
+    private ChatterBoxPaper platform;
     private FusionPaper fusion;
 
     @Override
@@ -24,7 +24,7 @@ public class ChatterBox extends JavaPlugin {
         this.fusion = new FusionPaper(this, getFile().toPath());
         this.fusion.init();
 
-        this.platform = new ChatterBoxPlatform(this, this.fusion);
+        this.platform = new ChatterBoxPaper(this, this.fusion);
         this.platform.init();
 
         final PluginManager pluginManager = getServer().getPluginManager();
@@ -43,7 +43,7 @@ public class ChatterBox extends JavaPlugin {
         }
     }
 
-    public @NotNull final ChatterBoxPlatform getPlatform() {
+    public @NotNull final ChatterBoxPaper getPlatform() {
         return this.platform;
     }
 

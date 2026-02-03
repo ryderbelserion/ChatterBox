@@ -13,7 +13,7 @@ import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleSenderAd
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
-import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.hytale.api.listeners.EventListener;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
@@ -30,7 +30,7 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final ChatterBoxPlatform platform = this.instance.getPlatform();
+    private final ChatterBoxHytale platform = this.instance.getPlatform();
 
     private final HytaleSenderAdapter adapter = this.platform.getSenderAdapter();
 

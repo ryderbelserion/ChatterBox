@@ -13,11 +13,11 @@ import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
-public class ChatterBoxPlatform extends ChatterBoxPlugin<Audience, Component> {
+public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, Component> {
 
     private final ChatterBox instance;
 
-    public ChatterBoxPlatform(@NotNull final FusionVelocity fusion, @NotNull final ChatterBox instance) {
+    public ChatterBoxVelocity(@NotNull final FusionVelocity fusion, @NotNull final ChatterBox instance) {
         super(fusion);
 
         this.instance = instance;

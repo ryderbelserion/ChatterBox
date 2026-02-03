@@ -1,7 +1,7 @@
 package com.ryderbelserion.chatterbox.paper.commands;
 
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
-import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
 import com.ryderbelserion.chatterbox.paper.commands.admin.CommandReload;
@@ -19,7 +19,7 @@ public class BaseCommand {
 
     private final ChatterBox instance = ChatterBox.getInstance();
 
-    private final ChatterBoxPlatform platform = this.instance.getPlatform();
+    private final ChatterBoxPaper platform = this.instance.getPlatform();
 
     private final PaperSenderAdapter adapter = this.platform.getSenderAdapter();
 

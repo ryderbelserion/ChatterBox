@@ -16,11 +16,11 @@ import org.incendo.cloud.paper.PaperCommandManager;
 import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
-public class ChatterBoxPlatform extends ChatterBoxPlugin<CommandSender, Component> {
+public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, Component> {
 
     private final ChatterBox plugin;
 
-    public ChatterBoxPlatform(@NotNull final ChatterBox plugin, @NotNull final FusionPaper fusion) {
+    public ChatterBoxPaper(@NotNull final ChatterBox plugin, @NotNull final FusionPaper fusion) {
         super(fusion);
 
         this.plugin = plugin;

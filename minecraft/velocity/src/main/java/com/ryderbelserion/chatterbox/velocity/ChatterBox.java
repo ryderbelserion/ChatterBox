@@ -1,7 +1,7 @@
 package com.ryderbelserion.chatterbox.velocity;
 
 import com.google.inject.Inject;
-import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxVelocity;
 import com.ryderbelserion.fusion.FusionVelocity;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -33,11 +33,11 @@ public class ChatterBox {
         this.fusion.init();
     }
 
-    private ChatterBoxPlatform platform;
+    private ChatterBoxVelocity platform;
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        this.platform = new ChatterBoxPlatform(this.fusion, this);
+        this.platform = new ChatterBoxVelocity(this.fusion, this);
         this.platform.init();
     }
 
@@ -50,7 +50,7 @@ public class ChatterBox {
         return this.description;
     }
 
-    public @NotNull final ChatterBoxPlatform getPlatform() {
+    public @NotNull final ChatterBoxVelocity getPlatform() {
         return this.platform;
     }
 

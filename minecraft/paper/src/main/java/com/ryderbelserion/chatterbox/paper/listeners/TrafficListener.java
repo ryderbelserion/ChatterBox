@@ -1,7 +1,7 @@
 package com.ryderbelserion.chatterbox.paper.listeners;
 
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
-import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPlatform;
+import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +12,7 @@ public class TrafficListener implements Listener {
 
     private final ChatterBox plugin = ChatterBox.getInstance();
 
-    private final ChatterBoxPlatform platform = this.plugin.getPlatform();
+    private final ChatterBoxPaper platform = this.plugin.getPlatform();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
