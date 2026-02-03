@@ -38,7 +38,9 @@ public class ChatterBox extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        super.onDisable();
+        if (this.platform != null) {
+            this.platform.shutdown();
+        }
     }
 
     public @NotNull final ChatterBoxPlatform getPlatform() {

@@ -60,7 +60,7 @@ public class DiscordBot extends DiscordPlugin {
     public void onGuildReady(@NotNull final Guild guild) { // no multi guild support yet.
         final DiscordConfig config = this.configManager.getDiscord();
 
-        if (config.isSendServerStatus()) {
+        if (config.isServerAlertsEnabled()) {
             final ServerConfig serverConfig = config.getDefault();
 
             serverConfig.sendMessage(getJDA(), config.getGuildId(), this.environment, Map.of(

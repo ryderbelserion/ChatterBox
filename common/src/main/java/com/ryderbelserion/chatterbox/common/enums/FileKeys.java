@@ -15,6 +15,7 @@ import java.util.Optional;
 public enum FileKeys {
 
     discord("config.yml", "discord"),
+    alerts("alerts.yml", "discord"),
 
     config("config.yml"),
     chat("chat.yml");

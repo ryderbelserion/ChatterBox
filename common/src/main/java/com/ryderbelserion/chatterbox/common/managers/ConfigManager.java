@@ -18,17 +18,16 @@ public class ConfigManager {
         this.serverName = configuration.node("root", "server-name").getString("global");
         this.timezone = configuration.node("root", "timezone").getString("America/New_York");
 
-        this.discord = new DiscordConfig(this.timezone, FileKeys.discord.getYamlConfig());
+        this.discord = new DiscordConfig(this.timezone);
     }
 
     public void reload() {
         final CommentedConfigurationNode configuration = FileKeys.config.getYamlConfig();
 
         this.serverName = configuration.node("root", "server-name").getString("global");
+        this.timezone = configuration.node("root", "timezone").getString("America/New_York");
 
-        if (this.discord != null) {
-            this.discord.init();
-        }
+        this.discord = new DiscordConfig(this.timezone);
     }
 
     public @NotNull final DiscordConfig getDiscord() {

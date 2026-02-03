@@ -2,6 +2,7 @@ package com.ryderbelserion.chatterbox.common.configs.discord;
 
 import com.ryderbelserion.chatterbox.common.configs.discord.features.PresenceConfig;
 import com.ryderbelserion.chatterbox.common.configs.discord.features.ServerConfig;
+import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.Collections;
@@ -13,18 +14,16 @@ public class DiscordConfig {
 
     private final Map<String, ServerConfig> servers = new HashMap<>();
 
-    private final CommentedConfigurationNode configuration;
-
-    private final boolean sendServerStatus;
+    private final boolean isServerAlertsEnabled;
     private final String timezone;
     private final String token;
 
-    public DiscordConfig(@NotNull final String timezone, @NotNull final CommentedConfigurationNode configuration) {
-        this.configuration = configuration;
+    public DiscordConfig(@NotNull final String timezone) {
+        final CommentedConfigurationNode config = FileKeys.discord.getYamlConfig();
 
-        this.sendServerStatus = this.configuration.node("root", "notifications", "server-status").getBoolean(true);
-        this.token = this.configuration.node("root", "token").getString("");
+        this.isServerAlertsEnabled = config.node("root", "alerts", "server").getBoolean(true);
         this.timezone = timezone;
+        this.token = config.node("root", "token").getString("");
 
         init();
     }
@@ -34,25 +33,31 @@ public class DiscordConfig {
     private long guildId;
 
     public void init() {
-        this.presenceConfig = new PresenceConfig(this.configuration.node("root", "presence"));
+        final CommentedConfigurationNode config = FileKeys.discord.getYamlConfig();
 
-        this.isEnabled = this.configuration.node("root", "enabled").getBoolean(false);
+        this.presenceConfig = new PresenceConfig(config.node("root", "presence"));
 
-        this.guildId = this.configuration.node("root", "guild-id").getLong(0);
+        this.isEnabled = config.node("root", "enabled").getBoolean(false);
+
+        this.guildId = config.node("root", "guild-id").getLong(0);
 
         this.servers.clear();
 
-        if (this.configuration.hasChild("notifications") && this.sendServerStatus) {
-            this.servers.put("default", new ServerConfig(this.timezone, "default", this.configuration.node("notifications", "default")));
+        final CommentedConfigurationNode alerts = FileKeys.alerts.getYamlConfig();
 
-            final Map<Object, CommentedConfigurationNode> notifications = this.configuration.node("notifications", "per-server").childrenMap();
+        if (this.isServerAlertsEnabled && alerts.hasChild("alerts", "server")) {
+            final CommentedConfigurationNode server = alerts.node("alerts", "server");
+
+            this.servers.put("default", new ServerConfig(this.timezone, "default", server.node("default")));
+
+            /*final Map<Object, CommentedConfigurationNode> notifications = status.node("per-server").childrenMap();
 
             for (final Map.Entry<Object, CommentedConfigurationNode> key : notifications.entrySet()) {
                 final String section = key.getKey().toString();
                 final CommentedConfigurationNode config = key.getValue();
 
                 this.servers.put(section, new ServerConfig(this.timezone, section, config));
-            }
+            }*/
         }
     }
 
@@ -76,8 +81,8 @@ public class DiscordConfig {
         return this.token;
     }
 
-    public final boolean isSendServerStatus() {
-        return this.sendServerStatus;
+    public final boolean isServerAlertsEnabled() {
+        return this.isServerAlertsEnabled;
     }
 
     public final boolean isEnabled() {

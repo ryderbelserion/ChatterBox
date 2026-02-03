@@ -78,7 +78,7 @@ public class DiscordManager {
 
         final DiscordConfig config = configManager.getDiscord();
 
-        if (config.isSendServerStatus()) {
+        if (config.isServerAlertsEnabled()) {
             final ServerConfig serverConfig = config.getDefault();
 
             serverConfig.sendMessage(this.bot.getJDA(), config.getGuildId(), Environment.SHUTDOWN, Map.of(
