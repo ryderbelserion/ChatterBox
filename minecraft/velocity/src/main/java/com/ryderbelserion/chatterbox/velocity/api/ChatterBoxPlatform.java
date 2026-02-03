@@ -9,9 +9,11 @@ import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.velocity.ChatterBox;
 import com.ryderbelserion.fusion.FusionVelocity;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
+import java.util.Map;
 
-public class ChatterBoxPlatform extends ChatterBoxPlugin<Audience, Object> {
+public class ChatterBoxPlatform extends ChatterBoxPlugin<Audience, Component> {
 
     private final ChatterBox instance;
 
@@ -49,5 +51,15 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<Audience, Object> {
     @Override
     public final int getPlayerCount() {
         return this.instance.getServer().getPlayerCount();
+    }
+
+    @Override
+    public void sendTitle(
+            @NotNull final Audience sender,
+            final boolean notifyServer,
+            @NotNull final String title, @NotNull final String subtitle, final int duration, final int fadeIn, final int fadeOut,
+            @NotNull final Map<String, String> placeholders
+    ) {
+
     }
 }

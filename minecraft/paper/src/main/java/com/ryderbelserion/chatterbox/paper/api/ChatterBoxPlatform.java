@@ -14,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.paper.PaperCommandManager;
 import org.jetbrains.annotations.NotNull;
+import java.util.Map;
 
 public class ChatterBoxPlatform extends ChatterBoxPlugin<CommandSender, Component> {
 
@@ -84,5 +85,15 @@ public class ChatterBoxPlatform extends ChatterBoxPlugin<CommandSender, Componen
     @Override
     public final int getPlayerCount() {
         return this.plugin.getServer().getOnlinePlayers().size();
+    }
+
+    @Override
+    public void sendTitle(
+            @NotNull final CommandSender sender,
+            final boolean notifyServer,
+            @NotNull final String title, @NotNull final String subtitle, final int duration, final int fadeIn, final int fadeOut,
+            @NotNull final Map<String, String> placeholders
+    ) {
+
     }
 }

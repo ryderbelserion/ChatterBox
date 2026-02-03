@@ -36,6 +36,14 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
         super(fusion);
     }
 
+    public void sendTitle(
+            @NotNull final S sender, final boolean notifyServer,
+            @NotNull final String title, @NotNull final String subtitle, final int duration, final int fadeIn, final int fadeOut,
+            @NotNull final Map<String, String> placeholders
+    ) {
+
+    }
+
     public abstract ISenderAdapter getSenderAdapter();
 
     public abstract int getPlayerCount();

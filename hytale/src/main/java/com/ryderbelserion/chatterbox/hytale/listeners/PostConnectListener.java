@@ -2,14 +2,11 @@ package com.ryderbelserion.chatterbox.hytale.listeners;
 
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.HytaleServer;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.event.events.player.AddPlayerToWorldEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
-import com.hypixel.hytale.server.core.universe.world.World;
-import com.hypixel.hytale.server.core.util.EventTitleUtil;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleSenderAdapter;
@@ -24,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -97,7 +93,16 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
                     final CommentedConfigurationNode configuration = config.node("root", "traffic", "join-message", "title");
 
                     if (configuration.node("toggle").getBoolean(false)) {
-                        sendTitle(player, configuration, placeholders);
+                        this.platform.sendTitle(
+                                player,
+                                true,
+                                configuration.node("header").getString("Player has joined!"),
+                                configuration.node("footer").getString("{player}"),
+                                configuration.node("delay", "duration").getInt(5),
+                                configuration.node("fade", "in").getInt(1),
+                                configuration.node("fade", "out").getInt(1),
+                                placeholders
+                        );
 
                         return;
                     }
@@ -114,7 +119,16 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
                 final CommentedConfigurationNode configuration = config.node("root", "traffic", "join-message", "groups", group, "title");
 
                 if (config.node("root", "traffic", "join-message", "title", "toggle").getBoolean(false)) {
-                    sendTitle(player, configuration, placeholders);
+                    this.platform.sendTitle(
+                            player,
+                            true,
+                            configuration.node("header").getString("Player has joined!"),
+                            configuration.node("footer").getString("{player}"),
+                            configuration.node("delay", "duration").getInt(5),
+                            configuration.node("fade", "in").getInt(1),
+                            configuration.node("fade", "out").getInt(1),
+                            placeholders
+                    );
 
                     return;
                 }
@@ -153,38 +167,5 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
         }
 
         this.adapter.sendMessage(receiver, Messages.message_of_the_day, placeholders);
-    }
-
-    private void sendTitle(@NotNull final PlayerRef player, @NotNull final CommentedConfigurationNode title, @NotNull final Map<String, String> placeholders) {
-        final Universe universe = Universe.get();
-
-        final Message header = this.fusion.asMessage(player,
-                title.node("header").getString("Player has joined!"),
-                placeholders
-        );
-
-        final Message footer = this.fusion.asMessage(
-                player,
-                title.node("footer").getString("{player}"),
-                placeholders
-        );
-
-        final int duration = title.node("delay", "duration").getInt(5);
-        final int fadeIn = title.node("delay", "fade", "in").getInt(1);
-        final int fadeOut = title.node("delay", "fade", "out").getInt(1);
-
-        universe.getPlayers().forEach(reference -> {
-            final UUID uuid = reference.getWorldUuid();
-
-            if (uuid != null) {
-                final World world = universe.getWorld(uuid);
-
-                if (world != null) {
-                    world.execute(() -> EventTitleUtil.showEventTitleToPlayer(reference, header, footer, true, null, duration,
-                            fadeIn,
-                            fadeOut));
-                }
-            }
-        });
     }
 }

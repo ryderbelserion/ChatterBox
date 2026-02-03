@@ -1,12 +1,9 @@
 package com.ryderbelserion.chatterbox.hytale.listeners;
 
 import com.hypixel.hytale.event.EventRegistry;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
-import com.hypixel.hytale.server.core.universe.world.World;
-import com.hypixel.hytale.server.core.util.EventTitleUtil;
 import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxPlatform;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
@@ -16,11 +13,9 @@ import com.ryderbelserion.chatterbox.hytale.api.listeners.EventListener;
 import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleUserAdapter;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DisconnectListener implements EventListener<PlayerDisconnectEvent> {
@@ -71,7 +66,16 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                     final CommentedConfigurationNode configuration = config.node("root", "traffic", "quit-message", "title");
 
                     if (configuration.node("toggle").getBoolean(false)) {
-                        sendTitle(player, configuration, placeholders);
+                        this.platform.sendTitle(
+                                player,
+                                true,
+                                configuration.node("header").getString("Player has quit!"),
+                                configuration.node("footer").getString("{player}"),
+                                configuration.node("delay", "duration").getInt(5),
+                                configuration.node("fade", "in").getInt(1),
+                                configuration.node("fade", "out").getInt(1),
+                                placeholders
+                        );
 
                         return;
                     }
@@ -88,7 +92,16 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                 final CommentedConfigurationNode configuration = config.node("root", "traffic", "quit-message", "groups", group, "title");
 
                 if (config.node("root", "traffic", "quit-message", "title", "toggle").getBoolean(false)) {
-                    sendTitle(player, configuration, placeholders);
+                    this.platform.sendTitle(
+                            player,
+                            true,
+                            configuration.node("header").getString("Player has quit!"),
+                            configuration.node("footer").getString("{player}"),
+                            configuration.node("delay", "duration").getInt(5),
+                            configuration.node("fade", "in").getInt(1),
+                            configuration.node("fade", "out").getInt(1),
+                            placeholders
+                    );
 
                     return;
                 }
@@ -105,38 +118,5 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
     @Override
     public Class<PlayerDisconnectEvent> getEvent() {
         return PlayerDisconnectEvent.class;
-    }
-
-    private void sendTitle(@NotNull final PlayerRef player, @NotNull final CommentedConfigurationNode title, @NotNull final Map<String, String> placeholders) {
-        final Universe universe = Universe.get();
-
-        final Message header = this.fusion.asMessage(player,
-                title.node("header").getString("Player has quit!"),
-                placeholders
-        );
-
-        final Message footer = this.fusion.asMessage(
-                player,
-                title.node("footer").getString("{player}"),
-                placeholders
-        );
-
-        final int duration = title.node("delay", "duration").getInt(5);
-        final int fadeIn = title.node("delay", "fade", "in").getInt(1);
-        final int fadeOut = title.node("delay", "fade", "out").getInt(1);
-
-        universe.getPlayers().forEach(reference -> {
-            final UUID uuid = reference.getWorldUuid();
-
-            if (uuid != null) {
-                final World world = universe.getWorld(uuid);
-
-                if (world != null) {
-                    world.execute(() -> EventTitleUtil.showEventTitleToPlayer(reference, header, footer, true, null, duration,
-                            fadeIn,
-                            fadeOut));
-                }
-            }
-        });
     }
 }
