@@ -14,16 +14,16 @@ import java.util.UUID;
 
 public class GroupAdapter implements IGroupAdapter {
 
-    private final LuckPerms luckperms = LuckPermsProvider.get();
-
-    private final UserManager userManager = this.luckperms.getUserManager();
-
     private String primaryGroup = "";
     private String prefix = "";
     private String suffix = "";
 
     public GroupAdapter(@NotNull final UUID uuid) {
-        final User user = this.userManager.getUser(uuid);
+        final LuckPerms luckperms = LuckPermsProvider.get();
+
+        final UserManager userManager = luckperms.getUserManager();
+
+        final User user = userManager.getUser(uuid);
 
         if (user == null) {
             return;

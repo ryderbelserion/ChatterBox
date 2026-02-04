@@ -1,3 +1,1 @@
-- Fixed a null pointer when a player disconnects.
-- Fixed a null pointer when a player joins, while LuckPerms is on the server.
-  - `getPrefix` & `getSuffix` returns nullable, so a null check was added.
+- Fixed an error when talking in chat while LuckPerms is not present.
