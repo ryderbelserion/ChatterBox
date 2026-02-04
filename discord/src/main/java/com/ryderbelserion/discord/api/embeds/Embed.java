@@ -24,6 +24,12 @@ public class Embed {
      * @return the embed class with updated information.
      */
     public Embed title(@NotNull final String title) {
+        if (title.isBlank()) {
+            this.builder.setTitle("Title cannot be blank!");
+
+            return this;
+        }
+
         this.builder.setTitle(title);
 
         return this;
@@ -37,6 +43,10 @@ public class Embed {
      * @return the embed class with updated information.
      */
     public Embed footer(@NotNull final String text, @Nullable final String icon) {
+        if (text.isBlank()) {
+            return this;
+        }
+
         if (icon == null) {
             this.builder.setFooter(text);
 
@@ -86,6 +96,10 @@ public class Embed {
      * @return the embed class with updated information.
      */
     public Embed description(@NotNull final String text) {
+        if (text.isBlank()) {
+            return this;
+        }
+
         this.builder.setDescription(text);
 
         return this;

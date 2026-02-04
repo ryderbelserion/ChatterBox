@@ -54,14 +54,18 @@ public class ServerConfig {
         return this.onlineText;
     }
 
-    public Embed buildEmbed(@NotNull final CommentedConfigurationNode configuration, @NotNull final Environment environment, @NotNull final Map<String, String> placeholders) {
+    public Embed buildEmbed(@NotNull final CommentedConfigurationNode configuration, @NotNull final Map<String, String> placeholders) {
         final Embed embed = new Embed();
 
         embed.title(this.fusion.replacePlaceholders(
-                configuration.node("title").getString(environment == Environment.INITIALIZED ? "The server {server} is now online." : "The server {server} is now offline."), placeholders)
+                configuration.node("title").getString(""), placeholders)
         );
 
         embed.color(configuration.node("color").getString("#0eeb6a"));
+
+        if (configuration.hasChild("description")) {
+            embed.description(this.fusion.replacePlaceholders(configuration.node("description").getString(""), placeholders));
+        }
 
         if (configuration.hasChild("footer")) {
             embed.footer(this.fusion.replacePlaceholders(configuration.node("footer").getString("{timestamp}"), placeholders));
@@ -115,7 +119,7 @@ public class ServerConfig {
                     }
 
                     if (this.configuration.hasChild("embed", "offline")) {
-                        final Embed embed = buildEmbed(this.configuration.node("embed", "offline"), environment, copy);
+                        final Embed embed = buildEmbed(this.configuration.node("embed", "offline"), copy);
 
                         channel.sendMessageEmbeds(embed.build()).queue();
                     }
@@ -129,7 +133,7 @@ public class ServerConfig {
                     }
 
                     if (this.configuration.hasChild("embed", "online")) {
-                        final Embed embed = buildEmbed(this.configuration.node("embed", "online"), environment, copy);
+                        final Embed embed = buildEmbed(this.configuration.node("embed", "online"), copy);
 
                         channel.sendMessageEmbeds(embed.build()).queue();
                     }
