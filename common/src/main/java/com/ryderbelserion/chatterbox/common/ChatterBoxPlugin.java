@@ -36,6 +36,14 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
         super(fusion);
     }
 
+    public void broadcast(@NotNull final S sender, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
+
+    }
+
+    public void broadcast(@NotNull final String message, @NotNull final Map<String, String> placeholders) {
+
+    }
+
     public void sendTitle(
             @NotNull final S sender, final boolean notifyServer,
             @NotNull final String title, @NotNull final String subtitle, final int duration, final int fadeIn, final int fadeOut,
@@ -57,7 +65,8 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
         } catch (final IOException ignored) {}
 
         Map.of( // map internal files to external output
-                "/discord.yml", "discord;config.yml"
+                "/discord.yml", "discord;config.yml",
+                "/alerts.yml", "discord;alerts.yml"
         ).forEach((input, output) -> {
             final String[] splitter = output.split(";");
             final String folder = splitter[0];

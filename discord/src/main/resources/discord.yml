@@ -11,6 +11,9 @@ root:
     # Tracks different events for servers like start/stop.
     # You can configure this in alerts.yml
     server: true
+    # Tracks different events for players like join/quit.
+    # You can configure this in alerts.yml
+    player: true
   # Bot Presence Settings
   presence:
     # Should this be enabled?

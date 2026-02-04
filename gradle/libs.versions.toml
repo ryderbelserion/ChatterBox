@@ -38,7 +38,7 @@ cloud-beta = "2.0.0-beta.14" # https://cloud.incendo.org/minecraft/paper/
 
 logback-classic = "1.5.20" # https://github.com/qos-ch/logback
 jopt-simple = "5.0.4" # https://github.com/jopt-simple/jopt-simple
-jda = "6.1.0" # https://github.com/discord-jda/JDA
+jda = "6.3.0" # https://github.com/discord-jda/JDA
 
 [plugins]
 # https://github.com/mfnalex/gradle-fix-javadoc-plugin

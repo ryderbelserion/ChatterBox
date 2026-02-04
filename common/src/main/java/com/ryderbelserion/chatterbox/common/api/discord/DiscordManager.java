@@ -7,7 +7,9 @@ import com.ryderbelserion.chatterbox.common.api.discord.objects.DiscordBot;
 import com.ryderbelserion.discord.api.enums.Environment;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
 import com.ryderbelserion.fusion.core.api.enums.Level;
-import com.ryderbelserion.fusion.kyori.FusionKyori;import net.dv8tion.jda.api.requests.GatewayIntent;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -81,7 +83,7 @@ public class DiscordManager {
         if (config.isServerAlertsEnabled()) {
             final ServerConfig serverConfig = config.getDefault();
 
-            serverConfig.sendMessage(this.bot.getJDA(), config.getGuildId(), Environment.SHUTDOWN, Map.of(
+            serverConfig.sendMessage(null, getGuild(), Environment.SHUTDOWN, Map.of(
                     "{server}", configManager.getServerName()
             ));
         }
@@ -90,5 +92,9 @@ public class DiscordManager {
     @ApiStatus.Internal
     public @NotNull final DiscordBot getBot() {
         return this.bot;
+    }
+
+    public @NotNull final Guild getGuild() {
+        return this.bot.getGuild();
     }
 }

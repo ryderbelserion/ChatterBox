@@ -81,6 +81,18 @@ public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Message
     }
 
     @Override
+    public void broadcast(@NotNull final IMessageReceiver sender, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
+        final FusionHytale fusion = (FusionHytale) this.fusion;
+
+        sender.sendMessage(fusion.asMessage(sender, message, placeholders));
+    }
+
+    @Override
+    public void broadcast(@NotNull final String message, @NotNull final Map<String, String> placeholders) {
+        broadcast(Universe.get(), message, placeholders);
+    }
+
+    @Override
     public void sendTitle(
             @NotNull final IMessageReceiver sender,
             final boolean alertServer,

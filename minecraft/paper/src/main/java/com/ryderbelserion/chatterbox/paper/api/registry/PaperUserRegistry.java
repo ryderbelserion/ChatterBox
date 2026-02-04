@@ -53,8 +53,6 @@ public class PaperUserRegistry implements IUserRegistry<Player> {
         final String username = player.getName();
         final String locale = player.locale().toString();
 
-        this.fusion.log(Level.WARNING, "Locale %s".formatted(locale));
-
         final UUID uuid = player.getUniqueId();
 
         final Path file = this.userPath.resolve("%s.json".formatted(uuid));

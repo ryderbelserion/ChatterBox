@@ -1,16 +1,21 @@
 package com.ryderbelserion.chatterbox.common.configs.discord.features.alerts;
 
+import com.ryderbelserion.chatterbox.api.ChatterBoxProvider;
+import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.enums.alerts.PlayerAlert;
-import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.discord.api.utils.RoleUtils;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
-import net.dv8tion.jda.api.JDA;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.RoleColors;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.apache.commons.collections4.map.HashedMap;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -21,7 +26,9 @@ import java.util.Map;
 
 public class PlayerAlertConfig {
 
-    private final FusionCore fusion = FusionProvider.getInstance();
+    private final ChatterBoxPlugin plugin = (ChatterBoxPlugin) ChatterBoxProvider.getInstance();
+
+    private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
     private final CommentedConfigurationNode configuration;
     private final List<String> channels;
@@ -34,13 +41,53 @@ public class PlayerAlertConfig {
         this.timezone = timezone;
     }
 
-    public void sendMessage(@NotNull final JDA jda, final long guildId, @NotNull final PlayerAlert status, @NotNull final Map<String, String> placeholders) {
-        final Guild guild = jda.getGuildById(guildId);
+    public void sendMinecraft(@NotNull final Member member, @NotNull final String message, @NotNull final PlayerAlert alert, @NotNull final Map<String, String> placeholders) {
+        final Map<String, String> copy = new HashedMap<>(placeholders);
 
-        if (guild == null) {
-            return;
+        copy.putIfAbsent("{message}", this.fusion.replacePlaceholders(message, placeholders));
+
+        RoleUtils.getHighestRole(member).ifPresent(role -> {
+            copy.putIfAbsent("{role}", role.getName());
+
+            final RoleColors color = role.getColors();
+
+            final Color primary = color.getPrimary();
+
+            if (primary != null) {
+                copy.putIfAbsent("{primary}", primary.toString());
+            }
+
+            if (color.isGradient()) {
+                final Color secondary = color.getSecondary();
+
+                if (secondary != null) {
+                    copy.putIfAbsent("{secondary}", secondary.toString());
+                }
+            }
+        });
+
+        copy.putIfAbsent("{player}", member.getEffectiveName());
+
+        switch (alert) {
+            case DC_CHAT_ALERT -> { // discord->server
+                final CommentedConfigurationNode configuration = this.configuration.node("chat-alert");
+
+                if (configuration.hasChild("minecraft")) {
+                    final CommentedConfigurationNode minecraft = configuration.node("minecraft");
+
+                    if (minecraft.hasChild("message")) {
+                        this.plugin.broadcast(minecraft.node("message").getString("{player} > {message}"), copy);
+                    }
+                }
+            }
         }
+    }
 
+    public void sendMinecraft(@NotNull final Member member, @NotNull final String message, @NotNull final PlayerAlert alert) {
+        sendMinecraft(member, message, alert, Map.of());
+    }
+
+    public <S> void sendDiscord(@NotNull final S sender, @NotNull final Guild guild, @NotNull final PlayerAlert status, @NotNull final Map<String, String> placeholders) {
         if (this.channels.isEmpty()) {
             return;
         }
@@ -48,6 +95,8 @@ public class PlayerAlertConfig {
         final Map<String, String> copy = new HashedMap<>(placeholders);
 
         final ZonedDateTime time = LocalDateTime.now().atZone(ZoneId.of(this.timezone));
+
+        copy.putIfAbsent("{timestamp}", time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)));
 
         for (final String id : this.channels) {
             final TextChannel channel = guild.getTextChannelById(id);
@@ -57,70 +106,78 @@ public class PlayerAlertConfig {
             }
 
             switch (status) {
-                case SR_CHAT_ALERT -> { // discord->server
-                    final CommentedConfigurationNode configuration = this.configuration.node("chat-alert");
-
-                    if (configuration.hasChild("minecraft")) {
-                        final CommentedConfigurationNode minecraft = configuration.node("minecraft");
-
-                        if (minecraft.hasChild("message")) {
-                            //channel.sendMessage(minecraft.node("message").getString("{player} > {message}")).queue();
-
-                            //todo() send to server
-                        }
-                    }
-                }
-
-                case DC_CHAT_ALERT -> { // server->discord
-                    copy.putIfAbsent("{timestamp}", time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG))); // only useful for embeds
-
+                case MC_CHAT_ALERT -> { // server->discord
                     final CommentedConfigurationNode configuration = this.configuration.node("chat-alert");
 
                     if (configuration.hasChild("discord")) {
                         final CommentedConfigurationNode discord = configuration.node("discord");
 
                         if (discord.hasChild("message")) {
-                            channel.sendMessage(discord.node("message").getString("{player} > {message}")).queue();
+                            channel.sendMessage(this.fusion.parse(sender, discord.node("message").getString("{player} > {message}"), placeholders)).queue();
 
                             return;
                         }
 
                         if (discord.hasChild("embed")) {
-                            buildEmbed(discord.node("embed"), copy);
+                            final Embed embed = buildEmbed(sender, discord.node("embed"), copy);
+
+                            channel.sendMessageEmbeds(embed.build()).queue();
                         }
                     }
                 }
 
                 case JOIN_ALERT -> { // server->discord
-                    copy.putIfAbsent("{timestamp}", time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG))); // only useful for embeds
+                    final CommentedConfigurationNode configuration = this.configuration.node("join-alert");
+
+                    if (configuration.hasChild("message")) {
+                        channel.sendMessage(this.fusion.parse(sender, configuration.node("message").getString("{player} has joined!"), placeholders)).queue();
+
+                        return;
+                    }
+
+                    if (configuration.hasChild("embed")) {
+                        final Embed embed = buildEmbed(sender, configuration.node("embed"), copy);
+
+                        channel.sendMessageEmbeds(embed.build()).queue();
+                    }
                 }
 
                 case QUIT_ALERT -> { // server->discord
-                    copy.putIfAbsent("{timestamp}", time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG))); // only useful for embeds
+                    final CommentedConfigurationNode configuration = this.configuration.node("quit-alert");
+
+                    if (configuration.hasChild("message")) {
+                        channel.sendMessage(this.fusion.parse(sender, configuration.node("message").getString("{player} has quit!"), placeholders)).queue();
+
+                        return;
+                    }
+
+                    if (configuration.hasChild("embed")) {
+                        final Embed embed = buildEmbed(sender, configuration.node("embed"), copy);
+
+                        channel.sendMessageEmbeds(embed.build()).queue();
+                    }
                 }
             }
         }
     }
 
-    public void sendMessage(@NotNull final JDA jda, final long guildId, final PlayerAlert status) {
-        sendMessage(jda, guildId, status, Map.of());
+    public <S> void sendDiscord(@NotNull final S sender, @NotNull final Guild guild, final PlayerAlert status) {
+        sendDiscord(sender, guild, status, Map.of());
     }
 
-    public Embed buildEmbed(@NotNull final CommentedConfigurationNode configuration, @NotNull final Map<String, String> placeholders) {
+    public <S> Embed buildEmbed(@NotNull final S sender, @NotNull final CommentedConfigurationNode configuration, @NotNull final Map<String, String> placeholders) {
         final Embed embed = new Embed();
 
-        embed.title(this.fusion.replacePlaceholders(
-                configuration.node("title").getString(""), placeholders)
-        );
+        embed.title(this.fusion.parse(sender, configuration.node("title").getString(""), placeholders));
 
         embed.color(configuration.node("color").getString("#0eeb6a"));
 
         if (configuration.hasChild("description")) {
-            embed.description(this.fusion.replacePlaceholders(configuration.node("description").getString(""), placeholders));
+            embed.description(this.fusion.parse(sender, configuration.node("description").getString(""), placeholders));
         }
 
         if (configuration.hasChild("footer")) {
-            embed.footer(this.fusion.replacePlaceholders(configuration.node("footer").getString("{timestamp}"), placeholders));
+            embed.footer(this.fusion.parse(sender, configuration.node("footer").getString("{timestamp}"), placeholders));
         }
 
         if (configuration.hasChild("media")) {

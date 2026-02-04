@@ -5,7 +5,7 @@ public enum PlayerAlert {
     JOIN_ALERT,
     QUIT_ALERT,
 
-    SR_CHAT_ALERT,
-    DC_CHAT_ALERT
+    DC_CHAT_ALERT,
+    MC_CHAT_ALERT
 
 }

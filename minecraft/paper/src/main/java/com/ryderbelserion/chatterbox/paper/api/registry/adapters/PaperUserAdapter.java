@@ -65,7 +65,7 @@ public class PaperUserAdapter implements IUser {
 
     @Override
     public void setLocale(@NotNull final String locale) {
-        final String[] splitter = locale.split("-");
+        final String[] splitter = locale.contains("-") ? locale.split("-") : locale.split("_");
 
         final String language = splitter[0];
         final String country = splitter[1];

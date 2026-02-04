@@ -2,14 +2,14 @@ package com.ryderbelserion.chatterbox.common.configs.discord.features;
 
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.enums.Environment;
-import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
-import net.dv8tion.jda.api.JDA;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.apache.commons.collections4.map.HashedMap;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class ServerConfig {
 
-    private final FusionCore fusion = FusionProvider.getInstance();
+    private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
     private final CommentedConfigurationNode configuration;
 
@@ -54,45 +54,7 @@ public class ServerConfig {
         return this.onlineText;
     }
 
-    public Embed buildEmbed(@NotNull final CommentedConfigurationNode configuration, @NotNull final Map<String, String> placeholders) {
-        final Embed embed = new Embed();
-
-        embed.title(this.fusion.replacePlaceholders(
-                configuration.node("title").getString(""), placeholders)
-        );
-
-        embed.color(configuration.node("color").getString("#0eeb6a"));
-
-        if (configuration.hasChild("description")) {
-            embed.description(this.fusion.replacePlaceholders(configuration.node("description").getString(""), placeholders));
-        }
-
-        if (configuration.hasChild("footer")) {
-            embed.footer(this.fusion.replacePlaceholders(configuration.node("footer").getString("{timestamp}"), placeholders));
-        }
-
-        if (configuration.hasChild("media")) {
-            final CommentedConfigurationNode media = configuration.node("media");
-
-            if (media.hasChild("thumbnail")) {
-                embed.thumbnail(media.node("thumbnail").getString(""));
-            }
-
-            if (media.hasChild("image")) {
-                embed.image(media.node("image").getString(""));
-            }
-        }
-
-        return embed;
-    }
-
-    public void sendMessage(@NotNull final JDA jda, final long guildId, @NotNull final Environment environment, @NotNull final Map<String, String> placeholders) {
-        final Guild guild = jda.getGuildById(guildId);
-
-        if (guild == null) {
-            return;
-        }
-
+    public <S> void sendMessage(@Nullable final S sender, @NotNull final Guild guild, @NotNull final Environment environment, @NotNull final Map<String, String> placeholders) {
         if (this.channels.isEmpty()) {
             return;
         }
@@ -113,13 +75,13 @@ public class ServerConfig {
             switch (environment) {
                 case SHUTDOWN -> {
                     if (!this.offlineText.isBlank()) {
-                        channel.sendMessage(this.fusion.replacePlaceholders(this.offlineText, copy)).queue();
+                        channel.sendMessage(this.fusion.parse(sender, this.offlineText, copy)).queue();
 
                         continue;
                     }
 
                     if (this.configuration.hasChild("embed", "offline")) {
-                        final Embed embed = buildEmbed(this.configuration.node("embed", "offline"), copy);
+                        final Embed embed = buildEmbed(sender, this.configuration.node("embed", "offline"), copy);
 
                         channel.sendMessageEmbeds(embed.build()).queue();
                     }
@@ -127,13 +89,13 @@ public class ServerConfig {
 
                 case INITIALIZED -> {
                     if (!this.onlineText.isBlank()) {
-                        channel.sendMessage(this.fusion.replacePlaceholders(this.onlineText, copy)).queue();
+                        channel.sendMessage(this.fusion.parse(sender, this.onlineText, copy)).queue();
 
                         continue;
                     }
 
                     if (this.configuration.hasChild("embed", "online")) {
-                        final Embed embed = buildEmbed(this.configuration.node("embed", "online"), copy);
+                        final Embed embed = buildEmbed(sender, this.configuration.node("embed", "online"), copy);
 
                         channel.sendMessageEmbeds(embed.build()).queue();
                     }
@@ -142,8 +104,38 @@ public class ServerConfig {
         }
     }
 
-    public void sendMessage(@NotNull final JDA jda, final long guildId, final Environment environment) {
-        sendMessage(jda, guildId, environment, Map.of());
+    public <S> void sendMessage(@Nullable final S sender, @NotNull final Guild guild, final Environment environment) {
+        sendMessage(sender, guild, environment, Map.of());
+    }
+
+    public <S> Embed buildEmbed(@Nullable final S sender, @NotNull final CommentedConfigurationNode configuration, @NotNull final Map<String, String> placeholders) {
+        final Embed embed = new Embed();
+
+        embed.title(this.fusion.parse(sender, configuration.node("title").getString(""), placeholders));
+
+        embed.color(configuration.node("color").getString("#0eeb6a"));
+
+        if (configuration.hasChild("description")) {
+            embed.description(this.fusion.parse(sender, configuration.node("description").getString(""), placeholders));
+        }
+
+        if (configuration.hasChild("footer")) {
+            embed.footer(this.fusion.parse(sender, configuration.node("footer").getString("{timestamp}"), placeholders));
+        }
+
+        if (configuration.hasChild("media")) {
+            final CommentedConfigurationNode media = configuration.node("media");
+
+            if (media.hasChild("thumbnail")) {
+                embed.thumbnail(media.node("thumbnail").getString(""));
+            }
+
+            if (media.hasChild("image")) {
+                embed.image(media.node("image").getString(""));
+            }
+        }
+
+        return embed;
     }
 
     public @NotNull final String getServer() {

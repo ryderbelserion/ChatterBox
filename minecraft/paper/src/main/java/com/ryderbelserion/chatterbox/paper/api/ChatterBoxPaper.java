@@ -10,6 +10,7 @@ import com.ryderbelserion.chatterbox.paper.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.paper.PaperCommandManager;
@@ -19,11 +20,13 @@ import java.util.Map;
 public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, Component> {
 
     private final ChatterBox plugin;
+    private final Server server;
 
     public ChatterBoxPaper(@NotNull final ChatterBox plugin, @NotNull final FusionPaper fusion) {
         super(fusion);
 
         this.plugin = plugin;
+        this.server = this.plugin.getServer();
     }
 
     private PaperMessageRegistry messageRegistry;
@@ -84,7 +87,17 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, Component> 
 
     @Override
     public final int getPlayerCount() {
-        return this.plugin.getServer().getOnlinePlayers().size();
+        return this.server.getOnlinePlayers().size();
+    }
+
+    @Override
+    public void broadcast(@NotNull final CommandSender sender, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
+        this.server.broadcast(this.fusion.asComponent(sender, message, placeholders));
+    }
+
+    @Override
+    public void broadcast(@NotNull final String message, @NotNull final Map<String, String> placeholders) {
+        broadcast(this.server.getConsoleSender(), message, placeholders);
     }
 
     @Override

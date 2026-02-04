@@ -1,6 +1,7 @@
 package com.ryderbelserion.chatterbox.common.api.discord.objects;
 
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.common.api.discord.listeners.DiscordChatListener;
 import com.ryderbelserion.chatterbox.common.configs.discord.features.PresenceConfig;
 import com.ryderbelserion.chatterbox.common.configs.discord.features.ServerConfig;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
@@ -34,6 +35,8 @@ public class DiscordBot extends DiscordPlugin {
         this.configManager = this.instance.getConfigManager();
     }
 
+    private Guild guild;
+
     @Override
     public void init() {
         super.init();
@@ -54,16 +57,22 @@ public class DiscordBot extends DiscordPlugin {
 
             jda.getPresence().setPresence(customStatus, false);
         }
+
+        this.jda.addEventListener(
+                new DiscordChatListener(this.instance)
+        );
     }
 
     @Override
     public void onGuildReady(@NotNull final Guild guild) { // no multi guild support yet.
+        this.guild = guild;
+
         final DiscordConfig config = this.configManager.getDiscord();
 
         if (config.isServerAlertsEnabled()) {
             final ServerConfig serverConfig = config.getDefault();
 
-            serverConfig.sendMessage(getJDA(), config.getGuildId(), this.environment, Map.of(
+            serverConfig.sendMessage(null, this.guild, this.environment, Map.of(
                     "{server}", this.configManager.getServerName()
             ));
         }
@@ -77,5 +86,9 @@ public class DiscordBot extends DiscordPlugin {
     @Override
     public void onStop(@NotNull final JDA jda) {
 
+    }
+
+    public @NotNull final Guild getGuild() {
+        return this.guild;
     }
 }
