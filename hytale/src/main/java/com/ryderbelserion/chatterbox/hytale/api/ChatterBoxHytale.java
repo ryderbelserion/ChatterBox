@@ -1,5 +1,6 @@
 package com.ryderbelserion.chatterbox.hytale.api;
 
+import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -16,8 +17,11 @@ import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
-public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Message> {
+public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Message, Runnable> {
 
     private HytaleMessageRegistry messageRegistry;
     private HytaleContextRegistry contextRegistry;
@@ -78,6 +82,31 @@ public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Message
     @Override
     public final int getPlayerCount() {
         return Universe.get().getPlayerCount();
+    }
+
+    @Override
+    public void runTask(@NotNull Consumer<Runnable> consumer, final long seconds, final long delay) {
+        final ScheduledExecutorService executor = HytaleServer.SCHEDULED_EXECUTOR;
+
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                consumer.accept(this);
+            }
+        };
+
+        if (seconds > 0) {
+            executor.scheduleAtFixedRate(
+                    runnable,
+                    delay,
+                    seconds,
+                    TimeUnit.SECONDS
+            );
+
+            return;
+        }
+
+        executor.schedule(runnable, delay, TimeUnit.SECONDS);
     }
 
     @Override

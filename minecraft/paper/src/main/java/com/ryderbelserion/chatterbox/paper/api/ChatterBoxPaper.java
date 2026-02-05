@@ -8,16 +8,22 @@ import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
 import com.ryderbelserion.chatterbox.paper.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
+import io.papermc.paper.util.Tick;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.paper.PaperCommandManager;
 import org.jetbrains.annotations.NotNull;
+import java.time.Duration;
 import java.util.Map;
+import java.util.function.Consumer;
 
-public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, Component> {
+public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, Component, FoliaScheduler> {
 
     private final ChatterBox plugin;
     private final Server server;
@@ -88,6 +94,29 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, Component> 
     @Override
     public final int getPlayerCount() {
         return this.server.getOnlinePlayers().size();
+    }
+
+    @Override
+    public void runTask(@NotNull final Consumer<FoliaScheduler> consumer, final long seconds, final long delay) {
+        this.fusion.log(Level.WARNING, String.valueOf(Tick.tick().fromDuration(Duration.ofSeconds(seconds))));
+
+        if (seconds > 0) {
+            new FoliaScheduler(this.plugin, Scheduler.global_scheduler) {
+                @Override
+                public void run() {
+                    consumer.accept(this);
+                }
+            }.runAtFixedRate(delay, Tick.tick().fromDuration(Duration.ofSeconds(seconds))); // 20 ticks = 1 second
+
+            return;
+        }
+
+        new FoliaScheduler(this.plugin, Scheduler.global_scheduler) {
+            @Override
+            public void run() {
+                consumer.accept(this);
+            }
+        }.runDelayed(delay);
     }
 
     @Override

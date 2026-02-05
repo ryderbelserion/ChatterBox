@@ -5,6 +5,7 @@ import com.ryderbelserion.chatterbox.paper.listeners.CacheListener;
 import com.ryderbelserion.chatterbox.paper.listeners.TrafficListener;
 import com.ryderbelserion.chatterbox.paper.listeners.chat.ChatListener;
 import com.ryderbelserion.fusion.paper.FusionPaper;
+import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
@@ -44,6 +45,11 @@ public class ChatterBox extends JavaPlugin {
         if (this.platform != null) {
             this.platform.shutdown();
         }
+
+        final Server server = getServer();
+
+        server.getGlobalRegionScheduler().cancelTasks(this);
+        server.getAsyncScheduler().cancelTasks(this);
     }
 
     public @NotNull final ChatterBoxPaper getPlatform() {

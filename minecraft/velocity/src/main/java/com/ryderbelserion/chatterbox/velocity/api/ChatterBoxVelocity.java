@@ -8,19 +8,27 @@ import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.velocity.ChatterBox;
 import com.ryderbelserion.fusion.FusionVelocity;
+import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.scheduler.ScheduledTask;
+import com.velocitypowered.api.scheduler.Scheduler;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.Async;
 import org.jetbrains.annotations.NotNull;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
-public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, Component> {
+public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, Component, ScheduledTask> {
 
     private final ChatterBox instance;
+    private final ProxyServer server;
 
     public ChatterBoxVelocity(@NotNull final FusionVelocity fusion, @NotNull final ChatterBox instance) {
         super(fusion);
 
         this.instance = instance;
+        this.server = this.instance.getServer();
     }
 
     @Override
@@ -50,7 +58,27 @@ public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, Component> {
 
     @Override
     public final int getPlayerCount() {
-        return this.instance.getServer().getPlayerCount();
+        return this.server.getPlayerCount();
+    }
+
+    @Override
+    public void runTask(@NotNull final Consumer<ScheduledTask> consumer, final long seconds, final long delay) {
+        final Scheduler scheduler = this.server.getScheduler();
+
+        final Scheduler.TaskBuilder builder = scheduler.buildTask(
+                this.instance,
+                consumer
+        );
+
+        if (seconds > 0) {
+            builder.repeat(seconds, TimeUnit.SECONDS);
+        }
+
+        if (delay > 0) {
+            builder.delay(delay, TimeUnit.SECONDS);
+        }
+
+        builder.schedule();
     }
 
     @Override

@@ -21,8 +21,9 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
+public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
 
     public static final UUID CONSOLE_UUID = new UUID(0, 0);
 
@@ -42,6 +43,18 @@ public abstract class ChatterBoxPlugin<S, T> extends ChatterBox<S, T> {
 
     public void broadcast(@NotNull final String message, @NotNull final Map<String, String> placeholders) {
 
+    }
+
+    public void runTask(@NotNull final Consumer<R> consumer, final long seconds, final long delay) {
+
+    }
+
+    public void runTask(@NotNull final Consumer<R> consumer, final long seconds) {
+        runTask(consumer, seconds, 0);
+    }
+
+    public void runTask(@NotNull final Consumer<R> consumer) {
+        runTask(consumer, 0, 0);
     }
 
     public void sendTitle(
