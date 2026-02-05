@@ -1,4 +1,4 @@
-package com.ryderbelserion.chatterbox.paper.commands.admin;
+package com.ryderbelserion.chatterbox.paper.commands.player;
 
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.paper.commands.AnnotationFeature;
@@ -9,20 +9,21 @@ import org.incendo.cloud.annotations.Command;
 import org.incendo.cloud.annotations.CommandDescription;
 import org.incendo.cloud.annotations.Permission;
 import org.jetbrains.annotations.NotNull;
+import java.util.Map;
 
-public class CommandReload extends AnnotationFeature {
+public class MotdCommand extends AnnotationFeature {
 
     @Override
     public void registerFeature(@NotNull final AnnotationParser<CommandSourceStack> parser) {
         parser.parse(this);
     }
 
-    @Command("chatterbox reload")
-    @CommandDescription("Reloads the plugin!")
-    @Permission(value = "chatterbox.reload", mode = Permission.Mode.ALL_OF)
-    public void reload(final CommandSender sender) {
-        this.platform.reload();
-
-        this.adapter.sendMessage(sender, Messages.reload_plugin);
+    @Command("chatterbox motd")
+    @CommandDescription("Shows the message of the day!")
+    @Permission(value = "chatterbox.motd", mode = Permission.Mode.ALL_OF)
+    public void motd(final CommandSender sender) {
+        this.adapter.sendMessage(sender, Messages.message_of_the_day, Map.of(
+                "{player}", sender.getName()
+        ));
     }
 }

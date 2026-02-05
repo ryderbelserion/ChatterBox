@@ -4,8 +4,8 @@ import com.ryderbelserion.chatterbox.paper.ChatterBox;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
-import com.ryderbelserion.chatterbox.paper.commands.admin.CommandReload;
-import com.ryderbelserion.chatterbox.paper.commands.player.CommandMotd;
+import com.ryderbelserion.chatterbox.paper.commands.admin.ReloadCommand;
+import com.ryderbelserion.chatterbox.paper.commands.player.MotdCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -48,9 +48,9 @@ public class BaseCommand {
 
     private void register() { // register our universal commands
         List.of(
-                new CommandReload(),
+                new ReloadCommand(),
 
-                new CommandMotd()
+                new MotdCommand()
         ).forEach(command -> command.registerFeature(this.parser));
     }
 
