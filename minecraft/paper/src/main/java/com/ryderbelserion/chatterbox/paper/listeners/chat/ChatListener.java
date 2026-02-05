@@ -1,11 +1,16 @@
 package com.ryderbelserion.chatterbox.paper.listeners.chat;
 
+import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
+import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
+import com.ryderbelserion.chatterbox.common.configs.discord.features.alerts.PlayerAlertConfig;
+import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.paper.listeners.chat.renderers.ChatRender;
+import com.ryderbelserion.discord.api.enums.alerts.PlayerAlert;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.entity.Player;
@@ -26,6 +31,10 @@ public class ChatListener implements Listener {
     private final ChatterBoxPaper platform = this.plugin.getPlatform();
 
     private final PaperUserRegistry userRegistry = this.platform.getUserRegistry();
+
+    private final DiscordManager discordManager = this.platform.getDiscordManager();
+
+    private final ConfigManager configManager = this.platform.getConfigManager();
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerChat(AsyncChatEvent event) {
@@ -64,5 +73,21 @@ public class ChatListener implements Listener {
                 event.signedMessage(),
                 placeholders
         ));
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onDiscordChat(AsyncChatEvent event) {
+        final DiscordConfig config = this.configManager.getDiscord();
+
+        if (config.isPlayerAlertsEnabled()) {
+            final Player player = event.getPlayer();
+
+            final PlayerAlertConfig alertConfig = config.getAlertConfig();
+
+            alertConfig.sendDiscord(player, this.discordManager.getGuild(), PlayerAlert.MC_CHAT_ALERT, Map.of(
+                    "{player}", player.getName(),
+                    "{message}", event.signedMessage().message()
+            ));
+        }
     }
 }

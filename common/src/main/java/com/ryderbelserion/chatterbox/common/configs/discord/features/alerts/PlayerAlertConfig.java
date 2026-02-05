@@ -10,6 +10,7 @@ import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.RoleColors;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.apache.commons.collections4.map.HashedMap;
@@ -21,6 +22,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,12 +33,14 @@ public class PlayerAlertConfig {
 
     private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
+    private final Map<String, List<String>> channels = new HashMap<>();
     private final CommentedConfigurationNode configuration;
-    private final List<String> channels;
     private final String timezone;
 
     public PlayerAlertConfig(@NotNull final String timezone, @NotNull final CommentedConfigurationNode configuration) {
-        this.channels = StringUtils.getStringList(configuration.node("channels"), List.of());
+        this.channels.put("chat_alert", StringUtils.getStringList(configuration.node("chat-alert", "channels")));
+        this.channels.put("join_alert", StringUtils.getStringList(configuration.node("join-alert", "channels")));
+        this.channels.put("quit_alert", StringUtils.getStringList(configuration.node("quit-alert", "channels")));
 
         this.configuration = configuration;
         this.timezone = timezone;
@@ -98,65 +103,73 @@ public class PlayerAlertConfig {
 
         copy.putIfAbsent("{timestamp}", time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)));
 
-        for (final String id : this.channels) {
+        List<String> channels = new ArrayList<>();
+        MessageEmbed embed = null;
+        String message = "";
+
+        switch (status) {
+            case MC_CHAT_ALERT -> {
+                channels.addAll(this.channels.get("chat_alert"));
+
+                final CommentedConfigurationNode configuration = this.configuration.node("chat-alert");
+
+                if (configuration.hasChild("discord")) {
+                    final CommentedConfigurationNode discord = configuration.node("discord");
+
+                    if (discord.hasChild("message")) {
+                        message = this.fusion.parse(sender, discord.node("message").getString("{player} > {message}"), placeholders);
+                    }
+
+                    if (discord.hasChild("embed")) {
+                        embed = buildEmbed(sender, discord.node("embed"), copy).build();
+                    }
+                }
+            }
+
+            case QUIT_ALERT -> {
+                channels.addAll(this.channels.get("quit_alert"));
+
+                final CommentedConfigurationNode configuration = this.configuration.node("quit-alert");
+
+                if (configuration.hasChild("message")) {
+                    message = this.fusion.parse(sender, configuration.node("message").getString("{player} has quit!"), placeholders);
+                }
+
+                if (configuration.hasChild("embed")) {
+                    embed = buildEmbed(sender, configuration.node("embed"), copy).build();
+                }
+            }
+
+            case JOIN_ALERT -> {
+                channels.addAll(this.channels.get("join_alert"));
+
+                final CommentedConfigurationNode configuration = this.configuration.node("join-alert");
+
+                if (configuration.hasChild("message")) {
+                    message = this.fusion.parse(sender, configuration.node("message").getString("{player} has joined!"), placeholders);
+                }
+
+                if (configuration.hasChild("embed")) {
+                    embed = buildEmbed(sender, configuration.node("embed"), copy).build();
+                }
+            }
+        }
+
+        for (final String id : channels) {
             final TextChannel channel = guild.getTextChannelById(id);
 
             if (channel == null) {
                 continue;
             }
 
-            switch (status) {
-                case MC_CHAT_ALERT -> { // server->discord
-                    final CommentedConfigurationNode configuration = this.configuration.node("chat-alert");
+            if (!message.isBlank()) {
+                channel.sendMessage(message).queue();
 
-                    if (configuration.hasChild("discord")) {
-                        final CommentedConfigurationNode discord = configuration.node("discord");
+                return;
+            }
 
-                        if (discord.hasChild("message")) {
-                            channel.sendMessage(this.fusion.parse(sender, discord.node("message").getString("{player} > {message}"), placeholders)).queue();
-
-                            return;
-                        }
-
-                        if (discord.hasChild("embed")) {
-                            final Embed embed = buildEmbed(sender, discord.node("embed"), copy);
-
-                            channel.sendMessageEmbeds(embed.build()).queue();
-                        }
-                    }
-                }
-
-                case JOIN_ALERT -> { // server->discord
-                    final CommentedConfigurationNode configuration = this.configuration.node("join-alert");
-
-                    if (configuration.hasChild("message")) {
-                        channel.sendMessage(this.fusion.parse(sender, configuration.node("message").getString("{player} has joined!"), placeholders)).queue();
-
-                        return;
-                    }
-
-                    if (configuration.hasChild("embed")) {
-                        final Embed embed = buildEmbed(sender, configuration.node("embed"), copy);
-
-                        channel.sendMessageEmbeds(embed.build()).queue();
-                    }
-                }
-
-                case QUIT_ALERT -> { // server->discord
-                    final CommentedConfigurationNode configuration = this.configuration.node("quit-alert");
-
-                    if (configuration.hasChild("message")) {
-                        channel.sendMessage(this.fusion.parse(sender, configuration.node("message").getString("{player} has quit!"), placeholders)).queue();
-
-                        return;
-                    }
-
-                    if (configuration.hasChild("embed")) {
-                        final Embed embed = buildEmbed(sender, configuration.node("embed"), copy);
-
-                        channel.sendMessageEmbeds(embed.build()).queue();
-                    }
-                }
+            if (embed != null) {
+                channel.sendMessageEmbeds(embed).queue();
             }
         }
     }

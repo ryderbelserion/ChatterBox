@@ -64,8 +64,8 @@ public class DiscordConfig {
             }*/
         }
 
-        if (this.isPlayerAlertsEnabled && alerts.hasChild("alerts", "players")) {
-            final CommentedConfigurationNode players = alerts.node("alerts", "players");
+        if (this.isPlayerAlertsEnabled && alerts.hasChild("alerts", "player")) {
+            final CommentedConfigurationNode players = alerts.node("alerts", "player");
 
             this.alertConfig = new PlayerAlertConfig(this.timezone, players);
         }

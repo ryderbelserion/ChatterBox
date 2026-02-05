@@ -2,10 +2,10 @@ package com.ryderbelserion.discord.api.enums.alerts;
 
 public enum PlayerAlert {
 
-    JOIN_ALERT,
-    QUIT_ALERT,
+    JOIN_ALERT, // server->discord
+    QUIT_ALERT, // server->discord
 
-    DC_CHAT_ALERT,
-    MC_CHAT_ALERT
+    DC_CHAT_ALERT, // discord->server
+    MC_CHAT_ALERT // server->discord
 
 }

@@ -6,6 +6,7 @@ import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.apache.commons.collections4.map.HashedMap;
 import org.jetbrains.annotations.NotNull;
@@ -65,6 +66,31 @@ public class ServerConfig {
 
         copy.putIfAbsent("{timestamp}", time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG)));
 
+        MessageEmbed embed = null;
+        String text = "";
+
+        switch (environment) {
+            case SHUTDOWN -> {
+                if (!this.offlineText.isBlank()) {
+                    text = this.fusion.parse(sender, this.offlineText, copy);
+                }
+
+                if (this.configuration.hasChild("embed", "offline")) {
+                    embed = buildEmbed(sender, this.configuration.node("embed", "offline"), copy).build();
+                }
+            }
+
+            case INITIALIZED -> {
+                if (!this.onlineText.isBlank()) {
+                    text = this.fusion.parse(sender, this.onlineText, copy);
+                }
+
+                if (this.configuration.hasChild("embed", "online")) {
+                    embed = buildEmbed(sender, this.configuration.node("embed", "online"), copy).build();
+                }
+            }
+        }
+
         for (final String id : this.channels) {
             final TextChannel channel = guild.getTextChannelById(id);
 
@@ -72,34 +98,14 @@ public class ServerConfig {
                 continue;
             }
 
-            switch (environment) {
-                case SHUTDOWN -> {
-                    if (!this.offlineText.isBlank()) {
-                        channel.sendMessage(this.fusion.parse(sender, this.offlineText, copy)).queue();
+            if (!text.isBlank()) {
+                channel.sendMessage(text).queue();
 
-                        continue;
-                    }
+                continue;
+            }
 
-                    if (this.configuration.hasChild("embed", "offline")) {
-                        final Embed embed = buildEmbed(sender, this.configuration.node("embed", "offline"), copy);
-
-                        channel.sendMessageEmbeds(embed.build()).queue();
-                    }
-                }
-
-                case INITIALIZED -> {
-                    if (!this.onlineText.isBlank()) {
-                        channel.sendMessage(this.fusion.parse(sender, this.onlineText, copy)).queue();
-
-                        continue;
-                    }
-
-                    if (this.configuration.hasChild("embed", "online")) {
-                        final Embed embed = buildEmbed(sender, this.configuration.node("embed", "online"), copy);
-
-                        channel.sendMessageEmbeds(embed.build()).queue();
-                    }
-                }
+            if (embed != null) {
+                channel.sendMessageEmbeds(embed).queue();
             }
         }
     }
