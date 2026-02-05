@@ -98,8 +98,6 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, Component, 
 
     @Override
     public void runTask(@NotNull final Consumer<FoliaScheduler> consumer, final long seconds, final long delay) {
-        this.fusion.log(Level.WARNING, String.valueOf(Tick.tick().fromDuration(Duration.ofSeconds(seconds))));
-
         if (seconds > 0) {
             new FoliaScheduler(this.plugin, Scheduler.global_scheduler) {
                 @Override

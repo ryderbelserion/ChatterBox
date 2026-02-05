@@ -8,6 +8,7 @@ import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.discord.DiscordPlugin;
 import com.ryderbelserion.discord.api.enums.Environment;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
@@ -17,6 +18,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class DiscordBot extends DiscordPlugin {
 
@@ -49,13 +51,9 @@ public class DiscordBot extends DiscordPlugin {
         final PresenceConfig config = this.configManager.getDiscord().getPresenceConfig();
 
         if (config.isEnabled()) {
-            final int count = this.instance.getPlayerCount();
+            setPresence(); // set presence initially.
 
-            final Activity customStatus = Activity.customStatus(this.fusion.replacePlaceholders(config.getStatus(), Map.of(
-                    "{count}", String.valueOf(count)
-            )));
-
-            jda.getPresence().setPresence(customStatus, false);
+            this.instance.runTask(action -> setPresence(), 60, 0); // run repeated task
         }
 
         this.jda.addEventListener(
@@ -86,6 +84,18 @@ public class DiscordBot extends DiscordPlugin {
     @Override
     public void onStop(@NotNull final JDA jda) {
 
+    }
+
+    private void setPresence() {
+        final PresenceConfig config = this.configManager.getDiscord().getPresenceConfig();
+
+        final int count = this.instance.getPlayerCount();
+
+        final Activity customStatus = Activity.customStatus(this.fusion.replacePlaceholders(config.getStatus(), Map.of(
+                "{count}", String.valueOf(count)
+        )));
+
+        jda.getPresence().setPresence(customStatus, false);
     }
 
     public @NotNull final Guild getGuild() {
