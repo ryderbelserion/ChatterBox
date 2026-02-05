@@ -13,7 +13,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.RoleColors;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import org.apache.commons.collections4.map.HashedMap;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.awt.*;
@@ -46,8 +45,18 @@ public class PlayerAlertConfig {
         this.timezone = timezone;
     }
 
-    public void sendMinecraft(@NotNull final Member member, @NotNull final String message, @NotNull final PlayerAlert alert, @NotNull final Map<String, String> placeholders) {
-        final Map<String, String> copy = new HashedMap<>(placeholders);
+    public void sendMinecraft(@NotNull final Member member, @NotNull final String id, @NotNull final String message, @NotNull final PlayerAlert alert, @NotNull final Map<String, String> placeholders) {
+        if (this.channels.isEmpty()) {
+            return;
+        }
+
+        final boolean hasChannel = this.channels.get("chat_alert").contains(id);
+
+        if (!hasChannel) {
+            return;
+        }
+
+        final Map<String, String> copy = new HashMap<>(placeholders);
 
         copy.putIfAbsent("{message}", this.fusion.replacePlaceholders(message, placeholders));
 
@@ -59,14 +68,14 @@ public class PlayerAlertConfig {
             final Color primary = color.getPrimary();
 
             if (primary != null) {
-                copy.putIfAbsent("{primary}", primary.toString());
+                copy.putIfAbsent("{primary_color}", String.format("#%06x", primary.getRGB() & 0xFFFFFF));
             }
 
             if (color.isGradient()) {
                 final Color secondary = color.getSecondary();
 
                 if (secondary != null) {
-                    copy.putIfAbsent("{secondary}", secondary.toString());
+                    copy.putIfAbsent("{secondary_color}", String.format("#%06x", secondary.getRGB() & 0xFFFFFF));
                 }
             }
         });
@@ -88,8 +97,8 @@ public class PlayerAlertConfig {
         }
     }
 
-    public void sendMinecraft(@NotNull final Member member, @NotNull final String message, @NotNull final PlayerAlert alert) {
-        sendMinecraft(member, message, alert, Map.of());
+    public void sendMinecraft(@NotNull final Member member, @NotNull final String id, @NotNull final String message, @NotNull final PlayerAlert alert) {
+        sendMinecraft(member, id, message, alert, Map.of());
     }
 
     public <S> void sendDiscord(@NotNull final S sender, @NotNull final Guild guild, @NotNull final PlayerAlert status, @NotNull final Map<String, String> placeholders) {
@@ -97,7 +106,7 @@ public class PlayerAlertConfig {
             return;
         }
 
-        final Map<String, String> copy = new HashedMap<>(placeholders);
+        final Map<String, String> copy = new HashMap<>(placeholders);
 
         final ZonedDateTime time = LocalDateTime.now().atZone(ZoneId.of(this.timezone));
 

@@ -8,7 +8,6 @@ import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.discord.DiscordPlugin;
 import com.ryderbelserion.discord.api.enums.Environment;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
-import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
@@ -18,7 +17,6 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class DiscordBot extends DiscordPlugin {
 

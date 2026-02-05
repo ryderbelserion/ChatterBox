@@ -8,7 +8,6 @@ import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
 import com.ryderbelserion.chatterbox.paper.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
-import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;

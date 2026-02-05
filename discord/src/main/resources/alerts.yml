@@ -48,6 +48,17 @@ alerts:
         # The message to sent discord.
         message: "{player} > {message}"
       # The message sent to minecraft.
+      #
+      # A list of available placeholders:
+      # {player}
+      # {message_display_format}
+      # {message_raw_format}
+      # {message}
+
+      # {primary_color}
+      # {secondary_color}
+
+      # {role}
       minecraft:
         # The message sent to Minecraft.
         message: "{player} > {message}"

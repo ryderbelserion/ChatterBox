@@ -33,6 +33,7 @@ public abstract class DiscordPlugin {
 
         this.jda = JDABuilder.createDefault(token, intents)
                 .enableCache(flags)
+                .disableCache(CacheFlag.VOICE_STATE, CacheFlag.STICKER, CacheFlag.SCHEDULED_EVENTS)
                 .addEventListeners(new StatusListener(this))
                 .build();
     }

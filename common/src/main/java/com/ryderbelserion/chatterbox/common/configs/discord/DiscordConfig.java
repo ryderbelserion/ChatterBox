@@ -20,6 +20,8 @@ public class DiscordConfig {
     private final String timezone;
     private final String token;
 
+    private final CommentedConfigurationNode config;
+
     public DiscordConfig(@NotNull final String timezone) {
         final CommentedConfigurationNode config = FileKeys.discord.getYamlConfig();
 
@@ -27,6 +29,8 @@ public class DiscordConfig {
         this.isPlayerAlertsEnabled = config.node("root", "alerts", "player").getBoolean(true);
         this.timezone = timezone;
         this.token = config.node("root", "token").getString("");
+
+        this.config = config;
 
         init();
     }
@@ -37,13 +41,11 @@ public class DiscordConfig {
     private long guildId;
 
     public void init() {
-        final CommentedConfigurationNode config = FileKeys.discord.getYamlConfig();
+        this.presenceConfig = new PresenceConfig(this.config.node("root", "presence"));
 
-        this.presenceConfig = new PresenceConfig(config.node("root", "presence"));
+        this.isEnabled = this.config.node("root", "enabled").getBoolean(false);
 
-        this.isEnabled = config.node("root", "enabled").getBoolean(false);
-
-        this.guildId = config.node("root", "guild-id").getLong(0);
+        this.guildId = this.config.node("root", "guild-id").getLong(0);
 
         this.servers.clear();
 

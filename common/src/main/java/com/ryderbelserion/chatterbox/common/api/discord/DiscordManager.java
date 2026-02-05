@@ -60,14 +60,18 @@ public class DiscordManager {
                 this.instance,
                 // This will never be configurable, gateway intents ensure all features function.
                 List.of(
+                        // message intents
                         GatewayIntent.MESSAGE_CONTENT,
 
                         // guild intents
+                        GatewayIntent.GUILD_EXPRESSIONS,
                         GatewayIntent.GUILD_PRESENCES,
+                        GatewayIntent.GUILD_MESSAGES,
                         GatewayIntent.GUILD_WEBHOOKS
                 ),
                 List.of(
-                        CacheFlag.ACTIVITY
+                        CacheFlag.ACTIVITY,
+                        CacheFlag.EMOJI
                 ),
                 token
         );

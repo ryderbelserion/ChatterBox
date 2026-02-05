@@ -8,6 +8,7 @@ import com.ryderbelserion.discord.api.enums.alerts.PlayerAlert;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -39,17 +40,21 @@ public class DiscordChatListener extends ListenerAdapter {
             return;
         }
 
-        final PlayerAlertConfig alertConfig = config.getAlertConfig();
-
         final Member member = event.getMember();
 
         if (member == null) {
             return;
         }
 
+        final PlayerAlertConfig alertConfig = config.getAlertConfig();
+
         final Message message = event.getMessage();
 
-        alertConfig.sendMinecraft(member, message.getContentStripped(), PlayerAlert.DC_CHAT_ALERT, Map.of(
+        final Channel channel = event.getChannel();
+
+        final String id = channel.getId();
+
+        alertConfig.sendMinecraft(member, id, message.getContentStripped(), PlayerAlert.DC_CHAT_ALERT, Map.of(
                 "{message_raw_format}", message.getContentRaw(),
                 "{message_display_format}", message.getContentDisplay()
         ));
