@@ -17,9 +17,9 @@ public class CommandReload extends AnnotationFeature {
         parser.parse(this);
     }
 
-    @Command("chatmanager reload")
+    @Command("chatterbox reload")
     @CommandDescription("Reloads the plugin!")
-    @Permission(value = "chatmanager.reload", mode = Permission.Mode.ALL_OF)
+    @Permission(value = "chatterbox.reload", mode = Permission.Mode.ALL_OF)
     public void reload(final CommandSender sender) {
         this.platform.reload();
 

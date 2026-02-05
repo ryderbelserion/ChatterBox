@@ -18,9 +18,9 @@ public class CommandMotd extends AnnotationFeature {
         parser.parse(this);
     }
 
-    @Command("chatmanager motd")
+    @Command("chatterbox motd")
     @CommandDescription("Shows the message of the day!")
-    @Permission(value = "chatmanager.motd", mode = Permission.Mode.ALL_OF)
+    @Permission(value = "chatterbox.motd", mode = Permission.Mode.ALL_OF)
     public void motd(final CommandSender sender) {
         this.adapter.sendMessage(sender, Messages.message_of_the_day, Map.of(
                 "{player}", sender.getName()
