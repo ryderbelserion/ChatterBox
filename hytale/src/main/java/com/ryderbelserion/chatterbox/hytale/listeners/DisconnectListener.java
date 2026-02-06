@@ -16,7 +16,6 @@ import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class DisconnectListener implements EventListener<PlayerDisconnectEvent> {
 
@@ -39,8 +38,6 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
             final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
 
-            final AtomicReference<String> reference = new AtomicReference<>("");
-
             if (config.node("root", "traffic", "quit-message", "toggle").getBoolean(true)) {
                 final Map<String, String> placeholders = new HashMap<>();
 
@@ -54,15 +51,12 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                     if (!map.isEmpty()) {
                         placeholders.putAll(map);
                     }
-
-                    reference.set(adapter.getPrimaryGroup().toLowerCase());
                 }
 
+                final String group = placeholders.getOrDefault("{group}", "").toLowerCase();
                 final Universe universe = Universe.get();
 
-                final String group = reference.get();
-
-                if (!config.hasChild("root", "traffic", "quit-message", "groups", group, "title")) {
+                if (group.isBlank() || !config.hasChild("root", "traffic", "quit-message", "groups", group, "title")) { // this is sent if the group is not found.
                     final CommentedConfigurationNode configuration = config.node("root", "traffic", "quit-message", "title");
 
                     if (configuration.node("toggle").getBoolean(false)) {
@@ -91,7 +85,7 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
                 final CommentedConfigurationNode configuration = config.node("root", "traffic", "quit-message", "groups", group, "title");
 
-                if (config.node("root", "traffic", "quit-message", "title", "toggle").getBoolean(false)) {
+                if (config.node("root", "traffic", "quit-message", "title", "toggle").getBoolean(false)) { // the title is sent if the group is found, and the toggle is true.
                     this.platform.sendTitle(
                             player,
                             true,
@@ -106,7 +100,7 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                     return;
                 }
 
-                final CommentedConfigurationNode node = config.node("root", "traffic", "quit-message", "groups", group, "output");
+                final CommentedConfigurationNode node = config.node("root", "traffic", "quit-message", "groups", group, "output"); // send this if the toggle for title is false.
 
                 final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
 

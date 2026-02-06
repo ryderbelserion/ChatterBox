@@ -2,8 +2,10 @@ package com.ryderbelserion.chatterbox.common;
 
 import com.ryderbelserion.chatterbox.api.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.ChatterBox;
+import com.ryderbelserion.chatterbox.api.adapters.IGroupAdapter;
 import com.ryderbelserion.chatterbox.api.adapters.IPlayerAdapter;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
+import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
@@ -18,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -179,6 +182,26 @@ public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
     @Override
     public @NotNull <C> IPlayerAdapter<C> getPlayerAdapter(@NotNull final Class<C> object) {
         return (IPlayerAdapter<C>) this.adapter;
+    }
+
+    public @NotNull final Map<String, String> getPlaceholders(@NotNull final String playerName, @NotNull final UUID uuid) {
+        final Map<String, String> placeholders = new HashMap<>();
+
+        placeholders.putIfAbsent("{player}", playerName);
+
+        final IUserRegistry<S> registry = getUserRegistry();
+
+        registry.getUser(uuid).ifPresent(user -> {
+            final IGroupAdapter adapter = user.getGroupAdapter();
+
+            final Map<String, String> map = adapter.getPlaceholders();
+
+            if (!map.isEmpty()) {
+                placeholders.putAll(map);
+            }
+        });
+
+        return placeholders;
     }
 
     public @NotNull final ConfigManager getConfigManager() {

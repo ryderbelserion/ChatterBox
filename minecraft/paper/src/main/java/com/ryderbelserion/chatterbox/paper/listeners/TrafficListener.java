@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TrafficListener implements Listener {
@@ -35,12 +36,9 @@ public class TrafficListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         final DiscordConfig config = this.configManager.getDiscord();
-
         final Player player = event.getPlayer();
 
-        final Map<String, String> placeholders = Map.of(
-                "{player}", player.getName()
-        );
+        final Map<String, String> placeholders = new HashMap<>(this.platform.getPlaceholders(player.getName(), player.getUniqueId()));
 
         if (config.isPlayerAlertsEnabled()) {
             final PlayerAlertConfig alertConfig = config.getAlertConfig();

@@ -10,7 +10,6 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleSenderAdapter;
-import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
 import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
@@ -22,7 +21,6 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
@@ -49,47 +47,17 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
             final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
 
             if (config.node("root", "motd", "toggle").getBoolean(false)) {
-                final Map<String, String> placeholders = new HashMap<>();
-
-                placeholders.put("{player}", playerName);
-
-                this.userRegistry.getUser(player.getUuid()).ifPresent(user -> {
-                    final GroupAdapter adapter = user.getGroupAdapter();
-
-                    final Map<String, String> map = adapter.getPlaceholders();
-
-                    if (!map.isEmpty()) {
-                        placeholders.putAll(map);
-                    }
-                });
+                final Map<String, String> placeholders = new HashMap<>(this.platform.getPlaceholders(playerName, player.getUuid()));
 
                 execute(player, placeholders, config.node("root", "motd", "delay").getInt(0));
             }
 
-            final AtomicReference<String> reference = new AtomicReference<>("");
-
-            if (config.node("root", "traffic", "join-message", "toggle").getBoolean(true)) {
-                final Map<String, String> placeholders = new HashMap<>();
-
-                placeholders.put("{player}", playerName);
-
-                this.userRegistry.getUser(player.getUuid()).ifPresent(user -> {
-                    final GroupAdapter adapter = user.getGroupAdapter();
-
-                    final Map<String, String> map = adapter.getPlaceholders();
-
-                    if (!map.isEmpty()) {
-                        placeholders.putAll(map);
-                    }
-
-                    reference.set(adapter.getPrimaryGroup().toLowerCase());
-                });
-
+            if (config.node("root", "traffic", "join-message", "toggle").getBoolean(true)) { // module for join messages is enabled.
+                final Map<String, String> placeholders = new HashMap<>(this.platform.getPlaceholders(playerName, player.getUuid()));
+                final String group = placeholders.getOrDefault("{group}", "").toLowerCase();
                 final Universe universe = Universe.get();
 
-                final String group = reference.get();
-
-                if (!config.hasChild("root", "traffic", "join-message", "groups", group, "title")) {
+                if (group.isBlank() || !config.hasChild("root", "traffic", "join-message", "groups", group, "title")) {  // this is sent if the group is not found.
                     final CommentedConfigurationNode configuration = config.node("root", "traffic", "join-message", "title");
 
                     if (configuration.node("toggle").getBoolean(false)) {
@@ -118,7 +86,7 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
                 final CommentedConfigurationNode configuration = config.node("root", "traffic", "join-message", "groups", group, "title");
 
-                if (config.node("root", "traffic", "join-message", "title", "toggle").getBoolean(false)) {
+                if (config.node("root", "traffic", "join-message", "title", "toggle").getBoolean(false)) { // the title is sent if the group is found, and the toggle is true.
                     this.platform.sendTitle(
                             player,
                             true,
@@ -133,7 +101,7 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
                     return;
                 }
 
-                final CommentedConfigurationNode node = config.node("root", "traffic", "join-message", "groups", group, "output");
+                final CommentedConfigurationNode node = config.node("root", "traffic", "join-message", "groups", group, "output"); // send this if the toggle for title is false.
 
                 final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
 
