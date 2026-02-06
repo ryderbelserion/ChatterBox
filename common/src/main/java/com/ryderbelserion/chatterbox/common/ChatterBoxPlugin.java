@@ -4,12 +4,13 @@ import com.ryderbelserion.chatterbox.api.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.ChatterBox;
 import com.ryderbelserion.chatterbox.api.adapters.IGroupAdapter;
 import com.ryderbelserion.chatterbox.api.adapters.IPlayerAdapter;
+import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
-import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
 import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
+import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
@@ -19,6 +20,7 @@ import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -60,12 +62,32 @@ public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
         runTask(consumer, 0, 0);
     }
 
+    public void runDelayedTask(@NotNull final Consumer<R> consumer, final long delay) {
+        runTask(consumer, 0, delay);
+    }
+
     public void sendTitle(
             @NotNull final S sender, final boolean notifyServer,
             @NotNull final String title, @NotNull final String subtitle, final int duration, final int fadeIn, final int fadeOut,
             @NotNull final Map<String, String> placeholders
     ) {
 
+    }
+
+    public void sendMessageOfTheDay(@NotNull final CommentedConfigurationNode config, @NotNull final S sender, @NotNull final Map<String, String> placeholders) {
+        if (config.node("root", "motd", "toggle").getBoolean(false)) {
+            final int delay = config.node("root", "motd", "delay").getInt(0);
+
+            final ISenderAdapter adapter = getSenderAdapter();
+
+            if (delay > 0) {
+                runDelayedTask(consumer -> adapter.sendMessage(sender, Messages.message_of_the_day, placeholders), delay);
+
+                return;
+            }
+
+            adapter.sendMessage(sender, Messages.message_of_the_day, placeholders);
+        }
     }
 
     public abstract ISenderAdapter getSenderAdapter();

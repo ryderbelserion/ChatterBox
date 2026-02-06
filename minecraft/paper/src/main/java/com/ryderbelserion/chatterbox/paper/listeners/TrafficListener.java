@@ -1,6 +1,5 @@
 package com.ryderbelserion.chatterbox.paper.listeners;
 
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
 import com.ryderbelserion.chatterbox.common.configs.discord.features.alerts.PlayerAlertConfig;
@@ -9,13 +8,10 @@ import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
-import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperUserAdapter;
 import com.ryderbelserion.discord.api.enums.alerts.PlayerAlert;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
-import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -41,8 +37,6 @@ public class TrafficListener implements Listener {
 
     private final ConfigManager configManager = this.platform.getConfigManager();
 
-    private final PaperSenderAdapter adapter = this.platform.getSenderAdapter();
-
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
@@ -60,18 +54,7 @@ public class TrafficListener implements Listener {
 
         final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
 
-        if (config.node("root", "motd", "toggle").getBoolean(false)) {
-            final int delay = config.node("root", "motd", "delay").getInt(0);
-
-            if (delay > 0) {
-                new FoliaScheduler(this.plugin, Scheduler.global_scheduler) {
-                    @Override
-                    public void run() {
-                        adapter.sendMessage(player, Messages.message_of_the_day, placeholders);
-                    }
-                }.runDelayed(delay);
-            }
-        }
+        this.platform.sendMessageOfTheDay(config, player, placeholders);
 
         if (config.node("root", "traffic", "join-message", "toggle").getBoolean(true)) {
             final String group = placeholders.getOrDefault("{group}", "").toLowerCase();
