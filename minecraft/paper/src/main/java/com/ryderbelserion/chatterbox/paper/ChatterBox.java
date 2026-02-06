@@ -1,7 +1,6 @@
 package com.ryderbelserion.chatterbox.paper;
 
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
-import com.ryderbelserion.chatterbox.paper.listeners.CacheListener;
 import com.ryderbelserion.chatterbox.paper.listeners.TrafficListener;
 import com.ryderbelserion.chatterbox.paper.listeners.chat.ChatListener;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -33,8 +32,6 @@ public class ChatterBox extends JavaPlugin {
 
         List.of(
                 new TrafficListener(),
-
-                new CacheListener(),
 
                 new ChatListener()
         ).forEach(event -> pluginManager.registerEvents(event, this));

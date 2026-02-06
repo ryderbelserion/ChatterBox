@@ -9,7 +9,7 @@ public interface IUserRegistry<S> {
 
     void init();
 
-    void addUser(@NotNull final S player);
+    IUser addUser(@NotNull final S player);
 
     IUser removeUser(@NotNull final UUID uuid);
 

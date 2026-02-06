@@ -13,6 +13,7 @@ import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
 import io.papermc.paper.util.Tick;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.incendo.cloud.execution.ExecutionCoordinator;
@@ -133,6 +134,12 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, Component, 
             @NotNull final String title, @NotNull final String subtitle, final int duration, final int fadeIn, final int fadeOut,
             @NotNull final Map<String, String> placeholders
     ) {
-
+        this.server.showTitle(Title.title(
+                this.fusion.asComponent(title, placeholders),
+                this.fusion.asComponent(subtitle, placeholders),
+                fadeIn,
+                duration,
+                fadeOut
+        ));
     }
 }

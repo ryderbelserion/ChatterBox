@@ -49,7 +49,7 @@ public class PaperUserRegistry implements IUserRegistry<Player> {
     }
 
     @Override
-    public void addUser(@NonNull final Player player) {
+    public PaperUserAdapter addUser(@NonNull final Player player) {
         final String username = player.getName();
         final String locale = player.locale().toString();
 
@@ -92,6 +92,8 @@ public class PaperUserRegistry implements IUserRegistry<Player> {
         user.setLocale(locale);
 
         this.users.putIfAbsent(uuid, user);
+
+        return user;
     }
 
     @Override

@@ -6,7 +6,6 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
-import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
 import com.ryderbelserion.chatterbox.hytale.api.listeners.EventListener;
@@ -16,7 +15,6 @@ import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class DisconnectListener implements EventListener<PlayerDisconnectEvent> {
 
@@ -37,29 +35,13 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
             final HytaleUserAdapter user = this.registry.removeUser(player.getUuid());
 
+            final Map<String, String> placeholders = new HashMap<>(this.platform.getPlaceholders(user, player.getUsername()));
+
             final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
 
-            final AtomicReference<String> reference = new AtomicReference<>();
-
             if (config.node("root", "traffic", "quit-message", "toggle").getBoolean(true)) {
-                final Map<String, String> placeholders = new HashMap<>();
-
-                placeholders.put("{player}", player.getUsername());
-
-                if (user != null) {
-                    final GroupAdapter adapter = user.getGroupAdapter();
-
-                    final Map<String, String> map = adapter.getPlaceholders();
-
-                    if (!map.isEmpty()) {
-                        placeholders.putAll(map);
-                    }
-
-                    reference.set(adapter.getPrimaryGroup().toLowerCase());
-                }
-
                 final Universe universe = Universe.get();
-                final String group = reference.get();
+                final String group = placeholders.getOrDefault("{group}", "").toLowerCase();
 
                 if (group.isBlank() || !config.hasChild("root", "traffic", "quit-message", "groups", group, "title")) { // this is sent if the group is not found.
                     final CommentedConfigurationNode configuration = config.node("root", "traffic", "quit-message", "title");

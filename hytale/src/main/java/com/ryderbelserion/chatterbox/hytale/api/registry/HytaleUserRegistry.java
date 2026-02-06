@@ -49,7 +49,7 @@ public class HytaleUserRegistry implements IUserRegistry<PlayerRef> {
     }
 
     @Override
-    public void addUser(@NonNull final PlayerRef player) {
+    public HytaleUserAdapter addUser(@NonNull final PlayerRef player) {
         final String username = player.getUsername();
         final String locale = player.getLanguage();
         final UUID uuid = player.getUuid();
@@ -91,6 +91,8 @@ public class HytaleUserRegistry implements IUserRegistry<PlayerRef> {
         user.setLocale(locale);
 
         this.users.putIfAbsent(uuid, user);
+
+        return user;
     }
 
     @Override

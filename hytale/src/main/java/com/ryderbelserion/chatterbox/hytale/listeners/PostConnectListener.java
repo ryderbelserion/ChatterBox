@@ -14,6 +14,7 @@ import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
 import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.hytale.api.listeners.EventListener;
+import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleUserAdapter;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.jetbrains.annotations.NotNull;
@@ -42,18 +43,17 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
             final PlayerRef player = event.getPlayerRef();
             final String playerName = player.getUsername();
 
-            this.userRegistry.addUser(player);
+            final HytaleUserAdapter user = this.userRegistry.addUser(player);
+
+            final Map<String, String> placeholders = new HashMap<>(this.platform.getPlaceholders(user, playerName));
 
             final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
 
             if (config.node("root", "motd", "toggle").getBoolean(false)) {
-                final Map<String, String> placeholders = new HashMap<>(this.platform.getPlaceholders(playerName, player.getUuid()));
-
                 execute(player, placeholders, config.node("root", "motd", "delay").getInt(0));
             }
 
             if (config.node("root", "traffic", "join-message", "toggle").getBoolean(true)) { // module for join messages is enabled.
-                final Map<String, String> placeholders = new HashMap<>(this.platform.getPlaceholders(playerName, player.getUuid()));
                 final String group = placeholders.getOrDefault("{group}", "").toLowerCase();
                 final Universe universe = Universe.get();
 
