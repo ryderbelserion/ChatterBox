@@ -16,6 +16,7 @@ import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DisconnectListener implements EventListener<PlayerDisconnectEvent> {
 
@@ -38,6 +39,8 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
             final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
 
+            final AtomicReference<String> reference = new AtomicReference<>();
+
             if (config.node("root", "traffic", "quit-message", "toggle").getBoolean(true)) {
                 final Map<String, String> placeholders = new HashMap<>();
 
@@ -51,10 +54,12 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                     if (!map.isEmpty()) {
                         placeholders.putAll(map);
                     }
+
+                    reference.set(adapter.getPrimaryGroup().toLowerCase());
                 }
 
-                final String group = placeholders.getOrDefault("{group}", "").toLowerCase();
                 final Universe universe = Universe.get();
+                final String group = reference.get();
 
                 if (group.isBlank() || !config.hasChild("root", "traffic", "quit-message", "groups", group, "title")) { // this is sent if the group is not found.
                     final CommentedConfigurationNode configuration = config.node("root", "traffic", "quit-message", "title");

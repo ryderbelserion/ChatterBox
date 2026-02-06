@@ -52,7 +52,7 @@ public class ChatListener implements EventListener<PlayerChatEvent> {
                         placeholders.putAll(map);
                     }
 
-                    final String groupFormat = config.node("chat", "format", "groups", map.getOrDefault("{group}", "").toLowerCase()).getString("");
+                    final String groupFormat = config.node("chat", "format", "groups", adapter.getPrimaryGroup().toLowerCase()).getString("");
 
                     if (!groupFormat.isBlank()) {
                         reference.set(groupFormat);
