@@ -59,7 +59,7 @@ public class ChatListener implements Listener {
                 placeholders.putAll(map);
             }
 
-            final String groupFormat = configuration.node("chat", "format", "groups", adapter.getPrimaryGroup().toLowerCase()).getString("");
+            final String groupFormat = configuration.node("chat", "format", "groups", map.getOrDefault("{group}", "").toLowerCase()).getString("");
 
             if (!groupFormat.isBlank()) {
                 reference.set(groupFormat);
