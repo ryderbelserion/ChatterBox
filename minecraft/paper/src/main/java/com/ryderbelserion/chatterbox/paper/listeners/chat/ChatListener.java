@@ -79,7 +79,7 @@ public class ChatListener implements Listener {
     public void onDiscordChat(AsyncChatEvent event) {
         final DiscordConfig config = this.configManager.getDiscord();
 
-        if (config.isPlayerAlertsEnabled()) {
+        if (config.isEnabled() && config.isPlayerAlertsEnabled()) {
             final Player player = event.getPlayer();
 
             final PlayerAlertConfig alertConfig = config.getAlertConfig();

@@ -46,7 +46,7 @@ public class TrafficListener implements Listener {
 
         final Map<String, String> placeholders = new HashMap<>(this.platform.getPlaceholders(user, user.getUsername()));
 
-        if (discordConfig.isPlayerAlertsEnabled()) {
+        if (discordConfig.isEnabled() && discordConfig.isPlayerAlertsEnabled()) {
             final PlayerAlertConfig alertConfig = discordConfig.getAlertConfig();
 
             alertConfig.sendDiscord(player, this.discordManager.getGuild(), PlayerAlert.JOIN_ALERT, placeholders);
@@ -125,7 +125,7 @@ public class TrafficListener implements Listener {
 
         final DiscordConfig discordConfig = this.configManager.getDiscord();
 
-        if (discordConfig.isPlayerAlertsEnabled()) {
+        if (discordConfig.isEnabled() && discordConfig.isPlayerAlertsEnabled()) {
             final PlayerAlertConfig alertConfig = discordConfig.getAlertConfig();
 
             alertConfig.sendDiscord(player, this.discordManager.getGuild(), PlayerAlert.QUIT_ALERT, placeholders);
