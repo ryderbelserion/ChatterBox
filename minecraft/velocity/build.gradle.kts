@@ -8,6 +8,7 @@ project.version = "1.0.0"
 dependencies {
     implementation(project(":chatterbox-common"))
 
+    implementation(libs.fusion.mojang)
     implementation(libs.fusion.kyori)
 }
 

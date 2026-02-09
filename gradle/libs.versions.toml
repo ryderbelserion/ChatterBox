@@ -32,10 +32,6 @@ postgres = "42.7.8" # https://github.com/postgres/postgres
 
 luckperms = "5.4" # https://github.com/LuckPerms/LuckPerms
 
-# Commands
-cloud-release = "2.0.0" # https://cloud.incendo.org/core/
-cloud-beta = "2.0.0-beta.14" # https://cloud.incendo.org/minecraft/paper/
-
 logback-classic = "1.5.20" # https://github.com/qos-ch/logback
 jopt-simple = "5.0.4" # https://github.com/jopt-simple/jopt-simple
 jda = "6.3.0" # https://github.com/discord-jda/JDA
@@ -74,16 +70,8 @@ postgres = { module = "'org.postgresql:postgresql", version.ref = "postgres" }
 # https://github.com/brettwooldridge/HikariCP
 hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 
-# https://cloud.incendo.org/annotations/
-cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud-release" }
-# https://cloud.incendo.org/minecraft/minecraft-extras/
-cloud-extras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud-beta" }
-# https://cloud.incendo.org/core/
-cloud-core = { module = "org.incendo:cloud-core", version.ref = "cloud-release" }
-# https://cloud.incendo.org/minecraft/paper/
-cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-beta" }
-
 # https://github.com/ryderbelserion/Fusion
+fusion-mojang = { module = "com.ryderbelserion.fusion:fusion-mojang", version.ref = "fusion" }
 fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref = "fusion" }
 fusion-files = { module = "com.ryderbelserion.fusion:fusion-files", version.ref = "fusion" }
 fusion-kyori = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref = "fusion" }
@@ -108,12 +96,6 @@ jopt = { module = "net.sf.jopt-simple:jopt-simple", version.ref = "jopt-simple" 
 jda = { module = "net.dv8tion:JDA", version.ref = "jda" }
 
 [bundles]
-cloud-paper = [
-    "cloud-annotations",
-    "cloud-extras",
-    "cloud-paper"
-]
-
 kyori = [
     "kyori-logger",
     "kyori-text",

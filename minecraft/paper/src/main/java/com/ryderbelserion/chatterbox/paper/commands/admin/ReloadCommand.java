@@ -1,28 +1,47 @@
 package com.ryderbelserion.chatterbox.paper.commands.admin;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
-import com.ryderbelserion.chatterbox.paper.commands.AnnotationFeature;
+import com.ryderbelserion.chatterbox.paper.api.ChatterCommand;
+import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
+import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import org.bukkit.command.CommandSender;
-import org.incendo.cloud.annotations.AnnotationParser;
-import org.incendo.cloud.annotations.Command;
-import org.incendo.cloud.annotations.CommandDescription;
-import org.incendo.cloud.annotations.Permission;
+import io.papermc.paper.command.brigadier.Commands;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
 
-public class ReloadCommand extends AnnotationFeature {
+public class ReloadCommand extends ChatterCommand {
 
     @Override
-    public void registerFeature(@NotNull final AnnotationParser<CommandSourceStack> parser) {
-        parser.parse(this);
-    }
-
-    @Command("chatterbox reload")
-    @CommandDescription("Reloads the plugin!")
-    @Permission(value = "chatterbox.reload", mode = Permission.Mode.ALL_OF)
-    public void reload(final CommandSender sender) {
+    public void run(@NotNull final PaperCommandContext context) {
         this.platform.reload();
 
-        this.adapter.sendMessage(sender, Messages.reload_plugin);
+        this.adapter.sendMessage(context.getSender(), Messages.reload_plugin);
+    }
+
+    @Override
+    public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
+        return Commands.literal("reload").requires(this::requirement)
+                .executes(context -> {
+                    run(new PaperCommandContext(context));
+
+                    return Command.SINGLE_SUCCESS;
+                }).build();
+    }
+
+    @Override
+    public @NotNull final List<PermissionContext> getPermissions() {
+        return List.of(
+                new PermissionContext(
+                        "chatterbox.reload",
+                        "Reloads the plugin!"
+                )
+        );
+    }
+
+    @Override
+    public final boolean requirement(@NotNull final CommandSourceStack context) {
+        return context.getSender().hasPermission(getPermissions().getFirst().getPermission());
     }
 }

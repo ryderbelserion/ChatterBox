@@ -1,5 +1,6 @@
 package com.ryderbelserion.chatterbox.paper.api;
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperContextRegistry;
@@ -8,18 +9,23 @@ import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
 import com.ryderbelserion.chatterbox.paper.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.paper.commands.admin.ReloadCommand;
+import com.ryderbelserion.chatterbox.paper.commands.player.MotdCommand;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import io.papermc.paper.util.Tick;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
-import org.incendo.cloud.execution.ExecutionCoordinator;
-import org.incendo.cloud.paper.PaperCommandManager;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -61,9 +67,19 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, Component, 
     public void post() {
         super.post();
 
-        new BaseCommand(PaperCommandManager.builder()
-                .executionCoordinator(ExecutionCoordinator.simpleCoordinator())
-                .buildOnEnable(this.plugin));
+        final LifecycleEventManager<Plugin> eventManager = this.plugin.getLifecycleManager();
+
+        // Register commands.
+        eventManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            LiteralArgumentBuilder<CommandSourceStack> root = new BaseCommand().registerPermissions().literal().createBuilder();
+
+            List.of(
+                    new ReloadCommand(),
+                    new MotdCommand()
+            ).forEach(command -> root.then(command.registerPermissions().literal()));
+
+            event.registrar().register(root.build(), "The base command for ChatterBox");
+        });
     }
 
     @Override

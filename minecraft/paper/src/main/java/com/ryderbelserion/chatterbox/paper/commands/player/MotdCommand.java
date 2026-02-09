@@ -1,46 +1,47 @@
 package com.ryderbelserion.chatterbox.paper.commands.player;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
-import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
-import com.ryderbelserion.chatterbox.paper.commands.AnnotationFeature;
+import com.ryderbelserion.chatterbox.paper.api.ChatterCommand;
+import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
+import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.incendo.cloud.annotations.AnnotationParser;
-import org.incendo.cloud.annotations.Command;
-import org.incendo.cloud.annotations.CommandDescription;
-import org.incendo.cloud.annotations.Permission;
+import io.papermc.paper.command.brigadier.Commands;
 import org.jetbrains.annotations.NotNull;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-public class MotdCommand extends AnnotationFeature {
+public class MotdCommand extends ChatterCommand {
 
     @Override
-    public void registerFeature(@NotNull final AnnotationParser<CommandSourceStack> parser) {
-        parser.parse(this);
+    public void run(@NotNull final PaperCommandContext context) {
+        this.platform.reload();
+
+        this.adapter.sendMessage(context.getSender(), Messages.reload_plugin);
     }
 
-    @Command("chatterbox motd")
-    @CommandDescription("Shows the message of the day!")
-    @Permission(value = "chatterbox.motd", mode = Permission.Mode.ALL_OF)
-    public void motd(final CommandSender sender) {
-        final Map<String, String> placeholders = new HashMap<>();
+    @Override
+    public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
+        return Commands.literal("motd").requires(this::requirement)
+                .executes(context -> {
+                    run(new PaperCommandContext(context));
 
-        placeholders.put("{player}", sender.getName());
+                    return Command.SINGLE_SUCCESS;
+                }).build();
+    }
 
-        if (sender instanceof Player player) {
-            this.userRegistry.getUser(player.getUniqueId()).ifPresent(user -> {
-                final GroupAdapter adapter = user.getGroupAdapter();
+    @Override
+    public @NotNull final List<PermissionContext> getPermissions() {
+        return List.of(
+                new PermissionContext(
+                        "chatterbox.motd",
+                        "Shows the message of the day!"
+                )
+        );
+    }
 
-                final Map<String, String> map = adapter.getPlaceholders();
-
-                if (!map.isEmpty()) {
-                    placeholders.putAll(map);
-                }
-            });
-        }
-
-        this.adapter.sendMessage(sender, Messages.message_of_the_day, placeholders);
+    @Override
+    public final boolean requirement(@NotNull final CommandSourceStack context) {
+        return context.getSender().hasPermission(getPermissions().getFirst().getPermission());
     }
 }

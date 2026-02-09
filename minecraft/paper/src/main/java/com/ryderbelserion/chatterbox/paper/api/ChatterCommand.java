@@ -1,15 +1,12 @@
-package com.ryderbelserion.chatterbox.paper.commands;
+package com.ryderbelserion.chatterbox.paper.api;
 
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
-import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
-import com.ryderbelserion.chatterbox.api.registry.IAnnotationRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperMessageRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
-import io.papermc.paper.command.brigadier.CommandSourceStack;
-import org.incendo.cloud.annotations.AnnotationParser;
+import com.ryderbelserion.fusion.paper.builders.commands.PaperCommand;
 
-public abstract class AnnotationFeature implements IAnnotationRegistry<AnnotationParser<CommandSourceStack>> {
+public abstract class ChatterCommand extends PaperCommand {
 
     protected final ChatterBox instance = ChatterBox.getInstance();
 
