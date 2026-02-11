@@ -10,4 +10,5 @@ dependencies {
     api(project(":chatterbox-api"))
 
     compileOnly(libs.luckperms)
+    compileOnly(libs.log4j2)
 }

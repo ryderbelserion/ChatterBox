@@ -10,7 +10,9 @@ import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
-import com.ryderbelserion.chatterbox.common.enums.FileKeys;
+import com.ryderbelserion.chatterbox.common.api.objects.filter.types.SimpleFilterAdapter;
+import com.ryderbelserion.chatterbox.common.configs.FilterConfig;
+import com.ryderbelserion.chatterbox.common.configs.ServerConfig;
 import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
@@ -18,10 +20,11 @@ import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -119,11 +122,14 @@ public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
 
         final Platform platform = getPlatform();
 
+        final List<String> files = new ArrayList<>(List.of(
+                "config.yml",
+                "server.json"
+        ));
+
         switch (platform) {
             case VELOCITY -> {
-                List.of(
-                        "config.yml"
-                ).forEach(file -> {
+                files.forEach(file -> {
                     final String extension = file.split("\\.")[1];
 
                     final FileType fileType = switch (extension) {
@@ -137,11 +143,12 @@ public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
             }
 
             case HYTALE, MINECRAFT -> {
-                List.of(
+                files.addAll(List.of(
                         "messages.yml",
-                        "config.yml",
                         "chat.yml"
-                ).forEach(file -> {
+                ));
+
+                files.forEach(file -> {
                     final String extension = file.split("\\.")[1];
 
                     final FileType fileType = switch (extension) {
@@ -171,11 +178,21 @@ public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
         this.configManager = new ConfigManager();
         this.configManager.init();
 
-        final DiscordConfig config = this.configManager.getDiscord();
+        final DiscordConfig discordConfig = this.configManager.getDiscord();
 
-        if (config.isEnabled()) {
+        if (discordConfig.isEnabled()) {
             this.discordManager = new DiscordManager(this.fusion, this);
             this.discordManager.init();
+        }
+
+        final ServerConfig serverConfig = this.configManager.getServer();
+
+        final FilterConfig filterConfig = serverConfig.getFilterConfig();
+
+        if (filterConfig.isEnabled()) {
+            final Logger logger = (Logger) LogManager.getRootLogger();
+
+            logger.addFilter(new SimpleFilterAdapter(filterConfig));
         }
     }
 

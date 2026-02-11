@@ -17,6 +17,7 @@ public enum FileKeys {
     discord("config.yml", "discord"),
     alerts("alerts.yml", "discord"),
 
+    server("server.json"),
     config("config.yml"),
     chat("chat.yml");
 

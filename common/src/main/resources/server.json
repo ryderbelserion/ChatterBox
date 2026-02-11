@@ -1,0 +1,12 @@
+{
+  "settings": {
+    "log-filter": {
+      "minimum-level": "INFO",
+      "use-regex": false,
+      "enabled": false,
+      "blocked": [
+        "your_message_to_filter"
+      ]
+    }
+  }
+}

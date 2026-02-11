@@ -1,6 +1,7 @@
 [versions]
 ## Hytale
-hytale = "1.0.0" # https://hytale.com
+hytale = "+" # https://hytale.com
+log4j2 = "2.25.3" # https://github.com/apache/logging-log4j2
 
 ## Paper
 paperweight = "2.0.0-beta.19" # https://github.com/PaperMC/paperweight
@@ -61,6 +62,9 @@ run-paper = { module = "xyz.jpenilla.run-paper:xyz.jpenilla.run-paper.gradle.plu
 # https://github.com/modrinth/minotaur
 minotaur = { module = "com.modrinth.minotaur:com.modrinth.minotaur.gradle.plugin", version.ref = "minotaur" }
 
+# https://github.com/apache/logging-log4j2
+log4j2 = { group = "org.apache.logging.log4j", name = "log4j-core", version.ref = "log4j2" }
+
 # https://github.com/GradleUp/shadow
 shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
 
@@ -87,6 +91,9 @@ velocity = { module = "com.velocitypowered:velocity-api", version.ref = "velocit
 
 # https://github.com/LuckPerms/LuckPerms
 luckperms = { module = "net.luckperms:api", version.ref = "luckperms" }
+
+# https://hytale.com
+hytale = { module = "com.hypixel.hytale:Server", version.ref = "hytale" }
 
 # https://github.com/qos-ch/logback
 classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }

@@ -5,8 +5,12 @@ plugins {
 project.group = "${rootProject.group}.hytale"
 project.version = rootProject.version
 
+repositories {
+    maven("https://maven.hytale.com/release")
+}
+
 dependencies {
-    compileOnly(files(System.getenv("HYTALE_SERVER")))
+    compileOnly(libs.hytale)
 
     implementation(project(":chatterbox-common")) {
         exclude(group = "ch.qos.logback", module = "logback-classic")
