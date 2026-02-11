@@ -10,6 +10,7 @@ import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
+import com.ryderbelserion.chatterbox.common.api.objects.filter.types.RegexFilterAdapter;
 import com.ryderbelserion.chatterbox.common.api.objects.filter.types.SimpleFilterAdapter;
 import com.ryderbelserion.chatterbox.common.configs.FilterConfig;
 import com.ryderbelserion.chatterbox.common.configs.ServerConfig;
@@ -192,7 +193,11 @@ public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
         if (filterConfig.isEnabled()) {
             final Logger logger = (Logger) LogManager.getRootLogger();
 
-            logger.addFilter(new SimpleFilterAdapter(filterConfig));
+            if (filterConfig.isUseRegex()) {
+                logger.addFilter(new RegexFilterAdapter(filterConfig));
+            } else {
+                logger.addFilter(new SimpleFilterAdapter(filterConfig));
+            }
         }
     }
 
