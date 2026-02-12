@@ -2,7 +2,7 @@ package com.ryderbelserion.chatterbox.velocity.commands.admin;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.chatterbox.velocity.ChatterBox;
+import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterCommand;
 import com.ryderbelserion.fusion.commands.context.VelocityCommandContext;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
@@ -13,13 +13,11 @@ import java.util.List;
 
 public class ReloadCommand extends ChatterCommand {
 
-    public ReloadCommand(@NotNull final ChatterBox plugin) {
-        super(plugin);
-    }
-
     @Override
     public void run(@NotNull final VelocityCommandContext context) {
-        this.plugin.getPlatform().reload();
+        this.platform.reload();
+
+        this.adapter.sendMessage(context.getSender(), Messages.reload_plugin);
     }
 
     @Override

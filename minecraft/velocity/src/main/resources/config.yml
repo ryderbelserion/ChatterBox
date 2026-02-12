@@ -8,3 +8,7 @@ root:
   prefix: " <gold>ChatterBox <reset>"
   # The name of the server.
   server-name: "global"
+  # The configuration for the /hub command.
+  hub:
+    # The server the /hub command is configured to go back to.
+    server: ""

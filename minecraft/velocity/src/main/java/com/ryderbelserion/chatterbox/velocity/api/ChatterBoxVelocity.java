@@ -1,20 +1,25 @@
 package com.ryderbelserion.chatterbox.velocity.api;
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
-import com.ryderbelserion.chatterbox.api.registry.IContextRegistry;
-import com.ryderbelserion.chatterbox.api.registry.IMessageRegistry;
-import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
-import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.velocity.ChatterBox;
+import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityContextRegistry;
+import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityMessageRegistry;
+import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityUserRegistry;
+import com.ryderbelserion.chatterbox.velocity.api.registry.adapters.VelocitySenderAdapter;
+import com.ryderbelserion.chatterbox.velocity.commands.BaseCommand;
+import com.ryderbelserion.chatterbox.velocity.commands.admin.ReloadCommand;
+import com.ryderbelserion.chatterbox.velocity.commands.player.HubCommand;
 import com.ryderbelserion.fusion.FusionVelocity;
+import com.velocitypowered.api.command.*;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.scheduler.ScheduledTask;
 import com.velocitypowered.api.scheduler.Scheduler;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
-import org.jetbrains.annotations.Async;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -31,24 +36,71 @@ public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, Component, Sc
         this.server = this.instance.getServer();
     }
 
+    private VelocityMessageRegistry messageRegistry;
+    private VelocityContextRegistry contextRegistry;
+    private VelocitySenderAdapter userAdapter;
+    private VelocityUserRegistry userRegistry;
+
     @Override
-    public @NotNull final IMessageRegistry getMessageRegistry() {
-        return null;
+    public void init() {
+        super.init();
+
+        this.contextRegistry = new VelocityContextRegistry();
+
+        this.userRegistry = new VelocityUserRegistry();
+        this.userRegistry.init();
+
+        this.messageRegistry = new VelocityMessageRegistry();
+        this.messageRegistry.init();
+
+        this.userAdapter = new VelocitySenderAdapter(this);
+
+        post();
     }
 
     @Override
-    public @NotNull final IContextRegistry getContextRegistry() {
-        return null;
+    public void post() {
+        super.post();
+
+        final CommandManager commandManager = this.server.getCommandManager();
+
+        List.of( // individual commands like /hub
+                new HubCommand()
+        ).forEach(key -> {
+            final BrigadierCommand brigadier = key.getBrigadierCommand();
+
+            commandManager.register(commandManager.metaBuilder(brigadier).build(), brigadier);
+        });
+
+        LiteralArgumentBuilder<CommandSource> root = new BaseCommand().registerPermissions().literal().createBuilder();
+
+        List.of(
+                new ReloadCommand()
+        ).forEach(key -> root.then(key.registerPermissions().literal()));
+
+        final BrigadierCommand brigadier = new BrigadierCommand(root);
+
+        commandManager.register(commandManager.metaBuilder(brigadier).build(), brigadier);
     }
 
     @Override
-    public @NotNull final ISenderAdapter getSenderAdapter() {
-        return null;
+    public @NotNull final VelocityMessageRegistry getMessageRegistry() {
+        return this.messageRegistry;
     }
 
     @Override
-    public @NotNull final IUserRegistry getUserRegistry() {
-        return null;
+    public @NotNull final VelocityContextRegistry getContextRegistry() {
+        return this.contextRegistry;
+    }
+
+    @Override
+    public @NotNull final VelocitySenderAdapter getSenderAdapter() {
+        return this.userAdapter;
+    }
+
+    @Override
+    public @NotNull final VelocityUserRegistry getUserRegistry() {
+        return this.userRegistry;
     }
 
     @Override
