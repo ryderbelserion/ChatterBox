@@ -1,5 +1,6 @@
 package com.ryderbelserion.chatterbox.common.api.registry;
 
+import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.api.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.ChatterBox;
@@ -38,6 +39,8 @@ public class MessageRegistry implements IMessageRegistry<MessageAdapter> {
 
         paths.add(this.path.resolve("messages.yml")); // add to list
 
+        final Platform platform = this.plugin.getPlatform();
+
         for (final Path path : paths) {
             this.fileManager.getYamlFile(path).ifPresentOrElse(file -> {
                 final String fileName = file.getFileName();
@@ -58,18 +61,29 @@ public class MessageRegistry implements IMessageRegistry<MessageAdapter> {
 
                 addMessage(key, Messages.target_same_player, new MessageAdapter(configuration, "{prefix}<red>You cannot use this command on yourself.", "messages", "player", "target-same-player"));
 
-                addMessage(key, Messages.inventory_not_empty, new MessageAdapter(configuration, "{prefix}<red>Inventory is not empty, Please clear up some room.", "messages", "player", "inventory-not-empty"));
+                switch (platform) {
+                    case VELOCITY -> {
+                        addMessage(key, Messages.server_name_blank, new MessageAdapter(configuration, "{prefix}<red>Server name cannot be blank!"));
+                        addMessage(key, Messages.server_doesnt_exist, new MessageAdapter(configuration, "{prefix}<red>Server does not exist in velocity.toml, or is not registered/online."));
+                        addMessage(key, Messages.server_transfer_success, new MessageAdapter(configuration, "{prefix}<green>Successfully forwarded you to {server}."));
+                        addMessage(key, Messages.server_transfer_failed, new MessageAdapter(configuration, "{prefix}<red>Failed to forward you to {server}."));
+                    }
 
-                addMessage(key, Messages.message_of_the_day, new MessageAdapter(configuration, StringUtils.toString(List.of(
-                        "<gray>------------------------------------",
-                        "",
-                        "<green>Welcome to the server <blue>{player}</blue>!",
-                        "",
-                        "<green>If you need any help, Please message online staff!",
-                        "",
-                        "<green>You can change this message in the messages.yml or the locale folder.",
-                        "<gray>------------------------------------"
-                )), "messages", "motd"));
+                    case MINECRAFT, HYTALE -> {
+                        addMessage(key, Messages.inventory_not_empty, new MessageAdapter(configuration, "{prefix}<red>Inventory is not empty, Please clear up some room.", "messages", "player", "inventory-not-empty"));
+
+                        addMessage(key, Messages.message_of_the_day, new MessageAdapter(configuration, StringUtils.toString(List.of(
+                                "<gray>------------------------------------",
+                                "",
+                                "<green>Welcome to the server <blue>{player}</blue>!",
+                                "",
+                                "<green>If you need any help, Please message online staff!",
+                                "",
+                                "<green>You can change this message in the messages.yml or the locale folder.",
+                                "<gray>------------------------------------"
+                        )), "messages", "motd"));
+                    }
+                }
             }, () -> this.fusion.log(Level.INFO, "Path %s not found in cache.".formatted(path)));
         }
 
