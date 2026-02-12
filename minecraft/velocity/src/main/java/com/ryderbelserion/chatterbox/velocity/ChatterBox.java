@@ -2,7 +2,9 @@ package com.ryderbelserion.chatterbox.velocity;
 
 import com.google.inject.Inject;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxVelocity;
+import com.ryderbelserion.chatterbox.velocity.listeners.TrafficListener;
 import com.ryderbelserion.fusion.FusionVelocity;
+import com.velocitypowered.api.event.EventManager;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
@@ -43,6 +45,10 @@ public class ChatterBox {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         this.platform = new ChatterBoxVelocity(this.fusion, this);
         this.platform.init();
+
+        final EventManager eventManager = this.server.getEventManager();
+
+        eventManager.register(this, new TrafficListener());
     }
 
     @Subscribe
