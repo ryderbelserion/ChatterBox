@@ -18,6 +18,8 @@ import java.nio.file.Path;
         url = "https://github.com/ChatterBox", description = "Spice up your chat!", authors = {"ryderbelserion"})
 public class ChatterBox {
 
+    private static ChatterBox instance;
+
     private final PluginDescription description;
     private final FusionVelocity fusion;
     private final ProxyServer server;
@@ -25,6 +27,8 @@ public class ChatterBox {
 
     @Inject
     public ChatterBox(@NotNull final ProxyServer server, @NotNull final Logger logger, @NotNull final PluginDescription description, @DataDirectory final Path directory) {
+        instance = this;
+
         this.description = description;
         this.server = server;
         this.logger = logger;
@@ -43,7 +47,9 @@ public class ChatterBox {
 
     @Subscribe
     public void onProxyShutDown(ProxyShutdownEvent event) {
-        this.platform.shutdown();
+        if (this.platform != null) {
+            this.platform.shutdown();
+        }
     }
 
     public @NotNull final PluginDescription getDescription() {
@@ -60,5 +66,9 @@ public class ChatterBox {
 
     public @NotNull final ProxyServer getServer() {
         return this.server;
+    }
+
+    public static ChatterBox getInstance() {
+        return instance;
     }
 }

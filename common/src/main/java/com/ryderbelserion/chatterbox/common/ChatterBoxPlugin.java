@@ -124,6 +124,7 @@ public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
         final Platform platform = getPlatform();
 
         final List<String> files = new ArrayList<>(List.of(
+                "messages.yml",
                 "config.yml",
                 "server.json"
         ));
@@ -145,7 +146,6 @@ public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
 
             case HYTALE, MINECRAFT -> {
                 files.addAll(List.of(
-                        "messages.yml",
                         "chat.yml"
                 ));
 

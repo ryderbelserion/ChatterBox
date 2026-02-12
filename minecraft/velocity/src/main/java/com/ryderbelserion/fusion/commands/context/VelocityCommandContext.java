@@ -7,6 +7,7 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class VelocityCommandContext extends AbstractCommandContext<CommandSource> {
 
     public VelocityCommandContext(@NotNull final CommandContext<CommandSource> context) {
