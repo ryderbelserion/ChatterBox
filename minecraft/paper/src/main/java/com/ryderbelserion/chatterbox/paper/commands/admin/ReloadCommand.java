@@ -5,6 +5,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.paper.api.ChatterCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
+import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -35,7 +36,8 @@ public class ReloadCommand extends ChatterCommand {
         return List.of(
                 new PermissionContext(
                         "chatterbox.reload",
-                        "Reloads the plugin!"
+                        "Reloads the plugin!",
+                        PermissionType.OP
                 )
         );
     }

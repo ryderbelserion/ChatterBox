@@ -1,6 +1,5 @@
 package com.ryderbelserion.chatterbox.paper.commands;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.chatterbox.paper.api.ChatterCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
@@ -13,18 +12,11 @@ import java.util.List;
 public class BaseCommand extends ChatterCommand {
 
     @Override
-    public void run(@NotNull final PaperCommandContext context) {
-        //todo() help generation
-    }
+    public void run(@NotNull final PaperCommandContext context) {}
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("chatterbox").requires(this::requirement)
-                .executes(context -> {
-                    run(new PaperCommandContext(context));
-
-                    return Command.SINGLE_SUCCESS;
-                }).build();
+        return Commands.literal("chatterbox").requires(this::requirement).build();
     }
 
     @Override

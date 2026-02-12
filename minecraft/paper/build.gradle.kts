@@ -30,8 +30,7 @@ tasks {
         destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
 
         listOf(
-            "com.ryderbelserion.fusion",
-            "org.incendo"
+            "com.ryderbelserion.fusion"
         ).forEach {
             relocate(it, "com.ryderbelserion.libs.$it")
         }

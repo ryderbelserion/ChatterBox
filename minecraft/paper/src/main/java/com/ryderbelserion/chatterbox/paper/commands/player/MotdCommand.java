@@ -6,6 +6,7 @@ import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.paper.api.ChatterCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
+import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -56,7 +57,8 @@ public class MotdCommand extends ChatterCommand {
         return List.of(
                 new PermissionContext(
                         "chatterbox.motd",
-                        "Shows the message of the day!"
+                        "Shows the message of the day!",
+                        PermissionType.TRUE
                 )
         );
     }
