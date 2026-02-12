@@ -10,6 +10,7 @@ import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
+import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -45,6 +46,26 @@ public class HubCommand extends ChatterCommand {
 
         if (registeredServer.isEmpty()) {
             this.adapter.sendMessage(source, Messages.server_doesnt_exist);
+
+            return;
+        }
+
+        boolean isSameServer = false;
+
+        final Optional<ServerConnection> optional = player.getCurrentServer();
+
+        if (optional.isPresent()) {
+            final ServerConnection connection = optional.get();
+
+            final RegisteredServer server = connection.getServer();
+
+            final String name = server.getServerInfo().getName();
+
+            isSameServer = name.equals(serverName);
+        }
+
+        if (isSameServer) {
+            this.adapter.sendMessage(source, Messages.server_already_there);
 
             return;
         }

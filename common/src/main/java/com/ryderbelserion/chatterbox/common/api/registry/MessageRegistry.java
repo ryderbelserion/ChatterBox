@@ -67,6 +67,7 @@ public class MessageRegistry implements IMessageRegistry<MessageAdapter> {
                         addMessage(key, Messages.server_doesnt_exist, new MessageAdapter(configuration, "{prefix}<red>Server does not exist in velocity.toml, or is not registered/online."));
                         addMessage(key, Messages.server_transfer_success, new MessageAdapter(configuration, "{prefix}<green>Successfully forwarded you to {server}."));
                         addMessage(key, Messages.server_transfer_failed, new MessageAdapter(configuration, "{prefix}<red>Failed to forward you to {server}."));
+                        addMessage(key, Messages.server_already_there, new  MessageAdapter(configuration, "{prefix}<red>You are already on that server."));
                     }
 
                     case MINECRAFT, HYTALE -> {

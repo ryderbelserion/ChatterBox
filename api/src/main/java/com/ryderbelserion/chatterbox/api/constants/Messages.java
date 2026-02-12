@@ -27,4 +27,5 @@ public class Messages {
     public static final Key server_doesnt_exist = Key.key(namespace, "server_doesnt_exist");
     public static final Key server_transfer_success = Key.key(namespace, "server_transfer_success");
     public static final Key server_transfer_failed = Key.key(namespace, "server_transfer_failed");
+    public static final Key server_already_there = Key.key(namespace, "server_already_there");
 }

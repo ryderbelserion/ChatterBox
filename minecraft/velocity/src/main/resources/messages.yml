@@ -30,3 +30,5 @@ messages:
     server-transfer-successful: "{prefix}<green>Successfully forwarded you to {server}."
     # Available placeholders: {prefix}, {server}
     server-transfer-failed: "{prefix}<red>Failed to forward you to {server}."
+    # Available placeholders: {prefix}
+    server-already-there: "{prefix}<red>You are already on that server."
