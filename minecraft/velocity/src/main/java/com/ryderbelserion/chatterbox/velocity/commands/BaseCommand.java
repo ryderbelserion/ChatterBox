@@ -13,7 +13,7 @@ public class BaseCommand extends ChatterCommand {
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSource> literal() {
-        return BrigadierCommand.literalArgumentBuilder("chatterbox").requires(this::requirement).build();
+        return BrigadierCommand.literalArgumentBuilder("cbv").requires(this::requirement).build();
     }
 
     @Override
@@ -21,7 +21,7 @@ public class BaseCommand extends ChatterCommand {
         return List.of(
                 new PermissionContext(
                         "chatterbox.use",
-                        "Allows you to use /chatterbox"
+                        "Allows you to use /cbv"
                 )
         );
     }
