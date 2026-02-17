@@ -16,7 +16,7 @@ public class BaseCommand extends ChatterCommand {
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("chatterbox").requires(this::requirement).build();
+        return Commands.literal("cb").requires(this::requirement).build();
     }
 
     @Override
@@ -24,7 +24,7 @@ public class BaseCommand extends ChatterCommand {
         return List.of(
                 new PermissionContext(
                         "chatterbox.use",
-                        "Allows you to use /chatterbox"
+                        "Allows you to use /cb"
                 )
         );
     }

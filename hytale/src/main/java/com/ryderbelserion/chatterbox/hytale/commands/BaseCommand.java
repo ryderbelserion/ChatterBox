@@ -7,7 +7,9 @@ import com.ryderbelserion.chatterbox.hytale.commands.subs.admin.ReloadCommand;
 public class BaseCommand extends AbstractCommandCollection {
 
     public BaseCommand() {
-        super("chatterbox", "The base command for ChatterBox");
+        super("cb", "The base command for ChatterBox");
+
+        addAliases("chatterbox");
 
         addSubCommand(new ReloadCommand());
 
