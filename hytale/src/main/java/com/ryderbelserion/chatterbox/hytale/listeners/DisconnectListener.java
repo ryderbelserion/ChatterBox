@@ -4,12 +4,17 @@ import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
+import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
+import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
+import com.ryderbelserion.chatterbox.common.configs.discord.features.alerts.PlayerAlertConfig;
+import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
 import com.ryderbelserion.chatterbox.hytale.api.listeners.EventListener;
 import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleUserAdapter;
+import com.ryderbelserion.discord.api.enums.alerts.PlayerAlert;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -24,7 +29,11 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
 
     private final ChatterBoxHytale platform = this.instance.getPlatform();
 
+    private final DiscordManager discordManager = this.platform.getDiscordManager();
+
     private final HytaleUserRegistry registry = this.platform.getUserRegistry();
+
+    private final ConfigManager configManager = this.platform.getConfigManager();
 
     private final FusionHytale fusion = this.instance.getFusion();
 
@@ -36,6 +45,14 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
             final HytaleUserAdapter user = this.registry.removeUser(player.getUuid());
 
             final Map<String, String> placeholders = new HashMap<>(this.platform.getPlaceholders(user, player.getUsername()));
+
+            final DiscordConfig discordConfig = this.configManager.getDiscord();
+
+            if (discordConfig.isEnabled() && discordConfig.isPlayerAlertsEnabled()) {
+                final PlayerAlertConfig alertConfig = discordConfig.getAlertConfig();
+
+                alertConfig.sendDiscord(player, this.discordManager.getGuild(), PlayerAlert.QUIT_ALERT, placeholders);
+            }
 
             final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
 

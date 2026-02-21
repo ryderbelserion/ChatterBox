@@ -2,7 +2,6 @@ package com.ryderbelserion.chatterbox.common.configs;
 
 import com.ryderbelserion.chatterbox.api.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
@@ -10,7 +9,6 @@ import org.apache.logging.log4j.spi.StandardLevel;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
-
 import java.util.List;
 
 public class FilterConfig {

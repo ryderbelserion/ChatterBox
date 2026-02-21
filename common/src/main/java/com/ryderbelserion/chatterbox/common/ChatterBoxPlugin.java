@@ -21,7 +21,6 @@ import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -154,16 +153,15 @@ public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
         }
 
         final ServerConfig serverConfig = this.configManager.getServer();
+        final FilterConfig config = serverConfig.getFilterConfig();
 
-        final FilterConfig filterConfig = serverConfig.getFilterConfig();
+        if (config.isEnabled()) {
+            final Logger logger = (Logger) org.apache.logging.log4j.LogManager.getRootLogger();
 
-        if (filterConfig.isEnabled()) {
-            final Logger logger = (Logger) LogManager.getRootLogger();
-
-            if (filterConfig.isUseRegex()) {
-                logger.addFilter(new RegexFilterAdapter(filterConfig));
+            if (config.isUseRegex()) {
+                logger.addFilter(new RegexFilterAdapter(config));
             } else {
-                logger.addFilter(new SimpleFilterAdapter(filterConfig));
+                logger.addFilter(new SimpleFilterAdapter(config));
             }
         }
     }
