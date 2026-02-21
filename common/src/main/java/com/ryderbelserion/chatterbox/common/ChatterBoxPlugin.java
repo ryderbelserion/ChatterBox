@@ -28,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -106,60 +105,28 @@ public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
             Files.createDirectories(this.dataPath);
         } catch (final IOException ignored) {}
 
-        Map.of( // map internal files to external output
-                "/discord.yml", "discord;config.yml",
-                "/alerts.yml", "discord;alerts.yml"
-        ).forEach((input, output) -> {
-            final String[] splitter = output.split(";");
-            final String folder = splitter[0];
-            final String name = splitter[1];
-
-            final Path path = this.dataPath.resolve(folder).resolve(name);
-
-            this.fileManager.extractFile(input, path);
-
-            this.fileManager.addFile(path, FileType.YAML, action -> action.addAction(FileAction.ALREADY_EXTRACTED));
-        });
-
         final Platform platform = getPlatform();
 
-        final List<String> files = new ArrayList<>(List.of(
-                "messages.yml",
-                "config.yml",
-                "server.json"
-        ));
+        this.fileManager.addFolder(this.dataPath.resolve("discord"), FileType.YAML);
+
+        this.fileManager.addFile(this.dataPath.resolve("server.json"), FileType.JSON);
 
         switch (platform) {
             case VELOCITY -> {
-                files.forEach(file -> {
-                    final String extension = file.split("\\.")[1];
+                this.fileManager.extractFolder(this.source, "velocity", "");
 
-                    final FileType fileType = switch (extension) {
-                        case "json" -> FileType.JSON;
-                        case "yml" -> FileType.YAML;
-                        default -> throw new IllegalStateException("Unexpected value: " + extension);
-                    };
-
-                    this.fileManager.addFile(this.dataPath.resolve(file), fileType);
-                });
+                List.of(
+                        "messages.yml",
+                        "config.yml"
+                ).forEach(file -> this.fileManager.addFile(this.dataPath.resolve(file), FileType.YAML, action -> action.addAction(FileAction.ALREADY_EXTRACTED)));
             }
 
             case HYTALE, MINECRAFT -> {
-                files.addAll(List.of(
+                List.of(
+                        "messages.yml",
+                        "config.yml",
                         "chat.yml"
-                ));
-
-                files.forEach(file -> {
-                    final String extension = file.split("\\.")[1];
-
-                    final FileType fileType = switch (extension) {
-                        case "json" -> FileType.JSON;
-                        case "yml" -> FileType.YAML;
-                        default -> throw new IllegalStateException("Unexpected value: " + extension);
-                    };
-
-                    this.fileManager.addFile(this.dataPath.resolve(file), fileType);
-                });
+                ).forEach(file -> this.fileManager.addFile(this.dataPath.resolve(file), FileType.YAML));
 
                 this.fileManager.addFolder(this.dataPath.resolve("locale"), FileType.YAML);
             }
