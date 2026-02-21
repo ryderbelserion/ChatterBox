@@ -3,7 +3,6 @@ plugins {
 }
 
 project.group = "${rootProject.group}.paper"
-project.version = "1.0.0"
 
 dependencies {
     implementation(project(":chatterbox-common"))

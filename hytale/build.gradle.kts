@@ -3,7 +3,6 @@ plugins {
 }
 
 project.group = "${rootProject.group}.hytale"
-project.version = rootProject.version
 
 repositories {
     maven("https://maven.hytale.com/release")
