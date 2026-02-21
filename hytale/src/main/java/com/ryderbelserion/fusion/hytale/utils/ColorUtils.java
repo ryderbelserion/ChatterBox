@@ -45,7 +45,11 @@ public class ColorUtils {
         final ClickEvent clickEvent = text.clickEvent();
 
         if (clickEvent != null && clickEvent.action() == ClickEvent.Action.OPEN_URL) {
-            message.link(clickEvent.value());
+            final ClickEvent.Payload payload = clickEvent.payload();
+
+            if (payload instanceof ClickEvent.Payload.Text value) {
+                message.link(value.value());
+            }
         }
 
         message.insertAll(text.children().stream()
