@@ -17,16 +17,15 @@ tasks {
         velocityVersion(libs.versions.velocity.get())
     }
 
+    build {
+        dependsOn(shadowJar)
+    }
+
     shadowJar {
-        archiveBaseName.set("${rootProject.name}-Velocity")
-        archiveClassifier.set("")
-
-        destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
-
         listOf(
             "com.ryderbelserion.fusion"
         ).forEach {
-            relocate(it, "com.ryderbelserion.libs.$it")
+            relocate(it, "libs.$it")
         }
     }
 }

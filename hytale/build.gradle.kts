@@ -10,31 +10,25 @@ repositories {
 }
 
 dependencies {
-    compileOnly(libs.hytale)
-
-    implementation(project(":chatterbox-common")) {
-        exclude(group = "ch.qos.logback", module = "logback-classic")
-        exclude(group = "net.dv8tion", module = "JDA")
-    }
-
+    implementation(project(":chatterbox-common"))
     implementation(libs.bundles.kyori)
     implementation(libs.fusion.kyori)
 
     compileOnly(libs.luckperms)
+    compileOnly(libs.hytale)
 }
 
 tasks {
+    build {
+        dependsOn(shadowJar)
+    }
+
     shadowJar {
-        archiveBaseName.set("${rootProject.name}-Hytale")
-        archiveClassifier.set("")
-
-        destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
-
         listOf(
             "com.ryderbelserion.fusion",
             "net.kyori.adventure"
         ).forEach {
-            relocate(it, "com.ryderbelserion.libs.$it")
-         }
+            relocate(it, "libs.$it")
+        }
     }
 }
