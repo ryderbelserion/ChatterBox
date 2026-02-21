@@ -2,7 +2,7 @@ package com.ryderbelserion.chatterbox.velocity.commands;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterCommand;
-import com.ryderbelserion.fusion.commands.context.VelocityCommandContext;
+import com.ryderbelserion.fusion.velocity.commands.context.VelocityCommandContext;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;

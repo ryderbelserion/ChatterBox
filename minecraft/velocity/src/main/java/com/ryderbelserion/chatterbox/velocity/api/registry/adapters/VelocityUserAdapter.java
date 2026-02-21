@@ -6,7 +6,7 @@ import com.ryderbelserion.chatterbox.api.constants.Support;
 import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
-import com.ryderbelserion.fusion.FusionVelocity;
+import com.ryderbelserion.fusion.velocity.FusionVelocity;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.objects.Mod;
 import com.ryderbelserion.fusion.core.api.registry.ModRegistry;

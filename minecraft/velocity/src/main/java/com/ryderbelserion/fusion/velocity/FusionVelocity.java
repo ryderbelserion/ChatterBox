@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion;
+package com.ryderbelserion.fusion.velocity;
 
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;

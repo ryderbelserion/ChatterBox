@@ -6,7 +6,7 @@ import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxVelocity;
 import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityMessageRegistry;
 import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityUserRegistry;
-import com.ryderbelserion.fusion.FusionVelocity;
+import com.ryderbelserion.fusion.velocity.FusionVelocity;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.ConsoleCommandSource;
 import com.velocitypowered.api.proxy.Player;

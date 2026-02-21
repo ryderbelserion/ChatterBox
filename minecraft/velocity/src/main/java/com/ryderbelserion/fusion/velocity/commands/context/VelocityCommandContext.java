@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.commands.context;
+package com.ryderbelserion.fusion.velocity.commands.context;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;

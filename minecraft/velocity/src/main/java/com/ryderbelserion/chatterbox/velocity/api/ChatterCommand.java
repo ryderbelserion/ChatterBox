@@ -4,8 +4,8 @@ import com.ryderbelserion.chatterbox.velocity.ChatterBox;
 import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityMessageRegistry;
 import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityUserRegistry;
 import com.ryderbelserion.chatterbox.velocity.api.registry.adapters.VelocitySenderAdapter;
-import com.ryderbelserion.fusion.FusionVelocity;
-import com.ryderbelserion.fusion.commands.VelocityCommand;
+import com.ryderbelserion.fusion.velocity.FusionVelocity;
+import com.ryderbelserion.fusion.velocity.commands.VelocityCommand;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 public abstract class ChatterCommand extends VelocityCommand {

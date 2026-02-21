@@ -11,7 +11,7 @@ import com.ryderbelserion.chatterbox.velocity.api.registry.adapters.VelocitySend
 import com.ryderbelserion.chatterbox.velocity.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.velocity.commands.admin.ReloadCommand;
 import com.ryderbelserion.chatterbox.velocity.commands.player.HubCommand;
-import com.ryderbelserion.fusion.FusionVelocity;
+import com.ryderbelserion.fusion.velocity.FusionVelocity;
 import com.velocitypowered.api.command.*;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.scheduler.ScheduledTask;
