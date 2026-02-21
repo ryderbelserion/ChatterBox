@@ -25,12 +25,4 @@ tasks {
     build {
         dependsOn(shadowJar)
     }
-
-    shadowJar {
-        listOf(
-            "com.ryderbelserion.fusion"
-        ).forEach {
-            relocate(it, "libs.$it")
-        }
-    }
 }

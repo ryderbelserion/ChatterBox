@@ -12,6 +12,7 @@ dependencies {
     implementation(project(":chatterbox-common"))
     implementation(libs.bundles.kyori)
     implementation(libs.fusion.kyori)
+    implementation(libs.log4j2)
 
     compileOnly(libs.luckperms)
     compileOnly(libs.hytale)
@@ -20,14 +21,5 @@ dependencies {
 tasks {
     build {
         dependsOn(shadowJar)
-    }
-
-    shadowJar {
-        listOf(
-            "com.ryderbelserion.fusion",
-            "net.kyori.adventure"
-        ).forEach {
-            relocate(it, "libs.$it")
-        }
     }
 }
