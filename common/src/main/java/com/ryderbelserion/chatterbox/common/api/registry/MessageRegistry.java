@@ -63,11 +63,11 @@ public class MessageRegistry implements IMessageRegistry<MessageAdapter> {
 
                 switch (platform) {
                     case VELOCITY -> {
-                        addMessage(key, Messages.server_name_blank, new MessageAdapter(configuration, "{prefix}<red>Server name cannot be blank!"));
-                        addMessage(key, Messages.server_doesnt_exist, new MessageAdapter(configuration, "{prefix}<red>Server does not exist in velocity.toml, or is not registered/online."));
-                        addMessage(key, Messages.server_transfer_success, new MessageAdapter(configuration, "{prefix}<green>Successfully forwarded you to {server}."));
-                        addMessage(key, Messages.server_transfer_failed, new MessageAdapter(configuration, "{prefix}<red>Failed to forward you to {server}."));
-                        addMessage(key, Messages.server_already_there, new  MessageAdapter(configuration, "{prefix}<red>You are already on that server."));
+                        addMessage(key, Messages.server_name_blank, new MessageAdapter(configuration, "{prefix}<red>Server name cannot be blank!", "messages", "hub", "server-name-blank"));
+                        addMessage(key, Messages.server_doesnt_exist, new MessageAdapter(configuration, "{prefix}<red>Server does not exist in velocity.toml, or is not registered/online.", "messages", "hub", "server-doesnt-exist"));
+                        addMessage(key, Messages.server_transfer_success, new MessageAdapter(configuration, "{prefix}<green>Successfully forwarded you to {server}.", "messages", "hub", "server-transfer-successful"));
+                        addMessage(key, Messages.server_transfer_failed, new MessageAdapter(configuration, "{prefix}<red>Failed to forward you to {server}.", "messages", "hub", "server-transfer-failed"));
+                        addMessage(key, Messages.server_already_there, new  MessageAdapter(configuration, "{prefix}<red>You are already on that server.", "messages", "hub", "server-already-there"));
                     }
 
                     case MINECRAFT, HYTALE -> {
@@ -93,7 +93,7 @@ public class MessageRegistry implements IMessageRegistry<MessageAdapter> {
 
     @Override
     public void addMessage(@NotNull final Key locale, @NotNull final Key key, @NotNull final MessageAdapter message) {
-        this.fusion.log(Level.INFO, "Registering the message @ %s for %s".formatted( locale.asString(), key.asString()));
+        this.fusion.log(Level.INFO, "Registering the message @ %s for %s".formatted(locale.asString(), key.asString()));
 
         final Map<Key, MessageAdapter> keys = this.messages.getOrDefault(locale, new HashMap<>());
 
