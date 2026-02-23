@@ -18,7 +18,6 @@ import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
 import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
-import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.apache.logging.log4j.core.Logger;
@@ -106,30 +105,23 @@ public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
 
         final Platform platform = getPlatform();
 
-        this.fileManager.addFolder(this.dataPath.resolve("discord"), FileType.YAML);
-
         this.fileManager.addFile(this.dataPath.resolve("server.json"), FileType.JSON);
 
+        this.fileManager.addFolder(this.dataPath.resolve("discord"), FileType.YAML);
+        this.fileManager.addFolder(this.dataPath.resolve("locale"), FileType.YAML);
+
+        final List<String> files = new ArrayList<>(List.of(
+                "messages.yml",
+                "config.yml"
+        ));
+
+        files.forEach(file -> this.fileManager.addFile(this.dataPath.resolve(file), FileType.YAML));
+
         switch (platform) {
-            case VELOCITY -> {
-                this.fileManager.extractFolder(this.source, "velocity", "");
-
-                List.of(
-                        "messages.yml",
-                        "config.yml"
-                ).forEach(file -> this.fileManager.addFile(this.dataPath.resolve(file), FileType.YAML, action -> action.addAction(FileAction.ALREADY_EXTRACTED)));
-            }
-
-            case HYTALE, MINECRAFT -> {
-                List.of(
-                        "messages.yml",
-                        "config.yml",
-                        "chat.yml"
-                ).forEach(file -> this.fileManager.addFile(this.dataPath.resolve(file), FileType.YAML));
-
-                this.fileManager.addFolder(this.dataPath.resolve("locale"), FileType.YAML);
-            }
+            case HYTALE, MINECRAFT -> files.add("chat.yml");
         }
+
+        files.forEach(file -> this.fileManager.addFile(this.dataPath.resolve(file), FileType.YAML));
 
         final ModRegistry registry = this.fusion.getModRegistry();
 
@@ -211,11 +203,11 @@ public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
         return placeholders;
     }
 
-    public @NotNull final ConfigManager getConfigManager() {
-        return this.configManager;
-    }
-
     public @NotNull final DiscordManager getDiscordManager() {
         return this.discordManager;
+    }
+
+    public @NotNull final ConfigManager getConfigManager() {
+        return this.configManager;
     }
 }

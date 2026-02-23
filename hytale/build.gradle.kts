@@ -10,6 +10,7 @@ repositories {
 
 dependencies {
     implementation(project(":chatterbox-common"))
+
     implementation(libs.bundles.kyori)
     implementation(libs.fusion.kyori)
     implementation(libs.log4j2)
@@ -19,7 +20,21 @@ dependencies {
 }
 
 tasks {
-    build {
-        dependsOn(shadowJar)
+    shadowJar {
+        archiveBaseName.set("${rootProject.name}-Hytale")
+        archiveClassifier.set("")
+
+        destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
+
+        from(rootProject.layout.projectDirectory.dir("configs").dir("minecraft")) {
+            into("/")
+        }
+
+        listOf(
+            "com.ryderbelserion.fusion",
+            "net.kyori.adventure"
+        ).forEach {
+            relocate(it, "libs.$it")
+        }
     }
 }
