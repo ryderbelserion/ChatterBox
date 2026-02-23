@@ -12,7 +12,6 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
-import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.List;
@@ -25,11 +24,11 @@ public class HubCommand extends ChatterCommand {
     public void run(@NotNull final VelocityCommandContext context) {
         final CommandSource source = context.getSource();
 
-        //if (!context.isPlayer()) {
-        //    this.adapter.sendMessage(source, Messages.must_be_player);
+        if (!context.isPlayer()) {
+            this.adapter.sendMessage(source, Messages.must_be_player);
 
-        //    return;
-        //}
+            return;
+        }
 
         final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
 
@@ -42,8 +41,6 @@ public class HubCommand extends ChatterCommand {
 
             return;
         }
-
-        player.sendMessage(Component.text("Server %s".formatted(serverName)));
 
         final Optional<RegisteredServer> registeredServer = this.server.getServer(serverName);
 
