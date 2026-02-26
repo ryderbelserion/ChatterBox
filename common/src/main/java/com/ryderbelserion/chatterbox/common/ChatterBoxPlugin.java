@@ -10,8 +10,8 @@ import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
-import com.ryderbelserion.chatterbox.common.api.objects.filter.types.RegexFilterAdapter;
-import com.ryderbelserion.chatterbox.common.api.objects.filter.types.SimpleFilterAdapter;
+import com.ryderbelserion.chatterbox.common.api.adapters.filter.types.RegexFilterAdapter;
+import com.ryderbelserion.chatterbox.common.api.adapters.filter.types.SimpleFilterAdapter;
 import com.ryderbelserion.chatterbox.common.configs.FilterConfig;
 import com.ryderbelserion.chatterbox.common.configs.ServerConfig;
 import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
@@ -114,8 +114,6 @@ public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
                 "messages.yml",
                 "config.yml"
         ));
-
-        files.forEach(file -> this.fileManager.addFile(this.dataPath.resolve(file), FileType.YAML));
 
         switch (platform) {
             case HYTALE, MINECRAFT -> files.add("chat.yml");

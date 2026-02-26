@@ -6,7 +6,7 @@ import com.ryderbelserion.chatterbox.api.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.ChatterBox;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.registry.IMessageRegistry;
-import com.ryderbelserion.chatterbox.common.api.objects.MessageAdapter;
+import com.ryderbelserion.chatterbox.common.api.adapters.MessageAdapter;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.files.FileManager;

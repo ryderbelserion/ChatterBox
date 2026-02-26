@@ -1,4 +1,4 @@
-package com.ryderbelserion.chatterbox.common.api.objects.filter;
+package com.ryderbelserion.chatterbox.common.api.adapters.filter;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;

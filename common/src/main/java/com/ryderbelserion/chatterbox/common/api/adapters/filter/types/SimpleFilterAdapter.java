@@ -1,6 +1,6 @@
-package com.ryderbelserion.chatterbox.common.api.objects.filter.types;
+package com.ryderbelserion.chatterbox.common.api.adapters.filter.types;
 
-import com.ryderbelserion.chatterbox.common.api.objects.filter.FilterAdapter;
+import com.ryderbelserion.chatterbox.common.api.adapters.filter.FilterAdapter;
 import com.ryderbelserion.chatterbox.common.configs.FilterConfig;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.NotNull;

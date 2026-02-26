@@ -1,4 +1,4 @@
-package com.ryderbelserion.chatterbox.common.api.objects;
+package com.ryderbelserion.chatterbox.common.api.adapters;
 
 import com.ryderbelserion.chatterbox.api.adapters.IMessageAdapter;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
