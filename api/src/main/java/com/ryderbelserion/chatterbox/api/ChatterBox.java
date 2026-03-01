@@ -10,7 +10,7 @@ import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 
-public abstract class ChatterBox<S, T> {
+public abstract class ChatterBox<S> {
 
     public static final String namespace = "chatterbox";
 
@@ -18,7 +18,6 @@ public abstract class ChatterBox<S, T> {
     protected final FileManager fileManager;
 
     protected final Path dataPath;
-    protected final Path source;
 
     public ChatterBox(@NotNull final FusionKyori<S> fusion) {
         this.fusion = fusion;
@@ -26,8 +25,6 @@ public abstract class ChatterBox<S, T> {
         this.dataPath = this.fusion.getDataPath();
 
         this.fileManager = this.fusion.getFileManager();
-
-        this.source = this.fileManager.getSource();
     }
 
     public abstract <C> @NotNull IPlayerAdapter<C> getPlayerAdapter(@NotNull final Class<C> object);
@@ -62,9 +59,5 @@ public abstract class ChatterBox<S, T> {
 
     public final Path getUserPath() {
         return this.dataPath.resolve("users");
-    }
-
-    public final Path getSource() {
-        return this.source;
     }
 }

@@ -18,7 +18,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import io.papermc.paper.util.Tick;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -29,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, Component, FoliaScheduler> {
+public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, FoliaScheduler> {
 
     private final ChatterBox plugin;
     private final Server server;

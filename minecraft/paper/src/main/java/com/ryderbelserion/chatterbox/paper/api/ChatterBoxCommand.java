@@ -6,7 +6,7 @@ import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
 import com.ryderbelserion.fusion.paper.builders.commands.PaperCommand;
 
-public abstract class ChatterCommand extends PaperCommand {
+public abstract class ChatterBoxCommand extends PaperCommand {
 
     protected final ChatterBox instance = ChatterBox.getInstance();
 

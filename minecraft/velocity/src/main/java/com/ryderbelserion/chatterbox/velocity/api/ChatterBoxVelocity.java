@@ -17,14 +17,13 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.scheduler.ScheduledTask;
 import com.velocitypowered.api.scheduler.Scheduler;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, Component, ScheduledTask> {
+public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, ScheduledTask> {
 
     private final ChatterBox instance;
     private final ProxyServer server;

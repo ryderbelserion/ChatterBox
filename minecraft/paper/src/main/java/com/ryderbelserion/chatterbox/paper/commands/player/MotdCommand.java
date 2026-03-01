@@ -4,7 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
-import com.ryderbelserion.chatterbox.paper.api.ChatterCommand;
+import com.ryderbelserion.chatterbox.paper.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MotdCommand extends ChatterCommand {
+public class MotdCommand extends ChatterBoxCommand {
 
     @Override
     public void run(@NotNull final PaperCommandContext context) {

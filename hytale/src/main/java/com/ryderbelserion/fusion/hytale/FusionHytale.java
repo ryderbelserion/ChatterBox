@@ -20,8 +20,8 @@ public class FusionHytale extends FusionKyori<IMessageReceiver> {
 
     private final HytaleLogger logger;
 
-    public FusionHytale(@NotNull final HytaleLogger logger, @NotNull final Path source, @NotNull final Path path) {
-        super(source, path);
+    public FusionHytale(@NotNull final HytaleLogger logger, @NotNull final Path path) {
+        super(path);
 
         this.logger = logger;
     }
@@ -37,6 +37,19 @@ public class FusionHytale extends FusionKyori<IMessageReceiver> {
     @Override
     public String papi(@Nullable final IMessageReceiver sender, @NotNull final String message) {
         return message;
+    }
+
+    @Override
+    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception, @NotNull final Map<String, String> placeholders) {
+        if (!this.isVerbose()) return;
+
+        final String safeMessage = replacePlaceholders(message, placeholders);
+
+        switch (level) {
+            case WARNING -> this.logger.atWarning().log(safeMessage, exception);
+            case ERROR -> this.logger.atSevere().log(safeMessage, exception);
+            case INFO -> this.logger.atInfo().log(safeMessage, exception);
+        }
     }
 
     @Override

@@ -14,10 +14,23 @@ public class FusionVelocity extends FusionKyori<Audience> {
 
     private final Logger logger;
 
-    public FusionVelocity(@NotNull final Logger logger, @NotNull final Path source, @NotNull final Path path) {
-        super(source, path);
+    public FusionVelocity(@NotNull final Logger logger, @NotNull final Path path) {
+        super(path);
 
         this.logger = logger;
+    }
+
+    @Override
+    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception, @NotNull final Map<String, String> placeholders) {
+        if (!this.isVerbose()) return;
+
+        final String safeMessage = replacePlaceholders(message, placeholders);
+
+        switch (level) {
+            case WARNING -> this.logger.warn(safeMessage, exception);
+            case ERROR -> this.logger.error(safeMessage, exception);
+            case INFO -> this.logger.info(safeMessage, exception);
+        }
     }
 
     @Override

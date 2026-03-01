@@ -22,7 +22,7 @@ public class ChatterBox extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        this.fusion = new FusionPaper(this, getFile().toPath());
+        this.fusion = new FusionPaper(this);
         this.fusion.init();
 
         this.platform = new ChatterBoxPaper(this, this.fusion);

@@ -35,7 +35,7 @@ public class ChatterBox {
         this.server = server;
         this.logger = logger;
 
-        this.fusion = new FusionVelocity(this.logger, description.getSource().orElseThrow(), directory);
+        this.fusion = new FusionVelocity(this.logger, directory);
         this.fusion.init();
     }
 

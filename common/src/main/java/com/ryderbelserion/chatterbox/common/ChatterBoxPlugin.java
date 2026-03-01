@@ -29,7 +29,7 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.function.Consumer;
 
-public abstract class ChatterBoxPlugin<S, T, R> extends ChatterBox<S, T> {
+public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
     public static final UUID CONSOLE_UUID = new UUID(0, 0);
 

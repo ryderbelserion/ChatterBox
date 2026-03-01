@@ -1,7 +1,7 @@
 package com.ryderbelserion.chatterbox.paper.commands;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.chatterbox.paper.api.ChatterCommand;
+import com.ryderbelserion.chatterbox.paper.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -9,7 +9,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
-public class BaseCommand extends ChatterCommand {
+public class BaseCommand extends ChatterBoxCommand {
 
     @Override
     public void run(@NotNull final PaperCommandContext context) {}

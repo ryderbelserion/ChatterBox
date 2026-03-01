@@ -21,7 +21,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Message, Runnable> {
+public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Runnable> {
 
     private HytaleMessageRegistry messageRegistry;
     private HytaleContextRegistry contextRegistry;
