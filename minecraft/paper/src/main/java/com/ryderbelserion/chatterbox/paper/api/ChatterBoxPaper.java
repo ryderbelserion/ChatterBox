@@ -11,6 +11,7 @@ import com.ryderbelserion.chatterbox.paper.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.paper.commands.admin.ReloadCommand;
 import com.ryderbelserion.chatterbox.paper.commands.player.MotdCommand;
+import com.ryderbelserion.chatterbox.paper.commands.player.social.MsgCommand;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
@@ -74,7 +75,9 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, FoliaSchedu
 
             List.of(
                     new ReloadCommand(),
-                    new MotdCommand()
+                    new MotdCommand(),
+
+                    new MsgCommand()
             ).forEach(command -> root.then(command.registerPermissions().literal()));
 
             event.registrar().register(root.build(), "The base command for ChatterBox");

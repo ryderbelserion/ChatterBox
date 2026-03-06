@@ -22,6 +22,16 @@ messages:
     no-permission: "{prefix}<red>You do not have permission to use that command!"
     # Available placeholders: {prefix}
     inventory-not-empty: "{prefix}<red>Inventory is not empty, Please clear up some room."
+  # All messages related to /msg
+  msg:
+    # Available Placeholders: {prefix}, {player}, {message}
+    receiver-format: "<bold><red>(!)</red> <white>[</white></bold><yellow>{player} <light_purple>-></light_purple> You</yellow><bold><white>]</white></bold> <green>{message}"
+    # Available Placeholders: {prefix}, {player}, {message}
+    sender-format: "<bold><red>(!)</red> <white>[</white><yellow>You</yellow></bold> <light_purple>-></light_purple> <yellow>{player}</yellow><bold><white>]</white></bold> <green>{message}"
+    # Available placeholders: {prefix}
+    cannot-message-yourself: "{prefix}<red>You cannot message yourself!"
+    # Available placeholders: {prefix}
+    cannot-be-blank: "{prefix}<red>You cannot send a blank message!"
   # Available placeholders: {player}
   motd:
     - "<gray>------------------------------------"

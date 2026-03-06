@@ -61,6 +61,14 @@ public class MessageRegistry implements IMessageRegistry<MessageAdapter> {
 
                 addMessage(key, Messages.target_same_player, new MessageAdapter(configuration, "{prefix}<red>You cannot use this command on yourself.", "messages", "player", "target-same-player"));
 
+                addMessage(key, Messages.sender_format, new MessageAdapter(configuration, "<bold><red>(!)</red> <white>[</white><yellow>You</yellow></bold> <light_purple>-></light_purple> <yellow>{player}</yellow><bold><white>]</white></bold> <green>{message}",
+                        "messages", "msg", "sender-format"));
+                addMessage(key, Messages.receiver_format, new MessageAdapter(configuration, "<bold><red>(!)</red> <white>[</white></bold><yellow>{player} <light_purple>-></light_purple> You</yellow><bold><white>]</white></bold> <green>{message}",
+                        "messages", "msg", "receiver-format"));
+
+                addMessage(key, Messages.cannot_msg_yourself, new MessageAdapter(configuration, "{prefix}<red>You cannot message yourself!", "messages", "msg", "cannot-message-yourself"));
+                addMessage(key, Messages.msg_cannot_be_blank, new MessageAdapter(configuration, "{prefix}<red>You cannot send a blank message!", "messages", "msg", "cannot-be-blank"));
+
                 switch (platform) {
                     case VELOCITY -> {
                         addMessage(key, Messages.server_name_blank, new MessageAdapter(configuration, "{prefix}<red>Server name cannot be blank!", "messages", "hub", "server-name-blank"));

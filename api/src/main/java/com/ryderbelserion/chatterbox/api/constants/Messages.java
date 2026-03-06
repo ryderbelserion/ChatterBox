@@ -22,6 +22,14 @@ public class Messages {
 
     public static final Key message_of_the_day = Key.key(namespace, "message_of_the_day");
 
+    // social messages
+    public static final Key receiver_format = Key.key(namespace, "receiver_format");
+    public static final Key sender_format = Key.key(namespace, "sender_format");
+
+    public static final Key cannot_msg_yourself = Key.key(namespace, "cannot_msg_yourself");
+
+    public static final Key msg_cannot_be_blank = Key.key(namespace, "msg_cannot_be_blank");
+
     // velocity only messages
     public static final Key server_name_blank = Key.key(namespace, "server_name_blank");
     public static final Key server_doesnt_exist = Key.key(namespace, "server_doesnt_exist");
