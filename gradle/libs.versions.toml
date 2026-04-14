@@ -4,7 +4,8 @@ hytale = "+" # https://hytale.com
 log4j2 = "2.25.3" # https://github.com/apache/logging-log4j2
 
 ## Paper
-paperweight = "2.0.0-beta.19" # https://github.com/PaperMC/paperweight
+paperweight = "2.0.0-beta.21" # https://github.com/PaperMC/paperweight
+adventure = "4.26.1" # https://github.com/KyoriPowered/adventure
 run-paper = "3.0.2" # https://github.com/jpenilla/run-task
 paper = "1.21.11-R0.1-SNAPSHOT" # https://github.com/PaperMC/Paper
 
@@ -13,19 +14,16 @@ velocity = "3.4.0-SNAPSHOT" # https://docs.papermc.io/velocity/dev/creating-your
 ## Minecraft
 minecraft = "1.21.11" # https://minecraft.net
 
-## Kyori
-adventure = "4.26.1" # https://github.com/KyoriPowered/adventure
-
 ## Other
-fusion = "4.0.0-SNAPSHOT" # https://github.com/ryderbelserion/Fusion
+fusion = "4.17.0" # https://github.com/ryderbelserion/Fusion
 
 ## Gradle Plugins
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 curseforge = "1.1.26" # https://github.com/Darkhax/CurseForgeGradle
-minotaur = "2.8.10" # https://github.com/modrinth/minotaur
+minotaur = "2.9.0" # https://github.com/modrinth/minotaur
 feather = "0.4.0" # https://github.com/ryderbelserion/Feather
 hangar = "0.1.4" # https://github.com/HangarMC/hangar-publish-plugin
-shadow = "9.3.0" # https://github.com/GradleUp/shadow
+shadow = "9.4.1" # https://github.com/GradleUp/shadow
 
 ## Databases
 hikari = "7.0.2" # https://github.com/brettwooldridge/HikariCP
