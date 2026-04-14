@@ -22,7 +22,7 @@ public class ChatRender implements ChatRenderer {
     private final Component renderedMessage;
 
     public ChatRender(@NotNull final FusionPaper fusion, @NotNull final Player player, @NotNull final String format, @NotNull final SignedMessage message, @NotNull final Map<String, String> placeholders) {
-        final String value = fusion.papi(player, format); // parse papi separately
+        final String value = fusion.papi(player, format.replace("{message}", "<message>")); // parse papi separately
 
         final Map<String, String> map = new HashMap<>(placeholders);
 
@@ -30,9 +30,7 @@ public class ChatRender implements ChatRenderer {
 
         final List<TagResolver> resolvers = new ArrayList<>();
 
-        final String output = message.message().replace("{message}", "<message>");
-
-        resolvers.add(message(player, output));
+        resolvers.add(message(player, message.message()));
 
         this.renderedMessage = fusion.asComponent(player, value, map, resolvers);
     }
