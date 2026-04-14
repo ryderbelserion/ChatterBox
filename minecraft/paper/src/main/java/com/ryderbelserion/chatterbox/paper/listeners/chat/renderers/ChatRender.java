@@ -6,6 +6,8 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.chat.SignedMessage;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.entity.Player;
@@ -25,8 +27,27 @@ public class ChatRender implements ChatRenderer {
         final Map<String, String> map = new HashMap<>(placeholders);
 
         map.put("{player}", player.getName());
-        map.put("{message}", message.message());
 
+        final List<TagResolver> resolvers = new ArrayList<>();
+
+        final String output = message.message().replace("{message}", "<message>");
+
+        resolvers.add(message(player, output));
+
+        this.renderedMessage = fusion.asComponent(player, value, map, resolvers);
+    }
+
+    @Override
+    public @NotNull Component render(
+            @NotNull final Player player,
+            @NotNull final Component displayName,
+            @NotNull final Component message,
+            @NotNull final Audience viewer
+    ) {
+        return this.renderedMessage;
+    }
+
+    private @NotNull TagResolver message(@NotNull final Player player, @NotNull final String message) {
         final List<TagResolver> resolvers = new ArrayList<>();
 
         if (player.hasPermission("chatterbox.color")) {
@@ -51,34 +72,37 @@ public class ChatRender implements ChatRenderer {
             if (player.hasPermission("chatterbox.decoration.bold")) {
                 resolvers.add(StandardTags.decorations(TextDecoration.BOLD));
             }
-            
+
             if (player.hasPermission("chatterbox.decoration.italic")) {
                 resolvers.add(StandardTags.decorations(TextDecoration.ITALIC));
             }
-            
+
             if (player.hasPermission("chatterbox.decoration.underlined")) {
                 resolvers.add(StandardTags.decorations(TextDecoration.UNDERLINED));
             }
-            
+
             if (player.hasPermission("chatterbox.decoration.strikethrough")) {
                 resolvers.add(StandardTags.decorations(TextDecoration.STRIKETHROUGH));
             }
-            
+
             if (player.hasPermission("chatterbox.decoration.obfuscated")) {
                 resolvers.add(StandardTags.decorations(TextDecoration.OBFUSCATED));
             }
         }
 
-        this.renderedMessage = fusion.asComponent(value, map, resolvers, false);
-    }
+        final MiniMessage parser = MiniMessage.builder()
+                .tags(TagResolver
+                        .builder()
+                        .resolvers(resolvers)
+                        .build()
+                )
+                .build();
 
-    @Override
-    public @NotNull Component render(
-            @NotNull final Player player,
-            @NotNull final Component displayName,
-            @NotNull final Component message,
-            @NotNull final Audience viewer
-    ) {
-        return this.renderedMessage;
+        final Component parsedMessage = parser.deserialize(message);
+
+        return TagResolver.resolver(
+                "message",
+                (_, _) -> Tag.selfClosingInserting(parsedMessage)
+        );
     }
 }
