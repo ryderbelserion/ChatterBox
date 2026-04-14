@@ -51,7 +51,7 @@ public class DiscordBot extends DiscordPlugin {
         if (config.isEnabled()) {
             setPresence(); // set presence initially.
 
-            this.instance.runTask(action -> setPresence(), 60, 0); // run repeated task
+            this.instance.runTask(_ -> setPresence(), 60L, 0L); // run repeated task
         }
 
         this.jda.addEventListener(
