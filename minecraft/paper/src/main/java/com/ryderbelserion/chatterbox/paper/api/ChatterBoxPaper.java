@@ -75,9 +75,9 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, FoliaSchedu
 
             List.of(
                     new ReloadCommand(),
-                    new MotdCommand(),
+                    new MotdCommand()
 
-                    new MsgCommand()
+                    //new MsgCommand()
             ).forEach(command -> root.then(command.registerPermissions().literal()));
 
             event.registrar().register(root.build(), "The base command for ChatterBox");
