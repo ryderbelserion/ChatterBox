@@ -1,0 +1,19 @@
+name: Release Build
+
+on:
+  workflow_dispatch:
+
+  release:
+    types: [ published ]
+
+jobs:
+  build:
+    uses: ryderbelserion/ryderbelserion/.github/workflows/build.yml@main
+
+    with:
+      branch: main
+
+    secrets:
+      webhook: ${{ secrets.BUILD_WEBHOOK }}
+      modrinth_token: ${{ secrets.MODRINTH_TOKEN }}
+      hangar_token: ${{ secrets.HANGAR_KEY }}

@@ -1,0 +1,15 @@
+name: Sync Page Description
+
+on:
+  workflow_dispatch:
+
+  push:
+    paths:
+      - 'README.md'   # Triggers for changes to this specific file
+
+jobs:
+  sync:
+    uses: ryderbelserion/ryderbelserion/.github/workflows/sync.yml@main
+
+    secrets:
+      modrinth_token: ${{ secrets.MODRINTH_TOKEN }}
