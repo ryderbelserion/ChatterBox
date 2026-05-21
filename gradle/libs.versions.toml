@@ -10,7 +10,7 @@ adventure = "5.0.0" # https://github.com/KyoriPowered/adventure
 run-paper = "3.0.2" # https://github.com/jpenilla/run-task
 paper = "26.1.2.build.+" # https://github.com/PaperMC/Paper
 
-velocity = "3.4.0-SNAPSHOT" # https://docs.papermc.io/velocity/dev/creating-your-first-plugin/
+velocity = "3.5.0-SNAPSHOT" # https://docs.papermc.io/velocity/dev/creating-your-first-plugin/
 
 ## Minecraft
 minecraft = "26.1.2" # https://minecraft.net
