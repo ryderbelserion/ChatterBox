@@ -17,6 +17,10 @@ tasks {
         velocityVersion(libs.versions.velocity.get())
     }
 
+    build {
+        dependsOn(shadowJar)
+    }
+
     shadowJar {
         archiveBaseName.set("${rootProject.name}-Velocity")
         archiveClassifier.set("")

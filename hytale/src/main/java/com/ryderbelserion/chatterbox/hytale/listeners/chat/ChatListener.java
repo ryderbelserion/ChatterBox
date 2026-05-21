@@ -60,7 +60,7 @@ public class ChatListener implements EventListener<PlayerChatEvent> {
                     }
                 });
 
-                event.setFormatter((ref, msg) -> this.fusion.asMessage(player, reference.get(), placeholders));
+                event.setFormatter((_, _) -> this.fusion.asMessage(player, reference.get(), placeholders));
             }
 
             final DiscordConfig discordConfig = this.configManager.getDiscord();

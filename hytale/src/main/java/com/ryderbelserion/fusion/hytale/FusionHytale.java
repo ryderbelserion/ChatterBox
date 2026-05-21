@@ -11,6 +11,7 @@ import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.hytale.utils.ColorUtils;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -40,28 +41,28 @@ public class FusionHytale extends FusionKyori<IMessageReceiver> {
     }
 
     @Override
-    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception, @NotNull final Map<String, String> placeholders) {
+    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception, @NotNull final Object... objects) {
         if (!this.isVerbose()) return;
 
-        final String safeMessage = replacePlaceholders(message, placeholders);
+        final String format = message.formatted(objects);
 
         switch (level) {
-            case WARNING -> this.logger.atWarning().log(safeMessage, exception);
-            case ERROR -> this.logger.atSevere().log(safeMessage, exception);
-            case INFO -> this.logger.atInfo().log(safeMessage, exception);
+            case WARNING -> this.logger.atWarning().log(format, exception);
+            case ERROR -> this.logger.atSevere().log(format, exception);
+            case INFO -> this.logger.atInfo().log(format, exception);
         }
     }
 
     @Override
-    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
+    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Object... objects) {
         if (!this.isVerbose()) return;
 
-        final String safeMessage = replacePlaceholders(message, placeholders);
+        final String format = message.formatted(objects);
 
         switch (level) {
-            case WARNING -> this.logger.atWarning().log(safeMessage);
-            case ERROR -> this.logger.atSevere().log(safeMessage);
-            case INFO -> this.logger.atInfo().log(safeMessage);
+            case WARNING -> this.logger.atWarning().log(format);
+            case ERROR -> this.logger.atSevere().log(format);
+            case INFO -> this.logger.atInfo().log(format);
         }
     }
 
@@ -70,5 +71,10 @@ public class FusionHytale extends FusionKyori<IMessageReceiver> {
         final PluginBase plugin = PluginManager.get().getPlugin(PluginIdentifier.fromString(key.getValue()));
 
         return plugin != null && plugin.isEnabled();
+    }
+
+    @Override
+    public @NonNull final String getNamespace() {
+        return "chatterbox";
     }
 }

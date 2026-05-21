@@ -32,7 +32,6 @@ public class ChatterBox extends JavaPlugin {
     @Override
     protected void start() {
         final Path dataPath = getDataDirectory();
-        final Path source = getFile();
 
         this.fusion = new FusionHytale(getLogger(), dataPath.getParent().resolve(dataPath.getFileName().toString().split("_")[0]));
         this.fusion.init();

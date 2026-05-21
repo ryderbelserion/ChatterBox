@@ -4,51 +4,57 @@ import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-import org.slf4j.Logger;
 import java.nio.file.Path;
-import java.util.Map;
 
 public class FusionVelocity extends FusionKyori<Audience> {
 
-    private final Logger logger;
+    private final ComponentLogger logger;
 
-    public FusionVelocity(@NotNull final Logger logger, @NotNull final Path path) {
+    public FusionVelocity(@NotNull final ComponentLogger logger, @NotNull final Path path) {
         super(path);
 
         this.logger = logger;
     }
 
     @Override
-    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception, @NotNull final Map<String, String> placeholders) {
+    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception, @NotNull final Object... objects) {
         if (!this.isVerbose()) return;
 
-        final String safeMessage = replacePlaceholders(message, placeholders);
+        final Component component = asComponent(message.formatted(objects));
 
         switch (level) {
-            case WARNING -> this.logger.warn(safeMessage, exception);
-            case ERROR -> this.logger.error(safeMessage, exception);
-            case INFO -> this.logger.info(safeMessage, exception);
+            case WARNING -> this.logger.warn(component, exception);
+            case ERROR -> this.logger.error(component, exception);
+            case INFO -> this.logger.info(component, exception);
         }
     }
 
     @Override
-    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
+    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Object... objects) {
         if (!this.isVerbose()) return;
 
-        final String safeMessage = replacePlaceholders(message, placeholders);
+        final Component component = asComponent(message.formatted(objects));
 
         switch (level) {
-            case WARNING -> this.logger.warn(safeMessage);
-            case ERROR -> this.logger.error(safeMessage);
-            case INFO -> this.logger.info(safeMessage);
+            case WARNING -> this.logger.warn(component, objects);
+            case ERROR -> this.logger.error(component, objects);
+            case INFO -> this.logger.info(component, objects);
         }
     }
 
     @Override
     public final boolean isModReady(@NotNull final FusionKey key) {
         return false;
+    }
+
+    @Override
+    public @NonNull final String getNamespace() {
+        return "chatterbox";
     }
 
     @Override

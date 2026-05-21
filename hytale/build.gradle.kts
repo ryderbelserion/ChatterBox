@@ -6,7 +6,7 @@ project.group = "${rootProject.group}.hytale"
 project.version = "1.2.4"
 
 repositories {
-    maven("https://maven.hytale.com/release")
+    maven("https://maven.hytale.com/release/")
 }
 
 dependencies {
@@ -21,6 +21,10 @@ dependencies {
 }
 
 tasks {
+    build {
+        dependsOn(shadowJar)
+    }
+
     shadowJar {
         archiveBaseName.set("${rootProject.name}-Hytale")
         archiveClassifier.set("")

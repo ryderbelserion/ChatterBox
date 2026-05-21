@@ -2,7 +2,7 @@ package com.ryderbelserion.chatterbox.common.groups;
 
 import com.ryderbelserion.chatterbox.api.constants.Support;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
-import com.ryderbelserion.fusion.core.api.objects.Mod;
+import com.ryderbelserion.fusion.core.api.registry.mods.objects.Mod;
 import org.jetbrains.annotations.NotNull;
 
 public class LuckPermsSupport extends Mod {

@@ -23,11 +23,13 @@ tasks {
         minecraftVersion(libs.versions.minecraft.get())
     }
 
+    build {
+        dependsOn(shadowJar)
+    }
+
     shadowJar {
         archiveBaseName.set("${rootProject.name}-Paper")
         archiveClassifier.set("")
-
-        destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
 
         from(rootProject.layout.projectDirectory.dir("configs").dir("minecraft")) {
             into("/")

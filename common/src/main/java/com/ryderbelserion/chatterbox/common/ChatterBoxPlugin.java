@@ -17,7 +17,7 @@ import com.ryderbelserion.chatterbox.common.configs.ServerConfig;
 import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
-import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
+import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.apache.logging.log4j.core.Logger;

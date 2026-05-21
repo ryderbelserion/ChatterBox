@@ -42,7 +42,7 @@ public class ColorUtils {
             message.italic(italic == TextDecoration.State.TRUE);
         }
 
-        final ClickEvent clickEvent = text.clickEvent();
+        final ClickEvent<?> clickEvent = text.clickEvent();
 
         if (clickEvent != null && clickEvent.action() == ClickEvent.Action.OPEN_URL) {
             final ClickEvent.Payload payload = clickEvent.payload();

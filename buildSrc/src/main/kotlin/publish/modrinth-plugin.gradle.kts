@@ -1,5 +1,6 @@
 @file:Suppress("PackageDirectoryMismatch")
 
+
 plugins {
     id("com.modrinth.minotaur")
 
@@ -7,7 +8,7 @@ plugins {
 }
 
 modrinth {
-    token = System.getenv("MODRINTH_TOKEN")
+    token = "mrp_rQCjGHWfpst4KBrJEf022BvqwrVScPeIN3n7w1Vckq4dUnLeFCJvjMGd6xuP"
 
     projectId = "${rootProject.property("project_id")}"
 

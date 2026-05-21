@@ -12,8 +12,8 @@ import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.PluginDescription;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
 import java.nio.file.Path;
 
 @Plugin(id = "chatterbox", name = "ChatterBox", version = "1.0.0",
@@ -23,12 +23,12 @@ public class ChatterBox {
     private static ChatterBox instance;
 
     private final PluginDescription description;
+    private final ComponentLogger logger;
     private final FusionVelocity fusion;
     private final ProxyServer server;
-    private final Logger logger;
 
     @Inject
-    public ChatterBox(@NotNull final ProxyServer server, @NotNull final Logger logger, @NotNull final PluginDescription description, @DataDirectory final Path directory) {
+    public ChatterBox(@NotNull final ProxyServer server, @NotNull final ComponentLogger logger, @NotNull final PluginDescription description, @DataDirectory final Path directory) {
         instance = this;
 
         this.description = description;

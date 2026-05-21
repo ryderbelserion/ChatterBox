@@ -9,7 +9,7 @@ import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
-import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
+import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;

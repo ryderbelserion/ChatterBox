@@ -1,6 +1,5 @@
 @file:Suppress("PackageDirectoryMismatch")
 
-import gradle.kotlin.dsl.accessors._ba5d290ab715e74c9896b4fa811d61b7.ext
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 
 plugins {
