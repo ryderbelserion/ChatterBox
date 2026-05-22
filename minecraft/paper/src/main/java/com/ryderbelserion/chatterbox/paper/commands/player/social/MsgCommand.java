@@ -17,50 +17,49 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class MsgCommand extends ChatterBoxCommand {
 
     @Override
     public void run(@NotNull final PaperCommandContext context) {
-        final String arg1 = context.getStringArgument("player");
-        final CommandSender sender = context.getSender();
-        final String name = sender.getName();
+        context.getStringArgument("player").ifPresent(arg1 -> {
+            final CommandSender sender = context.getSender();
+            final String name = sender.getName();
 
-        if (arg1.equalsIgnoreCase(name)) {
-            this.adapter.sendMessage(sender, Messages.cannot_msg_yourself);
+            if (arg1.equalsIgnoreCase(name)) {
+                this.adapter.sendMessage(sender, Messages.cannot_msg_yourself);
 
-            return;
-        }
+                return;
+            }
 
-        final Player player = this.server.getPlayerExact(arg1);
+            Optional.ofNullable(this.server.getPlayerExact(arg1)).ifPresentOrElse(player -> {
+                context.getStringArgument("msg").ifPresent(message -> {
+                    if (message.isBlank()) {
+                        this.adapter.sendMessage(sender, Messages.msg_cannot_be_blank);
 
-        if (player == null) {
-            this.adapter.sendMessage(sender, Messages.target_not_online, Map.of(
-                    "{player}",
-                    arg1
-            ));
+                        return;
+                    }
 
-            return;
-        }
+                    this.adapter.sendMessage(sender, Messages.sender_format, Map.of(
+                            "{message}", message,
+                            "{player}", arg1
+                    ));
 
-        final String arg2 = context.getStringArgument("msg");
-
-        if (arg2.isBlank()) {
-            this.adapter.sendMessage(sender, Messages.msg_cannot_be_blank);
-
-            return;
-        }
-
-        this.adapter.sendMessage(sender, Messages.sender_format, Map.of(
-                "{message}", arg2,
-                "{player}", arg1
-        ));
-
-        this.adapter.sendMessage(player, Messages.receiver_format, Map.of(
-                "{message}", arg2,
-                "{player}", name
-        ));
+                    this.adapter.sendMessage(player, Messages.receiver_format, Map.of(
+                            "{message}", message,
+                            "{player}", name
+                    ));
+                });
+            }, () -> {
+                this.adapter.sendMessage(sender, Messages.target_not_online, Map.of(
+                        "{player}",
+                        arg1
+                ));
+            });
+        });
     }
 
     @Override
