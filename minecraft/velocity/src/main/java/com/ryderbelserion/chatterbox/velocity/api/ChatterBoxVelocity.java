@@ -9,6 +9,7 @@ import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityMessageRegist
 import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityUserRegistry;
 import com.ryderbelserion.chatterbox.velocity.api.registry.adapters.VelocitySenderAdapter;
 import com.ryderbelserion.chatterbox.velocity.commands.BaseCommand;
+import com.ryderbelserion.chatterbox.velocity.commands.admin.BroadcastCommand;
 import com.ryderbelserion.chatterbox.velocity.commands.admin.ReloadCommand;
 import com.ryderbelserion.chatterbox.velocity.commands.player.HubCommand;
 import com.ryderbelserion.fusion.velocity.FusionVelocity;
@@ -74,6 +75,7 @@ public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, ScheduledTask
         LiteralArgumentBuilder<CommandSource> root = new BaseCommand().registerPermissions().literal().createBuilder();
 
         List.of(
+                new BroadcastCommand(),
                 new ReloadCommand()
         ).forEach(key -> root.then(key.registerPermissions().literal()));
 

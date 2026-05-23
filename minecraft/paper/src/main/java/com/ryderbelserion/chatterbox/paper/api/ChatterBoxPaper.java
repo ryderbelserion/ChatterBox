@@ -9,6 +9,7 @@ import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
 import com.ryderbelserion.chatterbox.paper.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.paper.commands.admin.BroadcastCommand;
 import com.ryderbelserion.chatterbox.paper.commands.admin.ReloadCommand;
 import com.ryderbelserion.chatterbox.paper.commands.player.MotdCommand;
 import com.ryderbelserion.chatterbox.paper.commands.player.social.MsgCommand;
@@ -74,6 +75,8 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, FoliaSchedu
             LiteralArgumentBuilder<CommandSourceStack> root = new BaseCommand().registerPermissions().literal().createBuilder();
 
             List.of(
+                    new BroadcastCommand(),
+
                     new ReloadCommand(),
                     new MotdCommand()
 
