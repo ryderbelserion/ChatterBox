@@ -3,7 +3,6 @@ plugins {
 }
 
 project.group = "${rootProject.group}.velocity"
-project.version = "1.0.0"
 
 dependencies {
     implementation(project(":chatterbox-common"))
@@ -22,7 +21,6 @@ tasks {
     }
 
     shadowJar {
-        archiveBaseName.set("${rootProject.name}-Velocity")
         archiveClassifier.set("")
 
         listOf(
