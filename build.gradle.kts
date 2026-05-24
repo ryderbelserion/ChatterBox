@@ -9,6 +9,8 @@ plugins {
     `java-plugin`
 }
 
+rootProject.version = rootProject.property("plugin_version") as String
+
 val git = feather.getBuilder()
 
 // https://github.com/granny/Pl3xMap/blob/0547bbba3f0b7468db17983412e95bf59a1a0b7d/build.gradle.kts#L10
@@ -22,7 +24,7 @@ tasks {
 
         archiveClassifier = ""
 
-        val files = subprojects.filter { it.name != "chatterbox-hytale" }.mapNotNull {
+        val files = subprojects.filter { it.name != "chatterbox-hytale" && it.name != "chatterbox-common" && it.name != "chatterbox-api" }.mapNotNull {
             val file = it.tasks.jar.get().archiveFile
 
             if (file.isPresent) {
