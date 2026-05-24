@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class PaperSenderAdapter extends ISenderAdapter<ChatterBoxPaper, Component, CommandSender> {
+public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender> {
 
     private final PaperMessageRegistry messageRegistry;
     private final PaperUserRegistry userRegistry;

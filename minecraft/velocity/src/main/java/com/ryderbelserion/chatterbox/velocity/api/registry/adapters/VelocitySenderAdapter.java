@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class VelocitySenderAdapter extends ISenderAdapter<ChatterBoxVelocity, Component, CommandSource> {
+public class VelocitySenderAdapter extends ISenderAdapter<Component, CommandSource> {
 
     private final VelocityMessageRegistry messageRegistry;
     private final VelocityUserRegistry userRegistry;

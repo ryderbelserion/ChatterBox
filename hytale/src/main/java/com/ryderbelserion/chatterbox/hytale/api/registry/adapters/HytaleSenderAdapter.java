@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class HytaleSenderAdapter extends ISenderAdapter<ChatterBoxHytale, Message, IMessageReceiver> {
+public class HytaleSenderAdapter extends ISenderAdapter<Message, IMessageReceiver> {
 
     private final HytaleMessageRegistry messageRegistry;
     private final HytaleUserRegistry userRegistry;

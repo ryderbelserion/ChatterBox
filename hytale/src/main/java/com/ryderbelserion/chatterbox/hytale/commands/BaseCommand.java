@@ -2,6 +2,7 @@ package com.ryderbelserion.chatterbox.hytale.commands;
 
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
 import com.ryderbelserion.chatterbox.hytale.commands.subs.MotdCommand;
+import com.ryderbelserion.chatterbox.hytale.commands.subs.admin.BroadcastCommand;
 import com.ryderbelserion.chatterbox.hytale.commands.subs.admin.ReloadCommand;
 
 public class BaseCommand extends AbstractCommandCollection {
@@ -11,6 +12,7 @@ public class BaseCommand extends AbstractCommandCollection {
 
         addAliases("chatterbox");
 
+        addSubCommand(new BroadcastCommand());
         addSubCommand(new ReloadCommand());
 
         addSubCommand(new MotdCommand());

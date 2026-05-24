@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public abstract class ISenderAdapter<P, C, S> {
+public abstract class ISenderAdapter<C, S> {
 
     public abstract UUID getUniqueId(@NotNull final S sender);
 
