@@ -8,6 +8,10 @@ root:
   prefix: " <gold>ChatterBox <reset>"
   # The name of the server.
   server-name: "global"
+  # The configuration for the /hub command. (only works on velocity)
+  hub:
+    # The server the /hub command is configured to go back to.
+    server: ""
   # Settings related to the motd.
   motd:
     # Should the message of the day be sent?

@@ -1,4 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar.Companion.shadowJar
 import utils.convertList
 import utils.updateMarkdown
 
@@ -23,7 +22,7 @@ tasks {
 
         archiveClassifier = ""
 
-        val files = subprojects.filter { it.name != "discord" && it.name != "common" && it.name != "api" && it.name != "hytale" && it.name != "velocity" }.mapNotNull {
+        val files = subprojects.filter { it.name != "hytale" }.mapNotNull {
             val file = it.tasks.jar.get().archiveFile
 
             if (file.isPresent) {
@@ -54,7 +53,6 @@ tasks.register("puzzle") {
     dependsOn(tasks.jar)
 
     dependsOn(rootProject.project(":chatterbox-hytale").tasks.build)
-    dependsOn(rootProject.project(":chatterbox-velocity").tasks.build)
 }
 
 val releaseType = rootProject.ext.get("release_type").toString()

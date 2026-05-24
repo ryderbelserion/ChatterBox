@@ -32,6 +32,18 @@ messages:
     cannot-message-yourself: "{prefix}<red>You cannot message yourself!"
     # Available placeholders: {prefix}
     cannot-be-blank: "{prefix}<red>You cannot send a blank message!"
+  # All messages related to /hub (only works on velocity)
+  hub:
+    # Available placeholders: {prefix}
+    server-name-blank: "{prefix}<red>Server name cannot be blank!"
+    # Available placeholders: {prefix}
+    server-doesnt-exist: "{prefix}<red>Server does not exist in velocity.toml, or is not registered/online."
+    # Available placeholders: {prefix}, {server}
+    server-transfer-successful: "{prefix}<green>Successfully forwarded you to {server}."
+    # Available placeholders: {prefix}, {server}
+    server-transfer-failed: "{prefix}<red>Failed to forward you to {server}."
+    # Available placeholders: {prefix}
+    server-already-there: "{prefix}<red>You are already on that server."
   # Available placeholders: {player}
   motd:
     - "<gray>------------------------------------"
