@@ -29,7 +29,7 @@ public class BroadcastCommand extends ChatterCommand {
     public @NotNull final LiteralCommandNode<CommandSource> literal() {
         final LiteralArgumentBuilder<CommandSource> root = BrigadierCommand.literalArgumentBuilder("broadcast").requires(this::requirement);
 
-        final RequiredArgumentBuilder<CommandSource, String> arg1 = BrigadierCommand.requiredArgumentBuilder("message", StringArgumentType.string()).suggests((_, builder) -> builder.buildFuture());
+        final RequiredArgumentBuilder<CommandSource, String> arg1 = BrigadierCommand.requiredArgumentBuilder("message", StringArgumentType.greedyString()).suggests((_, builder) -> builder.buildFuture());
 
         return root.then(arg1.executes(context -> {
             run(new VelocityCommandContext(context));

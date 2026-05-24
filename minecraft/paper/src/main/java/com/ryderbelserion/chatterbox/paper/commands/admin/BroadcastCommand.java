@@ -29,7 +29,7 @@ public class BroadcastCommand extends ChatterBoxCommand {
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
         final LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("broadcast").requires(this::requirement);
 
-        final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = argument("message", StringArgumentType.string()).suggests((context, builder) -> builder.buildFuture())
+        final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = argument("message", StringArgumentType.greedyString()).suggests((context, builder) -> builder.buildFuture())
                 .executes(context -> {
                     run(new PaperCommandContext(context));
 
