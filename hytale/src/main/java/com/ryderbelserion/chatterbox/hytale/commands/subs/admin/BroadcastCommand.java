@@ -19,12 +19,14 @@ public class BroadcastCommand extends CommandBase {
 
     private final HytaleSenderAdapter adapter = this.platform.getSenderAdapter();
 
-    private final RequiredArg<String> message = withRequiredArg("message", "The message to send to the server!", ArgTypes.STRING);
+    private final RequiredArg<String> message;
 
     public BroadcastCommand() {
         super("broadcast", "Sends a message to the server!", false);
 
         requirePermission("chatterbox.command.broadcast");
+
+        this.message = withRequiredArg("message", "The message to send to the server!", ArgTypes.STRING);
     }
 
     @Override
