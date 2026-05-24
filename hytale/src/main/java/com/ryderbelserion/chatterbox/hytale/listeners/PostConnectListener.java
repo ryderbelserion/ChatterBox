@@ -3,6 +3,7 @@ package com.ryderbelserion.chatterbox.hytale.listeners;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.event.events.player.AddPlayerToWorldEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
+import com.hypixel.hytale.server.core.event.events.player.RemovedPlayerFromWorldEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
@@ -121,6 +122,16 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
             if (config.node("root", "traffic", "join-message", "toggle").getBoolean(true)) {
                 event.setBroadcastJoinMessage(false);
+                event.setJoinMessage(null);
+            }
+        });
+
+        registry.registerGlobal(RemovedPlayerFromWorldEvent.class, event -> {
+            final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
+
+            if (config.node("root", "traffic", "quit-message", "toggle").getBoolean(true)) {
+                event.setBroadcastLeaveMessage(false);
+                event.setLeaveMessage(null);
             }
         });
     }
