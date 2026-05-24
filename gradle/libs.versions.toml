@@ -4,7 +4,6 @@ hytale = "+" # https://hytale.com
 log4j2 = "2.25.3" # https://github.com/apache/logging-log4j2
 
 ## Paper
-## Paper
 paperweight = "2.0.0-beta.21" # https://github.com/PaperMC/paperweight
 adventure = "5.0.0" # https://github.com/KyoriPowered/adventure
 run-paper = "3.0.2" # https://github.com/jpenilla/run-task
@@ -16,7 +15,7 @@ velocity = "3.5.0-SNAPSHOT" # https://docs.papermc.io/velocity/dev/creating-your
 minecraft = "26.1.2" # https://minecraft.net
 
 ## Other
-fusion = "4.23.0" # https://github.com/ryderbelserion/Fusion
+fusion = "4.26.0" # https://github.com/ryderbelserion/Fusion
 
 ## Gradle Plugins
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
@@ -74,9 +73,9 @@ postgres = { module = "'org.postgresql:postgresql", version.ref = "postgres" }
 hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 
 # https://github.com/ryderbelserion/Fusion
+fusion-velocity = { module = "com.ryderbelserion.fusion:fusion-velocity", version.ref = "fusion" }
 fusion-mojang = { module = "com.ryderbelserion.fusion:fusion-mojang", version.ref = "fusion" }
 fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref = "fusion" }
-fusion-files = { module = "com.ryderbelserion.fusion:fusion-files", version.ref = "fusion" }
 fusion-kyori = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref = "fusion" }
 fusion-core = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref = "fusion" }
 

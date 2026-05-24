@@ -82,7 +82,7 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
             final ISenderAdapter adapter = getSenderAdapter();
 
             if (delay > 0) {
-                runDelayedTask(consumer -> adapter.sendMessage(sender, Messages.message_of_the_day, placeholders), delay);
+                runDelayedTask(_ -> adapter.sendMessage(sender, Messages.message_of_the_day, placeholders), delay);
 
                 return;
             }
@@ -104,11 +104,13 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
         } catch (final IOException ignored) {}
 
         final Platform platform = getPlatform();
+        final String jarFolder = platform.getJarFolder();
+
+        this.fileManager.addFolder(this.dataPath.resolve("discord"), FileType.YAML);
 
         this.fileManager.addFile(this.dataPath.resolve("server.json"), FileType.JSON);
 
-        this.fileManager.addFolder(this.dataPath.resolve("discord"), FileType.YAML);
-        this.fileManager.addFolder(this.dataPath.resolve("locale"), FileType.YAML);
+        this.fileManager.addFolder(this.dataPath.resolve("locale"), jarFolder, FileType.YAML);
 
         final List<String> files = new ArrayList<>(List.of(
                 "messages.yml",
@@ -119,7 +121,7 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
             case HYTALE, MINECRAFT -> files.add("chat.yml");
         }
 
-        files.forEach(file -> this.fileManager.addFile(this.dataPath.resolve(file), FileType.YAML));
+        files.forEach(file -> this.fileManager.addFile(this.dataPath.resolve(file), jarFolder, FileType.YAML));
 
         final ModRegistry registry = this.fusion.getModRegistry();
 

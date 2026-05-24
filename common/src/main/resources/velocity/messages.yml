@@ -20,25 +20,15 @@ messages:
     target-same-player: "{prefix}<red>You cannot use this command on yourself."
     # Available placeholders: {prefix}
     no-permission: "{prefix}<red>You do not have permission to use that command!"
+  # All messages related to /hub
+  hub:
     # Available placeholders: {prefix}
-    inventory-not-empty: "{prefix}<red>Inventory is not empty, Please clear up some room."
-  # All messages related to /msg
-  msg:
-    # Available Placeholders: {prefix}, {player}, {message}
-    receiver-format: "<bold><red>(!)</red> <white>[</white></bold><yellow>{player} <light_purple>-></light_purple> You</yellow><bold><white>]</white></bold> <green>{message}"
-    # Available Placeholders: {prefix}, {player}, {message}
-    sender-format: "<bold><red>(!)</red> <white>[</white><yellow>You</yellow></bold> <light_purple>-></light_purple> <yellow>{player}</yellow><bold><white>]</white></bold> <green>{message}"
+    server-name-blank: "{prefix}<red>Server name cannot be blank!"
     # Available placeholders: {prefix}
-    cannot-message-yourself: "{prefix}<red>You cannot message yourself!"
+    server-doesnt-exist: "{prefix}<red>Server does not exist in velocity.toml, or is not registered/online."
+    # Available placeholders: {prefix}, {server}
+    server-transfer-successful: "{prefix}<green>Successfully forwarded you to {server}."
+    # Available placeholders: {prefix}, {server}
+    server-transfer-failed: "{prefix}<red>Failed to forward you to {server}."
     # Available placeholders: {prefix}
-    cannot-be-blank: "{prefix}<red>You cannot send a blank message!"
-  # Available placeholders: {player}
-  motd:
-    - "<gray>------------------------------------"
-    - ""
-    - "<green>Welcome to the server <blue>{player}</blue>!"
-    - ""
-    - "<green>If you need any help, Please message online staff!"
-    - ""
-    - "<green>You can change this message in the messages.yml or the locale folder."
-    - "<gray>------------------------------------"
+    server-already-there: "{prefix}<red>You are already on that server."

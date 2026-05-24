@@ -20,25 +20,15 @@ messages:
     target-same-player: "{prefix}<red>Sie können diesen Befehl nicht auf sich selbst anwenden."
     # Available placeholders: {prefix}
     no-permission: "{prefix}<red>Sie haben nicht die Erlaubnis, diesen Befehl zu benutzen!"
+  # All messages related to /hub
+  hub:
     # Available placeholders: {prefix}
-    inventory-not-empty: "{prefix}<red>Das Inventar ist nicht leer, bitte räumen Sie etwas Raum."
-  # All messages related to /msg
-  msg:
-    # Available Placeholders: {prefix}, {player}, {message}
-    receiver-format: "<bold><red>(!)</red> <white>[</white></bold><yellow>{player} <light_purple>-></light_purple> You</yellow><bold><white>]</white></bold> <green>{message}"
-    # Available Placeholders: {prefix}, {player}, {message}
-    sender-format: "<bold><red>(!)</red> <white>[</white><yellow>You</yellow></bold> <light_purple>-></light_purple> <yellow>{player}</yellow><bold><white>]</white></bold> <green>{message}"
+    server-name-blank: "{prefix}<red>Der Servername darf nicht leer sein!"
     # Available placeholders: {prefix}
-    cannot-message-yourself: "{prefix}<red>Du kannst dir selbst keine Nachrichten schicken!"
+    server-doesnt-exist: "{prefix}<red>Der Server existiert nicht in velocity.toml oder ist nicht registriert/online."
+    # Available placeholders: {prefix}, {server}
+    server-transfer-successful: "{prefix}<green>Sie wurden erfolgreich an {server} weitergeleitet."
+    # Available placeholders: {prefix}, {server}
+    server-transfer-failed: "{prefix}<red>Die Weiterleitung an {server} ist fehlgeschlagen."
     # Available placeholders: {prefix}
-    cannot-be-blank: "{prefix}<red>Sie können keine leere Nachricht senden!"
-  # Available placeholders: {player}
-  motd:
-    - "<gray>------------------------------------"
-    - ""
-    - "<green>Willkommen auf dem Server <blue>{player}</blue>!"
-    - ""
-    - "<green>Wenn Sie Hilfe benötigen, wenden Sie sich bitte an das Online-Personal!"
-    - ""
-    - "<green>Sie können diese Meldung in der Datei messages.yml oder im Ordner locale ändern."
-    - "<gray>------------------------------------"
+    server-already-there: "{prefix}<red>Sie befinden sich bereits auf diesem Server."
