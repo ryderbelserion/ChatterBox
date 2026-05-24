@@ -31,10 +31,6 @@ tasks {
 
         destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
 
-        from(rootProject.layout.projectDirectory.dir("configs").dir("minecraft")) {
-            into("/")
-        }
-
         listOf(
             "com.ryderbelserion.fusion",
             "net.kyori.adventure"

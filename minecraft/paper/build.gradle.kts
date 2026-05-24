@@ -31,10 +31,6 @@ tasks {
         archiveBaseName.set("${rootProject.name}-Paper")
         archiveClassifier.set("")
 
-        from(rootProject.layout.projectDirectory.dir("configs").dir("minecraft")) {
-            into("/")
-        }
-
         listOf(
             "com.ryderbelserion.fusion"
         ).forEach {

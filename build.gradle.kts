@@ -22,7 +22,7 @@ tasks {
 
         archiveClassifier = ""
 
-        val files = subprojects.filter { it.name != "hytale" }.mapNotNull {
+        val files = subprojects.filter { it.name != "chatterbox-hytale" }.mapNotNull {
             val file = it.tasks.jar.get().archiveFile
 
             if (file.isPresent) {

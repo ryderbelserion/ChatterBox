@@ -25,12 +25,6 @@ tasks {
         archiveBaseName.set("${rootProject.name}-Velocity")
         archiveClassifier.set("")
 
-        destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
-
-        from(rootProject.layout.projectDirectory.dir("configs").dir("velocity")) {
-            into("/")
-        }
-
         listOf(
             "com.ryderbelserion.fusion"
         ).forEach {
