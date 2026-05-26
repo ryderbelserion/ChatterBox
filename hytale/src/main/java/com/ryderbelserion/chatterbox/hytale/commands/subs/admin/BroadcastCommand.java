@@ -26,7 +26,7 @@ public class BroadcastCommand extends CommandBase {
 
         requirePermission("chatterbox.command.broadcast");
 
-        this.message = withRequiredArg("message", "The message to send to the server!", ArgTypes.STRING);
+        this.message = withRequiredArg("message", "The message to send to the server!", ArgTypes.GREEDY_STRING);
     }
 
     @Override
