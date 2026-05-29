@@ -34,15 +34,22 @@ tasks {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
         inputs.properties(
+            // global
             "group" to project.group.toString(),
             "artifact" to rootProject.name,
             "version" to rootProject.version,
             "description" to rootProject.description.toString(),
+
+            // fabric
+            "id" to rootProject.name.lowercase(),
+            "fabricloader" to libs.findVersion("fabric-loader").get(),
+
+            // generic
             "minecraft" to libs.findVersion("minecraft").get(),
         )
 
         with(copySpec {
-            include("*manifest.json", "*paper-plugin.yml")
+            include("*manifest.json", "*paper-plugin.yml", "*fabric.mod.json")
             from("src/main/resources") {
                 expand(inputs.properties)
             }

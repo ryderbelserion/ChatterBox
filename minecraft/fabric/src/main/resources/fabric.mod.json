@@ -1,0 +1,29 @@
+{
+  "schemaVersion" : 1,
+  "id" : "${id}",
+  "version" : "${version}",
+  "name" : "${artifact}",
+  "description" : "${description}",
+  "authors" : [
+    "ryderbelserion"
+  ],
+  "contact" : {
+    "homepage" : "https://modrinth.com/plugin/chatterbox",
+    "sources" : "https://github.com/ryderbelserion/ChatterBox",
+    "issues" : "https://github.com/ryderbelserion/ChatterBox/issues"
+  },
+  "license" : "MIT",
+  "environment" : "server",
+  "entrypoints" : {
+    "client" : [],
+    "server": [
+      "com.ryderbelserion.chatterbox.fabric.GradleTemplate"
+    ]
+  },
+  "depends" : {
+    "fabricloader" : ">=${fabricloader}",
+    "minecraft" : "${minecraft}",
+    "java" : ">=25",
+    "fabric-api" : "*"
+  }
+}

@@ -1,9 +1,18 @@
+pluginManagement {
+    repositories {
+        maven("https://maven.fabricmc.net/")
+
+        gradlePluginPortal()
+    }
+}
+
 rootProject.name = "ChatterBox"
 
 listOf(
     "hytale" to "hytale",
 
     "minecraft/velocity" to "velocity",
+    "minecraft/fabric" to "fabric",
     "minecraft/paper" to "paper",
 
     "discord" to "discord",

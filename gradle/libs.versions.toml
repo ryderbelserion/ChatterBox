@@ -1,15 +1,20 @@
 [versions]
 ## Hytale
 hytale = "+" # https://hytale.com
-log4j2 = "2.25.3" # https://github.com/apache/logging-log4j2
+log4j2 = "2.25.4" # https://github.com/apache/logging-log4j2
 
-## Paper
+## Paper API
 paperweight = "2.0.0-beta.21" # https://github.com/PaperMC/paperweight
 adventure = "5.0.0" # https://github.com/KyoriPowered/adventure
 run-paper = "3.0.2" # https://github.com/jpenilla/run-task
 paper = "26.1.2.build.+" # https://github.com/PaperMC/Paper
 
 velocity = "3.5.0-SNAPSHOT" # https://docs.papermc.io/velocity/dev/creating-your-first-plugin/
+
+## Fabric API
+fabric-loader = "0.19.2" # https://fabricmc.net/develop/
+fabric-loom = "1.16-SNAPSHOT" # https://fabricmc.net/develop/
+fabric-api = "0.150.0+26.1.2" # https://fabricmc.net/develop/
 
 ## Minecraft
 minecraft = "26.1.2" # https://minecraft.net
@@ -31,13 +36,15 @@ postgres = "42.7.8" # https://github.com/postgres/postgres
 
 luckperms = "5.4" # https://github.com/LuckPerms/LuckPerms
 
-logback-classic = "1.5.20" # https://github.com/qos-ch/logback
-jopt-simple = "5.0.4" # https://github.com/jopt-simple/jopt-simple
-jda = "6.3.0" # https://github.com/discord-jda/JDA
+logback-classic = "1.5.33" # https://github.com/qos-ch/logback
+jda = "6.4.1" # https://github.com/discord-jda/JDA
 
 [plugins]
 # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 fix-javadoc = { id = "com.jeff-media.fix-javadoc-plugin", version.ref = "fix-javadoc" }
+
+# https://fabricmc.net/develop/
+fabric-loom = { id = "net.fabricmc.fabric-loom", version.ref = "fabric-loom" }
 
 [libraries]
 # https://github.com/Darkhax/CurseForgeGradle
@@ -79,6 +86,13 @@ fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref 
 fusion-kyori = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref = "fusion" }
 fusion-core = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref = "fusion" }
 
+# https://fabricmc.net/develop/
+fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabric-api" }
+fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = "fabric-loader" }
+
+# https://minecraft.net
+minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft" }
+
 # https://github.com/KyoriPowered/adventure
 kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
 kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
@@ -95,8 +109,6 @@ hytale = { module = "com.hypixel.hytale:Server", version.ref = "hytale" }
 
 # https://github.com/qos-ch/logback
 classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }
-# https://github.com/jopt-simple/jopt-simple
-jopt = { module = "net.sf.jopt-simple:jopt-simple", version.ref = "jopt-simple" }
 # https://github.com/discord-jda/JDA
 jda = { module = "net.dv8tion:JDA", version.ref = "jda" }
 
