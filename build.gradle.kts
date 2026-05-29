@@ -13,39 +13,25 @@ rootProject.version = rootProject.property("plugin_version") as String
 
 val git = feather.getBuilder()
 
-// https://github.com/granny/Pl3xMap/blob/0547bbba3f0b7468db17983412e95bf59a1a0b7d/build.gradle.kts#L10
-tasks {
-    jar {
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+val mergedJar by configurations.creating {
+    isCanBeResolved = true
+    isCanBeConsumed = false
+}
 
-        subprojects {
-            dependsOn(project.tasks.build)
-        }
+dependencies {
+    mergedJar(project(":chatterbox-velocity"))
+    mergedJar(project(":chatterbox-fabric"))
+    mergedJar(project(":chatterbox-paper"))
+}
 
-        archiveClassifier = ""
+tasks.withType<Jar> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-        val files = subprojects.filter { it.name != "chatterbox-hytale" && it.name != "chatterbox-common" && it.name != "chatterbox-api" }.mapNotNull {
-            val file = it.tasks.jar.get().archiveFile
+    dependsOn(mergedJar)
 
-            if (file.isPresent) {
-                zipTree(file.get().asFile)
-            } else {
-                null
-            }
-        }
+    val jars = mergedJar.map { zipTree(it) }
 
-        from(files) {
-            exclude("META-INF/MANIFEST.MF")
-        }
-
-        doFirst {
-            files.forEach { file ->
-                file.matching { include("META-INF/MANIFEST.MF") }.files.forEach {
-                    manifest.from(it)
-                }
-            }
-        }
-    }
+    from(jars)
 }
 
 tasks.register("puzzle") {
