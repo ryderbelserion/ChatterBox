@@ -40,5 +40,10 @@ tasks {
         }
 
         relocate("org.bstats", project.group.toString())
+
+        minimize {
+            exclude(dependency("com.ryderbelserion.fusion:.*"))
+            exclude(dependency("net.kyori.adventure:.*"))
+        }
     }
 }

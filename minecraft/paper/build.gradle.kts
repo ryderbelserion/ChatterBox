@@ -7,7 +7,10 @@ project.group = "${rootProject.group}.paper"
 dependencies {
     implementation(project(":chatterbox-common"))
 
-    implementation(libs.fusion.paper)
+    implementation(libs.fusion.paper) {
+        exclude(module = "configurate-yaml")
+    }
+
     implementation(libs.bstats.paper)
 }
 
@@ -37,5 +40,9 @@ tasks {
         }
 
         relocate("org.bstats", project.group.toString())
+
+        minimize {
+            exclude(dependency("com.ryderbelserion.fusion:.*"))
+        }
     }
 }

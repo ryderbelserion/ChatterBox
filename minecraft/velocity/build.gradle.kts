@@ -7,7 +7,11 @@ project.group = "${rootProject.group}.velocity"
 dependencies {
     implementation(project(":chatterbox-common"))
 
-    implementation(libs.fusion.velocity)
+    implementation(libs.fusion.velocity) {
+        exclude(module = "configurate-yaml")
+        exclude(module = "configurate-gson")
+    }
+
     implementation(libs.bstats.velocity)
 }
 
@@ -30,5 +34,9 @@ tasks {
         }
 
         relocate("org.bstats", project.group.toString())
+
+        minimize {
+            exclude(dependency("com.ryderbelserion.fusion:.*"))
+        }
     }
 }

@@ -8,5 +8,7 @@ dependencies {
     compileOnly(libs.fusion.core)
     compileOnly(libs.classic)
 
-    api(libs.jda)
+    api(libs.jda) {
+        exclude(module = "opus-java") // we don't use voice features
+    }
 }
