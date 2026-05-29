@@ -13,25 +13,38 @@ rootProject.version = rootProject.property("plugin_version") as String
 
 val git = feather.getBuilder()
 
-val mergedJar by configurations.creating {
-    isCanBeResolved = true
-    isCanBeConsumed = false
-}
+tasks {
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-dependencies {
-    mergedJar(project(":chatterbox-velocity"))
-    mergedJar(project(":chatterbox-fabric"))
-    mergedJar(project(":chatterbox-paper"))
-}
+        subprojects {
+            dependsOn(project.tasks.build)
+        }
 
-tasks.withType<Jar> {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        archiveClassifier = ""
 
-    dependsOn(mergedJar)
+        val files = subprojects.filter { it.name != "chatterbox-hytale" && it.name != "chatterbox-common" && it.name != "chatterbox-api" }.mapNotNull {
+            val file = it.tasks.jar.get().archiveFile
 
-    val jars = mergedJar.map { zipTree(it) }
+            if (file.isPresent) {
+                zipTree(file.get().asFile)
+            } else {
+                null
+            }
+        }
 
-    from(jars)
+        from(files) {
+            exclude("META-INF/MANIFEST.MF")
+        }
+
+        doFirst {
+            files.forEach { file ->
+                file.matching { include("META-INF/MANIFEST.MF") }.files.forEach {
+                    manifest.from(it)
+                }
+            }
+        }
+    }
 }
 
 tasks.register("puzzle") {

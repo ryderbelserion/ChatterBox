@@ -38,5 +38,7 @@ tasks {
         ).forEach {
             relocate(it, "libs.$it")
         }
+
+        relocate("org.bstats", project.group.toString())
     }
 }
