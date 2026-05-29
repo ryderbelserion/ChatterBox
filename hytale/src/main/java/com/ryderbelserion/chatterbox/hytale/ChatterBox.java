@@ -36,7 +36,7 @@ public class ChatterBox extends JavaPlugin {
         this.fusion = new FusionHytale(getLogger(), dataPath.getParent().resolve(dataPath.getFileName().toString().split("_")[0]));
         this.fusion.init();
 
-        this.plugin = new ChatterBoxHytale(this.fusion);
+        this.plugin = new ChatterBoxHytale(this, this.fusion);
         this.plugin.init();
 
         final EventRegistry registry = getEventRegistry();

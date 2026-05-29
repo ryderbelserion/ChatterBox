@@ -12,7 +12,6 @@ import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.paper.commands.admin.BroadcastCommand;
 import com.ryderbelserion.chatterbox.paper.commands.admin.ReloadCommand;
 import com.ryderbelserion.chatterbox.paper.commands.player.MotdCommand;
-import com.ryderbelserion.chatterbox.paper.commands.player.social.MsgCommand;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
@@ -21,6 +20,7 @@ import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import io.papermc.paper.util.Tick;
 import net.kyori.adventure.title.Title;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -85,6 +85,8 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, FoliaSchedu
 
             event.registrar().register(root.build(), "The base command for ChatterBox");
         });
+
+        new Metrics(this.plugin, 30926);
     }
 
     @Override

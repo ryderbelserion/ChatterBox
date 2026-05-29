@@ -13,6 +13,7 @@ import com.velocitypowered.api.plugin.PluginDescription;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.bstats.velocity.Metrics;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 
@@ -23,15 +24,17 @@ public class ChatterBox {
     private static ChatterBox instance;
 
     private final PluginDescription description;
+    private final Metrics.Factory factory;
     private final ComponentLogger logger;
     private final FusionVelocity fusion;
     private final ProxyServer server;
 
     @Inject
-    public ChatterBox(@NotNull final ProxyServer server, @NotNull final ComponentLogger logger, @NotNull final PluginDescription description, @DataDirectory final Path directory) {
+    public ChatterBox(@NotNull final ProxyServer server, @NotNull final Metrics.Factory factory, @NotNull final ComponentLogger logger, @NotNull final PluginDescription description, @DataDirectory final Path directory) {
         instance = this;
 
         this.description = description;
+        this.factory = factory;
         this.server = server;
         this.logger = logger;
 
@@ -64,6 +67,10 @@ public class ChatterBox {
 
     public @NotNull final ChatterBoxVelocity getPlatform() {
         return this.platform;
+    }
+
+    public @NotNull final Metrics.Factory getFactory() {
+        return this.factory;
     }
 
     public @NotNull final FusionVelocity getFusion() {

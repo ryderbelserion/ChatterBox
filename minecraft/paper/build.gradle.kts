@@ -8,6 +8,7 @@ dependencies {
     implementation(project(":chatterbox-common"))
 
     implementation(libs.fusion.paper)
+    implementation(libs.bstats.paper)
 }
 
 tasks {

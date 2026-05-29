@@ -8,12 +8,14 @@ import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
+import com.ryderbelserion.chatterbox.hytale.ChatterBox;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleContextRegistry;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleMessageRegistry;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleSenderAdapter;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
+import org.bstats.hytale.Metrics;
 import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 import java.util.UUID;
@@ -28,8 +30,12 @@ public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Runnabl
     private HytaleSenderAdapter userAdapter;
     private HytaleUserRegistry userRegistry;
 
-    public ChatterBoxHytale(@NotNull final FusionHytale fusion) {
+    private final ChatterBox plugin;
+
+    public ChatterBoxHytale(@NotNull final ChatterBox plugin, @NotNull final FusionHytale fusion) {
         super(fusion);
+
+        this.plugin = plugin;
     }
 
     @Override
@@ -52,6 +58,8 @@ public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Runnabl
     @Override
     public void post() {
         super.post();
+
+        new Metrics(this.plugin, 30926);
     }
 
     @Override

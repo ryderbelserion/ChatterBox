@@ -1,5 +1,5 @@
 [versions]
-## Hytale
+## Hytale API
 hytale = "+" # https://hytale.com
 log4j2 = "2.25.4" # https://github.com/apache/logging-log4j2
 
@@ -7,20 +7,33 @@ log4j2 = "2.25.4" # https://github.com/apache/logging-log4j2
 paperweight = "2.0.0-beta.21" # https://github.com/PaperMC/paperweight
 adventure = "5.0.0" # https://github.com/KyoriPowered/adventure
 run-paper = "3.0.2" # https://github.com/jpenilla/run-task
+velocity = "3.5.0-SNAPSHOT" # https://github.com/PaperMC/Velocity
 paper = "26.1.2.build.+" # https://github.com/PaperMC/Paper
-
-velocity = "3.5.0-SNAPSHOT" # https://docs.papermc.io/velocity/dev/creating-your-first-plugin/
 
 ## Fabric API
 fabric-loader = "0.19.2" # https://fabricmc.net/develop/
 fabric-loom = "1.16-SNAPSHOT" # https://fabricmc.net/develop/
 fabric-api = "0.150.0+26.1.2" # https://fabricmc.net/develop/
 
-## Minecraft
+## Minecraft API
 minecraft = "26.1.2" # https://minecraft.net
 
-## Other
+## Other API
 fusion = "4.26.0" # https://github.com/ryderbelserion/Fusion
+
+## Metrics API
+bstats = "3.2.1" # https://bstats.org/docs
+
+## Database API
+hikari = "7.0.2" # https://github.com/brettwooldridge/HikariCP
+postgres = "42.7.8" # https://github.com/postgres/postgres
+
+## LuckPerms API
+luckperms = "5.4" # https://github.com/LuckPerms/LuckPerms
+
+## Discord API
+logback-classic = "1.5.33" # https://github.com/qos-ch/logback
+jda = "6.4.1" # https://github.com/discord-jda/JDA
 
 ## Gradle Plugins
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
@@ -29,15 +42,6 @@ minotaur = "2.9.0" # https://github.com/modrinth/minotaur
 feather = "0.6.1" # https://github.com/ryderbelserion/Feather
 hangar = "0.1.4" # https://github.com/HangarMC/hangar-publish-plugin
 shadow = "9.4.1" # https://github.com/GradleUp/shadow
-
-## Databases
-hikari = "7.0.2" # https://github.com/brettwooldridge/HikariCP
-postgres = "42.7.8" # https://github.com/postgres/postgres
-
-luckperms = "5.4" # https://github.com/LuckPerms/LuckPerms
-
-logback-classic = "1.5.33" # https://github.com/qos-ch/logback
-jda = "6.4.1" # https://github.com/discord-jda/JDA
 
 [plugins]
 # https://github.com/mfnalex/gradle-fix-javadoc-plugin
@@ -81,7 +85,6 @@ hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 
 # https://github.com/ryderbelserion/Fusion
 fusion-velocity = { module = "com.ryderbelserion.fusion:fusion-velocity", version.ref = "fusion" }
-fusion-mojang = { module = "com.ryderbelserion.fusion:fusion-mojang", version.ref = "fusion" }
 fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref = "fusion" }
 fusion-kyori = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref = "fusion" }
 fusion-core = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref = "fusion" }
@@ -106,6 +109,11 @@ luckperms = { module = "net.luckperms:api", version.ref = "luckperms" }
 
 # https://hytale.com
 hytale = { module = "com.hypixel.hytale:Server", version.ref = "hytale" }
+
+# https://bstats.org
+bstats-velocity = { module = "org.bstats:bstats-velocity", version.ref = "bstats" }
+bstats-hytale = { module = "org.bstats:bstats-hytale", version.ref = "bstats" }
+bstats-paper = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
 
 # https://github.com/qos-ch/logback
 classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }

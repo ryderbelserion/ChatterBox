@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":chatterbox-common"))
 
     implementation(libs.bundles.kyori)
+    implementation(libs.bstats.hytale)
     implementation(libs.fusion.kyori)
     implementation(libs.log4j2)
 

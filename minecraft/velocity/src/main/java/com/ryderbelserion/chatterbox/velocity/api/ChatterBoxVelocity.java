@@ -82,6 +82,8 @@ public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, ScheduledTask
         final BrigadierCommand brigadier = new BrigadierCommand(root);
 
         commandManager.register(commandManager.metaBuilder(brigadier).build(), brigadier);
+
+        this.instance.getFactory().make(this.instance, 30926);
     }
 
     @Override

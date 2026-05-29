@@ -8,6 +8,7 @@ dependencies {
     implementation(project(":chatterbox-common"))
 
     implementation(libs.fusion.velocity)
+    implementation(libs.bstats.velocity)
 }
 
 tasks {
