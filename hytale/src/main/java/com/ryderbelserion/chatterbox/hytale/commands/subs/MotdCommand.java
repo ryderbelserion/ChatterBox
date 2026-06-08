@@ -35,7 +35,7 @@ public class MotdCommand extends CommandBase {
 
         final Map<String, String> placeholders = new HashMap<>();
 
-        placeholders.put("{player}", sender.getDisplayName());
+        placeholders.put("{player}", sender.getUsername());
 
         this.userRegistry.getUser(sender.getUuid()).ifPresent(user -> {
             final GroupAdapter adapter = user.getGroupAdapter();
