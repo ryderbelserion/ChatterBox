@@ -55,6 +55,12 @@ public class HubCommand extends ChatterBoxCommand {
 
         final String name = optional.isPresent() ? optional.get().getServer().getServerInfo().getName() : "";
 
+        if (name.isBlank()) {
+            this.adapter.sendMessage(source, Messages.server_name_blank);
+
+            return;
+        }
+
         if (name.equals(serverName)) {
             this.adapter.sendMessage(source, Messages.server_already_there);
 
