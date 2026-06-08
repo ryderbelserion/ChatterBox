@@ -27,24 +27,24 @@ public enum Permissions {
     use(PermissionType.OP, "command.use", "Allows use of /cb|/cbv"),
 
     // features
-    mute_chat_bypass(PermissionType.OP, "mutechat.bypass", "Allows you to bypass muted server chats!"),
+    mute_chat_bypass(PermissionType.OP, "mutechat.bypass", "Allows you to bypass muted server chats!", true),
 
     // color resolvers
-    standard_colors(PermissionType.TRUE, "color", "Allows you to use standard colors like <red>"),
+    standard_colors(PermissionType.TRUE, "color", "Allows you to use standard colors like <red>", true),
 
-    gradient_colors(PermissionType.TRUE, "gradient", "Allows you to use gradient colors using <gradient>"),
+    gradient_colors(PermissionType.TRUE, "gradient", "Allows you to use gradient colors using <gradient>", true),
 
-    rainbow_colors(PermissionType.OP, "rainbow", "Allows you to use rainbow colors by doing <rainbow>"),
+    rainbow_colors(PermissionType.OP, "rainbow", "Allows you to use rainbow colors by doing <rainbow>", true),
 
-    decoration_font(PermissionType.OP, "font", "Allows you to use <font> in chat"),
+    decoration_font(PermissionType.OP, "font", "Allows you to use <font> in chat", true),
 
-    decoration_wildcard(PermissionType.TRUE, "decoration", "Gives access to all decoration tags!"),
+    decoration_wildcard(PermissionType.TRUE, "decoration", "Gives access to all decoration tags!", true),
 
-    decoration_strikethrough(PermissionType.FALSE, "decoration.strikethrough", "Gives access to <strikethrough>"),
-    decoration_obfuscated(PermissionType.FALSE, "decoration.obfuscated", "Gives access to <obfuscated>"),
-    decoration_underlined(PermissionType.FALSE, "decoration.underlined", "Gives access to <underlined>"),
-    decoration_italic(PermissionType.FALSE, "decoration.italic", "Gives access to <italic>"),
-    decoration_bold(PermissionType.FALSE, "decoration.bold", "Gives access to <bold>");
+    decoration_strikethrough(PermissionType.FALSE, "decoration.strikethrough", "Gives access to <strikethrough>", true),
+    decoration_obfuscated(PermissionType.FALSE, "decoration.obfuscated", "Gives access to <obfuscated>", true),
+    decoration_underlined(PermissionType.FALSE, "decoration.underlined", "Gives access to <underlined>", true),
+    decoration_italic(PermissionType.FALSE, "decoration.italic", "Gives access to <italic>", true),
+    decoration_bold(PermissionType.FALSE, "decoration.bold", "Gives access to <bold>", true);
 
     private final PermissionType permissionType;
     private final Map<String, Boolean> children;
@@ -66,6 +66,16 @@ public enum Permissions {
         this.children = children;
 
         this.isRegister = isRegister;
+    }
+
+    Permissions(
+            final PermissionType permissionType,
+            final String permissionNode,
+            final String permissionDesc,
+
+            final boolean isRegister
+    ) {
+        this(permissionType, permissionNode, permissionDesc, new HashMap<>(), isRegister);
     }
 
     Permissions(

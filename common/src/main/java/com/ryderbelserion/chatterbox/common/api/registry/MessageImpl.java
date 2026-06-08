@@ -92,6 +92,11 @@ public class MessageImpl {
 
                             action.addKey(key, Messages.cannot_speak_while_muted, new YamlMessageAdapter(configuration, "{prefix}<red>You cannot speak while the server chat is muted!", "messages", "mute", "chat", "cannot-speak-while-muted"));
 
+                            action.addKey(key, Messages.staff_chat_enabled, new YamlMessageAdapter(configuration, "{prefix}<green>You have enabled Staff Chat!", "messages", "staff", "chat_enabled"));
+                            action.addKey(key, Messages.staff_chat_disabled, new YamlMessageAdapter(configuration, "{prefix}<red>You have disabled Staff Chat!", "messages", "staff", "chat_disabled"));
+                            action.addKey(key, Messages.staff_chat_format, new YamlMessageAdapter(configuration, "<yellow>[<green>StaffChat</green>]</yellow> <green>{player}</green> <gray>></gray> <blue>{message}</blue>", "messages", "staff", "chat_format"));
+                            action.addKey(key, Messages.staff_chat_cannot_enable, new YamlMessageAdapter(configuration, "{prefix}<red>You cannot enable Staff Chat!", "messages", "staff", "chat_cannot_enable"));
+
                             action.addKey(key, Messages.message_of_the_day, new YamlMessageAdapter(configuration, StringUtils.toString(List.of(
                                     "<gray>------------------------------------",
                                     "",

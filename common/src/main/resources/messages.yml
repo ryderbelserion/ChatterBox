@@ -46,6 +46,16 @@ messages:
       server-unmuted-sender: "{prefix}<red>You have unmuted the server chat!"
       # Available Placeholders: {prefix}
       cannot-speak-while-muted: "{prefix}<red>You cannot speak while the server chat is muted!"
+  # All messages related to /cb staffchat
+  staff:
+    # Available Placeholders: {prefix}
+    chat_enabled: "{prefix}<green>You have enabled Staff Chat!"
+    # Available Placeholders: {prefix}
+    chat_disabled: "{prefix}<red>You have disabled Staff Chat!"
+    # Available Placeholders: {prefix}, {player}, {message}
+    chat_format: "<yellow>[<green>StaffChat</green>]</yellow> <green>{player}</green> <gray>></gray> <blue>{message}</blue>"
+    # Available Placeholders: {prefix}
+    chat_cannot_enable: "{prefix}<red>You cannot enable Staff Chat!"
   # Available placeholders: {player}
   motd:
     - "<gray>------------------------------------"

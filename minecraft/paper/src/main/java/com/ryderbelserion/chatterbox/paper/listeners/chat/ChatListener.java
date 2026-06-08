@@ -1,7 +1,9 @@
 package com.ryderbelserion.chatterbox.paper.listeners.chat;
 
 import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.api.enums.server.ServerState;
+import com.ryderbelserion.chatterbox.api.enums.user.UserState;
 import com.ryderbelserion.chatterbox.common.api.adapters.ServerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
@@ -46,8 +48,10 @@ public class ChatListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onMuteChat(AsyncChatEvent event) {
-        if (this.serverAdapter.hasState(ServerState.chat_muted)) {
-            this.senderAdapter.sendMessage(event.getPlayer(), Messages.cannot_speak_while_muted);
+        final Player player = event.getPlayer();
+
+        if (this.serverAdapter.hasState(ServerState.chat_muted) && !Permissions.mute_chat_bypass.hasPermission(player)) {
+            this.senderAdapter.sendMessage(player, Messages.cannot_speak_while_muted);
 
             event.setCancelled(true);
         }
@@ -55,7 +59,9 @@ public class ChatListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerChat(AsyncChatEvent event) {
-        if (this.serverAdapter.hasState(ServerState.chat_muted)) {
+        final Player player = event.getPlayer();
+
+        if (this.serverAdapter.hasState(ServerState.chat_muted) && !Permissions.mute_chat_bypass.hasPermission(player)) {
             return;
         }
 
@@ -63,15 +69,19 @@ public class ChatListener implements Listener {
 
         if (!configuration.node("chat", "format", "toggle").getBoolean(true)) return;
 
-        final AtomicReference<String> reference = new AtomicReference<>(configuration.node("chat", "format", "default").getString("{player} <gold>-> <reset>{message}"));
-
-        final Map<String, String> placeholders = new HashMap<>();
-
-        final Player player = event.getPlayer();
-
         final UUID uuid = player.getUniqueId();
 
         this.userRegistry.getUser(uuid).ifPresent(user -> {
+            if (user.hasUserState(UserState.staff_chat)) {
+                event.setCancelled(true); // cancel event, because staff chat!
+
+                return;
+            }
+
+            final AtomicReference<String> reference = new AtomicReference<>(configuration.node("chat", "format", "default").getString("{player} <gold>-> <reset>{message}"));
+
+            final Map<String, String> placeholders = new HashMap<>();
+
             final GroupAdapter adapter = user.getGroupAdapter();
 
             final Map<String, String> map = adapter.getPlaceholders();
@@ -85,34 +95,42 @@ public class ChatListener implements Listener {
             if (!groupFormat.isBlank()) {
                 reference.set(groupFormat);
             }
-        });
 
-        event.renderer(new ChatRender(
-                this.fusion,
-                player,
-                reference.get(),
-                event.signedMessage(),
-                placeholders
-        ));
+            event.renderer(new ChatRender(
+                    this.fusion,
+                    player,
+                    reference.get(),
+                    event.signedMessage(),
+                    placeholders
+            ));
+        });
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onDiscordChat(AsyncChatEvent event) {
-        if (this.serverAdapter.hasState(ServerState.chat_muted)) {
+        final Player player = event.getPlayer();
+
+        if (this.serverAdapter.hasState(ServerState.chat_muted) && !Permissions.mute_chat_bypass.hasPermission(player)) {
             return;
         }
 
-        final DiscordConfig config = this.configManager.getDiscord();
+        final UUID uuid = player.getUniqueId();
 
-        if (config.isEnabled() && config.isPlayerAlertsEnabled()) {
-            final Player player = event.getPlayer();
+        this.userRegistry.getUser(uuid).ifPresent(user -> {
+            if (user.hasUserState(UserState.staff_chat)) { // return, because staff chat!
+                return;
+            }
 
-            final PlayerAlertConfig alertConfig = config.getAlertConfig();
+            final DiscordConfig config = this.configManager.getDiscord();
 
-            alertConfig.sendDiscord(player, this.discordManager.getGuild(), PlayerAlert.MC_CHAT_ALERT, Map.of(
-                    "{player}", player.getName(),
-                    "{message}", event.signedMessage().message()
-            ));
-        }
+            if (config.isEnabled() && config.isPlayerAlertsEnabled()) {
+                final PlayerAlertConfig alertConfig = config.getAlertConfig();
+
+                alertConfig.sendDiscord(player, this.discordManager.getGuild(), PlayerAlert.MC_CHAT_ALERT, Map.of(
+                        "{player}", player.getName(),
+                        "{message}", event.signedMessage().message()
+                ));
+            }
+        });
     }
 }

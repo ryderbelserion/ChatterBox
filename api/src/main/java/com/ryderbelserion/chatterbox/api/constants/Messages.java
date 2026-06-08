@@ -22,6 +22,7 @@ public class Messages {
 
     public static final FusionKey message_of_the_day = FusionKey.key(namespace, "message_of_the_day");
 
+    // /cb mutechat
     public static final FusionKey server_muted_broadcast = FusionKey.key(namespace, "server_muted_broadcast");
 
     public static final FusionKey server_unmuted_broadcast = FusionKey.key(namespace, "server_unmuted_broadcast");
@@ -32,7 +33,16 @@ public class Messages {
 
     public static final FusionKey cannot_speak_while_muted = FusionKey.key(namespace, "cannot_speak_while_muted");
 
-    // social messages
+    // /cb staffchat
+    public static final FusionKey staff_chat_enabled = FusionKey.key(namespace, "staff_chat_enabled");
+
+    public static final FusionKey staff_chat_disabled = FusionKey.key(namespace, "staff_chat_disabled");
+
+    public static final FusionKey staff_chat_format = FusionKey.key(namespace, "staff_chat_format");
+
+    public static final FusionKey staff_chat_cannot_enable = FusionKey.key(namespace, "staff_chat_cannot_enable");
+
+    // /cb msg
     public static final FusionKey receiver_format = FusionKey.key(namespace, "receiver_format");
     public static final FusionKey sender_format = FusionKey.key(namespace, "sender_format");
 

@@ -13,6 +13,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
+import java.util.Map;
 
 public class MuteChatCommand extends ChatterBoxCommand {
 
@@ -28,9 +29,11 @@ public class MuteChatCommand extends ChatterBoxCommand {
             this.serverAdapter.addState(ServerState.chat_muted);
         }
 
-        this.server.broadcast(this.adapter.getComponent(sender, isMuted ? Messages.server_unmuted_broadcast : Messages.server_muted_broadcast));
+        this.server.broadcast(this.adapter.getComponent(sender, isMuted ? Messages.server_unmuted_broadcast : Messages.server_muted_broadcast, Map.of(
+                "{player}", sender.getName()
+        )));
 
-        this.adapter.sendMessage(sender, isMuted ? Messages.server_muted_sender : Messages.server_unmuted_sender);
+        this.adapter.sendMessage(sender, isMuted ? Messages.server_unmuted_sender : Messages.server_muted_sender);
     }
 
     @Override

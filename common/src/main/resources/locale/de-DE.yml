@@ -37,15 +37,25 @@ messages:
     # All messages related to /cb mutechat
     chat:
       # Available Placeholders: {prefix}, {player}
-      server-muted-broadcast: "{prefix}{player} <red>hat den Chat stummgeschaltet. Du kannst nicht sprechen!"
+      server-muted-broadcast: "{prefix}{player} <red>hat den chat stummgeschaltet. Du kannst nicht sprechen!"
       # Available Placeholders: {prefix}, {player}
-      server-unmuted-broadcast: "{prefix}{player} <red>hat den Chat wieder freigeschaltet. Du kannst jetzt sprechen!"
+      server-unmuted-broadcast: "{prefix}{player} <red>hat den chat wieder freigeschaltet. Du kannst jetzt sprechen!"
       # Available Placeholders: {prefix}
-      server-muted-sender: "{prefix}<red>Du hast den Server-Chat stummgeschaltet!"
+      server-muted-sender: "{prefix}<red>Du hast den server chat stummgeschaltet!"
       # Available Placeholders: {prefix}
-      server-unmuted-sender: "{prefix}<red>Du hast den Server-Chat wieder stummgeschaltet!"
+      server-unmuted-sender: "{prefix}<red>Du hast den server chat wieder stummgeschaltet!"
       # Available Placeholders: {prefix}
-      cannot-speak-while-muted: "{prefix}<red>Du kannst nicht sprechen, während der Server-Chat stummgeschaltet ist!"
+      cannot-speak-while-muted: "{prefix}<red>Du kannst nicht sprechen, während der server chat stummgeschaltet ist!"
+  # All messages related to /cb staffchat
+  staff:
+    # Available Placeholders: {prefix}
+    chat_enabled: "{prefix}<green>Sie haben den Mitarbeiter-Chat aktiviert!"
+    # Available Placeholders: {prefix}
+    chat_disabled: "{prefix}<red>Du hast den Mitarbeiter-Chat deaktiviert!"
+    # Available Placeholders: {prefix}, {player}, {message}
+    chat_format: "<yellow>[<green>Mitarbeiter-Chat</green>]</yellow> <green>{player}</green> <gray>></gray> <blue>{message}</blue>"
+    # Available Placeholders: {prefix}
+    chat_cannot_enable: "{prefix}<red>Du kannst den Mitarbeiter-Chat nicht aktivieren!"
   # Available placeholders: {player}
   motd:
     - "<gray>------------------------------------"

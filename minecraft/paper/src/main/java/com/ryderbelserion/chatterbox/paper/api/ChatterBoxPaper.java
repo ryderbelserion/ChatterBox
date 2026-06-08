@@ -11,6 +11,7 @@ import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.paper.commands.admin.BroadcastCommand;
 import com.ryderbelserion.chatterbox.paper.commands.admin.ReloadCommand;
 import com.ryderbelserion.chatterbox.paper.commands.admin.chat.MuteChatCommand;
+import com.ryderbelserion.chatterbox.paper.commands.admin.chat.StaffChatCommand;
 import com.ryderbelserion.chatterbox.paper.commands.player.MotdCommand;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
@@ -74,6 +75,7 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, FoliaSchedu
             List.of(
                     new BroadcastCommand(),
 
+                    new StaffChatCommand(),
                     new MuteChatCommand(),
 
                     new ReloadCommand(),
