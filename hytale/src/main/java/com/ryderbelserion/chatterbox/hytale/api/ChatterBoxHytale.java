@@ -10,7 +10,6 @@ import com.hypixel.hytale.server.core.util.EventTitleUtil;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleContextRegistry;
-import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleMessageRegistry;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleSenderAdapter;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
@@ -25,7 +24,6 @@ import java.util.function.Consumer;
 
 public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Runnable> {
 
-    private HytaleMessageRegistry messageRegistry;
     private HytaleContextRegistry contextRegistry;
     private HytaleSenderAdapter userAdapter;
     private HytaleUserRegistry userRegistry;
@@ -47,9 +45,6 @@ public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Runnabl
         this.userRegistry = new HytaleUserRegistry();
         this.userRegistry.init();
 
-        this.messageRegistry = new HytaleMessageRegistry();
-        this.messageRegistry.init();
-
         this.userAdapter = new HytaleSenderAdapter(this);
 
         post();
@@ -65,11 +60,6 @@ public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Runnabl
     @Override
     public @NotNull final HytaleContextRegistry getContextRegistry() {
         return this.contextRegistry;
-    }
-
-    @Override
-    public @NotNull final HytaleMessageRegistry getMessageRegistry() {
-        return this.messageRegistry;
     }
 
     @Override

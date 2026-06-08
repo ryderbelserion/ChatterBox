@@ -4,13 +4,13 @@ import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxVelocity;
-import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityMessageRegistry;
 import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityUserRegistry;
+import com.ryderbelserion.fusion.core.api.FusionKey;
+import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.velocity.FusionVelocity;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.ConsoleCommandSource;
 import com.velocitypowered.api.proxy.Player;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -18,20 +18,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class VelocitySenderAdapter extends ISenderAdapter<Component, CommandSource> {
 
-    private final VelocityMessageRegistry messageRegistry;
     private final VelocityUserRegistry userRegistry;
+    private final MessageRegistry messageRegistry;
     private final FusionVelocity fusion;
 
     public VelocitySenderAdapter(@NotNull final ChatterBoxVelocity platform) {
         super();
 
-        this.messageRegistry = platform.getMessageRegistry();
         this.userRegistry = platform.getUserRegistry();
 
         this.fusion = (FusionVelocity) platform.getFusion();
+        this.messageRegistry = this.fusion.getMessageRegistry();
     }
 
     @Override
@@ -53,12 +54,12 @@ public class VelocitySenderAdapter extends ISenderAdapter<Component, CommandSour
     }
 
     @Override
-    public void sendMessage(@NotNull final CommandSource sender, @NotNull final Key id, @NotNull final Map<String, String> placeholders) {
+    public void sendMessage(@NotNull final CommandSource sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
         sender.sendMessage(getComponent(sender, id, placeholders));
     }
 
     @Override
-    public Component getComponent(@NotNull final CommandSource sender, @NotNull final Key id, @NotNull final Map<String, String> placeholders) {
+    public Component getComponent(@NotNull final CommandSource sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
         final Map<String, String> map = new HashMap<>(placeholders);
 
         final CommentedConfigurationNode configuration = FileKeys.config.getYamlConfig();
@@ -69,17 +70,27 @@ public class VelocitySenderAdapter extends ISenderAdapter<Component, CommandSour
             map.putIfAbsent("{prefix}", prefix);
         }
 
+        final AtomicReference<String> reference = new AtomicReference<>("");
+
         if (!(sender instanceof Player player)) {
-            return this.fusion.asComponent(sender, this.messageRegistry.getMessage(id).getValue(), map);
+            this.messageRegistry.getMessage(id).ifPresent(value -> reference.set(value.getValue()));
+
+            return this.fusion.asComponent(sender, reference.get(), map);
         }
 
         final Optional<VelocityUserAdapter> optional = this.userRegistry.getUser(player.getUniqueId());
 
-        if (optional.isEmpty()) return this.fusion.asComponent(player, this.messageRegistry.getMessage(id).getValue(), map);
+        if (optional.isEmpty()) {
+            this.messageRegistry.getMessage(id).ifPresent(value -> reference.set(value.getValue()));
+
+            return this.fusion.asComponent(player, reference.get(), map);
+        }
 
         final VelocityUserAdapter user = optional.get();
 
-        return this.fusion.asComponent(player, this.messageRegistry.getMessageByLocale(user.getLocaleKey(), id).getValue(), map);
+        this.messageRegistry.getMessageByLocale(user.getLocaleKey(), id).ifPresent(value -> reference.set(value.getValue()));
+
+        return this.fusion.asComponent(player, reference.get(), map);
     }
 
     @Override

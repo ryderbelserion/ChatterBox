@@ -5,7 +5,6 @@ import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.velocity.ChatterBox;
 import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityContextRegistry;
-import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityMessageRegistry;
 import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityUserRegistry;
 import com.ryderbelserion.chatterbox.velocity.api.registry.adapters.VelocitySenderAdapter;
 import com.ryderbelserion.chatterbox.velocity.commands.BaseCommand;
@@ -19,6 +18,8 @@ import com.velocitypowered.api.scheduler.ScheduledTask;
 import com.velocitypowered.api.scheduler.Scheduler;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -36,7 +37,6 @@ public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, ScheduledTask
         this.server = this.instance.getServer();
     }
 
-    private VelocityMessageRegistry messageRegistry;
     private VelocityContextRegistry contextRegistry;
     private VelocitySenderAdapter userAdapter;
     private VelocityUserRegistry userRegistry;
@@ -49,9 +49,6 @@ public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, ScheduledTask
 
         this.userRegistry = new VelocityUserRegistry();
         this.userRegistry.init();
-
-        this.messageRegistry = new VelocityMessageRegistry();
-        this.messageRegistry.init();
 
         this.userAdapter = new VelocitySenderAdapter(this);
 
@@ -84,11 +81,6 @@ public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, ScheduledTask
         commandManager.register(commandManager.metaBuilder(brigadier).build(), brigadier);
 
         this.instance.getFactory().make(this.instance, 30926);
-    }
-
-    @Override
-    public @NotNull final VelocityMessageRegistry getMessageRegistry() {
-        return this.messageRegistry;
     }
 
     @Override
@@ -138,11 +130,10 @@ public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, ScheduledTask
 
     @Override
     public void sendTitle(
-            @NotNull final Audience sender,
-            final boolean notifyServer,
-            @NotNull final String title, @NotNull final String subtitle, final int duration, final int fadeIn, final int fadeOut,
-            @NotNull final Map<String, String> placeholders
+            final @NonNull Audience sender, final boolean notifyServer,
+            final @NotNull String title, final @NotNull String subtitle, final int duration, final int fadeIn, final int fadeOut,
+            final @NotNull Map<String, String> placeholders
     ) {
-
+        super.sendTitle(sender, notifyServer, title, subtitle, duration, fadeIn, fadeOut, placeholders);
     }
 }

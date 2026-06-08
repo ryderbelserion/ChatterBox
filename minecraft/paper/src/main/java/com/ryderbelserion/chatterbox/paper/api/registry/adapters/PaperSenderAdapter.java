@@ -1,13 +1,13 @@
 package com.ryderbelserion.chatterbox.paper.api.registry.adapters;
 
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
-import com.ryderbelserion.chatterbox.paper.api.registry.PaperMessageRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
+import com.ryderbelserion.fusion.core.api.FusionKey;
+import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -18,10 +18,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender> {
 
-    private final PaperMessageRegistry messageRegistry;
+    private final MessageRegistry messageRegistry;
     private final PaperUserRegistry userRegistry;
     private final FusionPaper fusion;
 
@@ -53,12 +54,12 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
     }
 
     @Override
-    public void sendMessage(@NotNull final CommandSender sender, @NotNull final Key id, @NotNull final Map<String, String> placeholders) {
+    public void sendMessage(@NotNull final CommandSender sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
         sender.sendMessage(getComponent(sender, id, placeholders));
     }
 
     @Override
-    public Component getComponent(@NotNull final CommandSender sender, @NotNull final Key id, @NotNull final Map<String, String> placeholders) {
+    public Component getComponent(@NotNull final CommandSender sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
         final Map<String, String> map = new HashMap<>(placeholders);
 
         final CommentedConfigurationNode configuration = FileKeys.config.getYamlConfig();
@@ -69,17 +70,27 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
             map.putIfAbsent("{prefix}", prefix);
         }
 
+        final AtomicReference<String> reference = new AtomicReference<>("");
+
         if (!(sender instanceof Player player)) {
-            return this.fusion.asComponent(sender, this.messageRegistry.getMessage(id).getValue(), map);
+            this.messageRegistry.getMessage(id).ifPresent(value -> reference.set(value.getValue()));
+
+            return this.fusion.asComponent(sender, reference.get(), map);
         }
 
         final Optional<PaperUserAdapter> optional = this.userRegistry.getUser(player.getUniqueId());
 
-        if (optional.isEmpty()) return this.fusion.asComponent(player, this.messageRegistry.getMessage(id).getValue(), map);
+        if (optional.isEmpty()) {
+            this.messageRegistry.getMessage(id).ifPresent(value -> reference.set(value.getValue()));
+
+            return this.fusion.asComponent(player, reference.get(), map);
+        }
 
         final PaperUserAdapter user = optional.get();
 
-        return this.fusion.asComponent(player, this.messageRegistry.getMessageByLocale(user.getLocaleKey(), id).getValue(), map);
+        this.messageRegistry.getMessageByLocale(user.getLocaleKey(), id).ifPresent(value -> reference.set(value.getValue()));
+
+        return this.fusion.asComponent(player, reference.get(), map);
     }
 
     @Override

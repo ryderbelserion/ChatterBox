@@ -13,11 +13,13 @@ import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
 import com.ryderbelserion.chatterbox.common.api.adapters.filter.types.RegexFilterAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.filter.types.SimpleFilterAdapter;
+import com.ryderbelserion.chatterbox.common.api.registry.MessageImpl;
 import com.ryderbelserion.chatterbox.common.configs.FilterConfig;
 import com.ryderbelserion.chatterbox.common.configs.ServerConfig;
 import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
+import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
@@ -37,11 +39,13 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
     public static final String CONSOLE_NAME = "Console";
 
+    protected MessageRegistry messageRegistry;
     protected DiscordManager discordManager;
     protected ConfigManager configManager;
 
     protected ServerAdapter serverAdapter;
     protected IPlayerAdapter<?> adapter;
+    protected MessageImpl messageImpl;
 
     public ChatterBoxPlugin(@NotNull final FusionKyori fusion) {
         super(fusion);
@@ -127,6 +131,9 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
         files.forEach(file -> this.fileManager.addFile(this.dataPath.resolve(file), jarFolder, FileType.YAML));
 
+        this.messageImpl = new MessageImpl(this.messageRegistry = this.fusion.getMessageRegistry());
+        this.messageImpl.init();
+
         final ModRegistry registry = this.fusion.getModRegistry();
 
         List.of(
@@ -170,13 +177,18 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
         this.fusion.reload();
 
-        getMessageRegistry().init();
-
         this.configManager.reload();
+
+        this.messageImpl.reload();
 
         if (this.discordManager != null) {
             this.discordManager.init();
         }
+    }
+
+    @Override
+    public @NonNull final MessageRegistry getMessageRegistry() {
+        return this.messageRegistry;
     }
 
     @Override
@@ -220,5 +232,9 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
     public @NotNull final ConfigManager getConfigManager() {
         return this.configManager;
+    }
+
+    public @NonNull final MessageImpl getMessageImpl() {
+        return this.messageImpl;
     }
 }

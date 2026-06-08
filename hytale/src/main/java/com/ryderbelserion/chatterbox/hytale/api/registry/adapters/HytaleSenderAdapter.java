@@ -5,23 +5,24 @@ import com.hypixel.hytale.server.core.console.ConsoleSender;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
-import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleMessageRegistry;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
+import com.ryderbelserion.fusion.core.api.FusionKey;
+import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
-import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class HytaleSenderAdapter extends ISenderAdapter<Message, IMessageReceiver> {
 
-    private final HytaleMessageRegistry messageRegistry;
+    private final MessageRegistry messageRegistry;
     private final HytaleUserRegistry userRegistry;
     private final FusionHytale fusion;
 
@@ -30,7 +31,6 @@ public class HytaleSenderAdapter extends ISenderAdapter<Message, IMessageReceive
 
         this.messageRegistry = platform.getMessageRegistry();
         this.userRegistry = platform.getUserRegistry();
-
         this.fusion = (FusionHytale) platform.getFusion();
     }
 
@@ -53,12 +53,12 @@ public class HytaleSenderAdapter extends ISenderAdapter<Message, IMessageReceive
     }
 
     @Override
-    public void sendMessage(@NotNull final IMessageReceiver sender, @NotNull final Key id, @NotNull final Map<String, String> placeholders) {
+    public void sendMessage(@NotNull final IMessageReceiver sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
         sender.sendMessage(getComponent(sender, id, placeholders));
     }
 
     @Override
-    public Message getComponent(@NotNull final IMessageReceiver sender, @NotNull final Key id, @NotNull final Map<String, String> placeholders) {
+    public Message getComponent(@NotNull final IMessageReceiver sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
         final Map<String, String> map = new HashMap<>(placeholders);
 
         final CommentedConfigurationNode configuration = FileKeys.config.getYamlConfig();
@@ -69,17 +69,27 @@ public class HytaleSenderAdapter extends ISenderAdapter<Message, IMessageReceive
             map.putIfAbsent("{prefix}", prefix);
         }
 
+        final AtomicReference<String> reference = new AtomicReference<>("");
+
         if (!(sender instanceof PlayerRef player)) {
-            return this.fusion.asMessage(sender, this.messageRegistry.getMessage(id).getValue(), map);
+            this.messageRegistry.getMessage(id).ifPresent(value -> reference.set(value.getValue()));
+
+            return this.fusion.asMessage(sender, reference.get(), map);
         }
 
         final Optional<HytaleUserAdapter> optional = this.userRegistry.getUser(player.getUuid());
 
-        if (optional.isEmpty()) return this.fusion.asMessage(sender, this.messageRegistry.getMessage(id).getValue(), map);
+        if (optional.isEmpty()) {
+            this.messageRegistry.getMessage(id).ifPresent(value -> reference.set(value.getValue()));
+
+            return this.fusion.asMessage(player, reference.get(), map);
+        }
 
         final HytaleUserAdapter user = optional.get();
 
-        return this.fusion.asMessage(player, this.messageRegistry.getMessageByLocale(user.getLocaleKey(), id).getValue(), map);
+        this.messageRegistry.getMessageByLocale(user.getLocaleKey(), id).ifPresent(value -> reference.set(value.getValue()));
+
+        return this.fusion.asMessage(player, reference.get(), map);
     }
 
     @Override

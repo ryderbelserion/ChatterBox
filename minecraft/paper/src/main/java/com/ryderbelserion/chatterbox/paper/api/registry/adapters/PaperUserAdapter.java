@@ -6,11 +6,11 @@ import com.ryderbelserion.chatterbox.api.constants.Support;
 import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
 import com.ryderbelserion.fusion.core.api.registry.mods.objects.Mod;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import net.kyori.adventure.key.Key;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +25,7 @@ public class PaperUserAdapter implements IUser {
 
     protected Player player;
 
-    protected Key locale;
+    protected FusionKey locale;
 
     public PaperUserAdapter(@Nullable final CommandSender sender) {
         if (sender instanceof Player reference) {
@@ -48,7 +48,7 @@ public class PaperUserAdapter implements IUser {
     }
 
     @Override
-    public @NotNull final Key getLocaleKey() {
+    public @NotNull final FusionKey getLocaleKey() {
         return this.player == null ? Messages.default_locale : this.locale;
     }
 
@@ -73,7 +73,7 @@ public class PaperUserAdapter implements IUser {
         final String value = "%s_%s.yml".formatted(language, country).toLowerCase();
 
         if (!value.equalsIgnoreCase("en_us.yml")) {
-            this.locale = Key.key(ChatterBox.namespace, value);
+            this.locale = FusionKey.key(ChatterBox.namespace, value);
         }
     }
 }

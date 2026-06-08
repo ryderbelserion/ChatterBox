@@ -1,7 +1,6 @@
 package com.ryderbelserion.chatterbox.velocity.api;
 
 import com.ryderbelserion.chatterbox.velocity.ChatterBox;
-import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityMessageRegistry;
 import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityUserRegistry;
 import com.ryderbelserion.chatterbox.velocity.api.registry.adapters.VelocitySenderAdapter;
 import com.ryderbelserion.fusion.velocity.FusionVelocity;
@@ -15,8 +14,6 @@ public abstract class ChatterCommand extends VelocityCommand {
     protected final ChatterBoxVelocity platform = this.plugin.getPlatform();
 
     protected final VelocityUserRegistry userRegistry = this.platform.getUserRegistry();
-
-    protected final VelocityMessageRegistry messageRegistry = this.platform.getMessageRegistry();
 
     protected final VelocitySenderAdapter adapter = this.platform.getSenderAdapter();
 

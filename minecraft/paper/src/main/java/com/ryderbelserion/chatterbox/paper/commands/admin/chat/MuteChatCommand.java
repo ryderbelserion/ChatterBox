@@ -2,6 +2,7 @@ package com.ryderbelserion.chatterbox.paper.commands.admin.chat;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.server.ServerState;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
@@ -9,6 +10,7 @@ import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
@@ -16,13 +18,19 @@ public class MuteChatCommand extends ChatterBoxCommand {
 
     @Override
     public void run(@NotNull final PaperCommandContext context) {
-        if (this.serverAdapter.hasState(ServerState.chat_muted)) {
-            this.serverAdapter.removeState(ServerState.chat_muted);
+        final CommandSender sender = context.getSender();
 
-            return;
+        final boolean isMuted = this.serverAdapter.hasState(ServerState.chat_muted);
+
+        if (isMuted) {
+            this.serverAdapter.removeState(ServerState.chat_muted);
+        } else {
+            this.serverAdapter.addState(ServerState.chat_muted);
         }
 
-        this.serverAdapter.addState(ServerState.chat_muted);
+        this.server.broadcast(this.adapter.getComponent(sender, isMuted ? Messages.server_unmuted_broadcast : Messages.server_muted_broadcast));
+
+        this.adapter.sendMessage(sender, isMuted ? Messages.server_muted_sender : Messages.server_unmuted_sender);
     }
 
     @Override

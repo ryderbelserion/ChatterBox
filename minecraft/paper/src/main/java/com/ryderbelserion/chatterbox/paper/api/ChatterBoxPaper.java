@@ -4,7 +4,6 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperContextRegistry;
-import com.ryderbelserion.chatterbox.paper.api.registry.PaperMessageRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
 import com.ryderbelserion.chatterbox.paper.commands.BaseCommand;
@@ -43,7 +42,6 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, FoliaSchedu
         this.server = this.plugin.getServer();
     }
 
-    private PaperMessageRegistry messageRegistry;
     private PaperContextRegistry contextRegistry;
     private PaperSenderAdapter userAdapter;
     private PaperUserRegistry userRegistry;
@@ -56,9 +54,6 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, FoliaSchedu
 
         this.userRegistry = new PaperUserRegistry();
         this.userRegistry.init();
-
-        this.messageRegistry = new PaperMessageRegistry();
-        this.messageRegistry.init();
 
         this.userAdapter = new PaperSenderAdapter(this);
 
@@ -95,11 +90,6 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, FoliaSchedu
     @Override
     public @NotNull final PaperContextRegistry getContextRegistry() {
         return this.contextRegistry;
-    }
-
-    @Override
-    public @NotNull final PaperMessageRegistry getMessageRegistry() {
-        return this.messageRegistry;
     }
 
     @Override

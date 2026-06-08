@@ -32,6 +32,20 @@ messages:
     cannot-message-yourself: "{prefix}<red>You cannot message yourself!"
     # Available placeholders: {prefix}
     cannot-be-blank: "{prefix}<red>You cannot send a blank message!"
+  # All messages relating to mute based commands.
+  mute:
+    # All messages related to /cb mutechat
+    chat:
+      # Available Placeholders: {prefix}, {player}
+      server-muted-broadcast: "{prefix}{player} <red>has muted the chat, You cannot speak!"
+      # Available Placeholders: {prefix}, {player}
+      server-unmuted-broadcast: "{prefix}{player} <red>has unmuted the chat, You can now speak!"
+      # Available Placeholders: {prefix}
+      server-muted-sender: "{prefix}<red>You have muted the server chat!"
+      # Available Placeholders: {prefix}
+      server-unmuted-sender: "{prefix}<red>You have unmuted the server chat!"
+      # Available Placeholders: {prefix}
+      cannot-speak-while-muted: "{prefix}<red>You cannot speak while the server chat is muted!"
   # Available placeholders: {player}
   motd:
     - "<gray>------------------------------------"

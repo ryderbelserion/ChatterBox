@@ -8,10 +8,10 @@ import com.ryderbelserion.chatterbox.api.constants.Support;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
-import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
@@ -24,7 +24,7 @@ public class HytaleUserAdapter implements IUser {
 
     protected PlayerRef player;
 
-    protected Key locale = Messages.default_locale;
+    protected FusionKey locale = Messages.default_locale;
 
     public HytaleUserAdapter(@Nullable final IMessageReceiver sender) {
         if (sender instanceof PlayerRef reference) {
@@ -47,7 +47,7 @@ public class HytaleUserAdapter implements IUser {
     }
 
     @Override
-    public @NotNull final Key getLocaleKey() {
+    public @NotNull final FusionKey getLocaleKey() {
         return this.player == null ? Messages.default_locale : this.locale;
     }
 
@@ -66,7 +66,7 @@ public class HytaleUserAdapter implements IUser {
         final String value = "%s_%s.yml".formatted(language, country).toLowerCase();
 
         if (!value.equalsIgnoreCase("en_us.yml")) {
-            this.locale = Key.key(ChatterBox.namespace, value);
+            this.locale = FusionKey.key(ChatterBox.namespace, value);
         }
     }
 }

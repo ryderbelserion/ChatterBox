@@ -4,8 +4,8 @@ import com.ryderbelserion.chatterbox.api.adapters.IPlayerAdapter;
 import com.ryderbelserion.chatterbox.api.adapters.IServerAdapter;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.api.registry.IContextRegistry;
-import com.ryderbelserion.chatterbox.api.registry.IMessageRegistry;
 import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
+import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,7 @@ public abstract class ChatterBox<S> {
 
     public abstract <C> @NotNull IPlayerAdapter<C> getPlayerAdapter(@NotNull final Class<C> object);
 
-    public abstract @NonNull IMessageRegistry getMessageRegistry();
+    public abstract @NonNull MessageRegistry getMessageRegistry();
 
     public abstract @NonNull IContextRegistry getContextRegistry();
 

@@ -1,5 +1,6 @@
 package com.ryderbelserion.chatterbox.paper.listeners.chat;
 
+import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.server.ServerState;
 import com.ryderbelserion.chatterbox.common.api.adapters.ServerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
@@ -11,6 +12,7 @@ import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
+import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
 import com.ryderbelserion.chatterbox.paper.listeners.chat.renderers.ChatRender;
 import com.ryderbelserion.discord.api.enums.alerts.PlayerAlert;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -32,6 +34,8 @@ public class ChatListener implements Listener {
 
     private final ChatterBoxPaper platform = this.plugin.getPlatform();
 
+    private final PaperSenderAdapter senderAdapter = this.platform.getSenderAdapter();
+
     private final ServerAdapter serverAdapter = this.platform.getServerAdapter();
 
     private final PaperUserRegistry userRegistry = this.platform.getUserRegistry();
@@ -42,7 +46,11 @@ public class ChatListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onMuteChat(AsyncChatEvent event) {
-        event.setCancelled(this.serverAdapter.hasState(ServerState.chat_muted));
+        if (this.serverAdapter.hasState(ServerState.chat_muted)) {
+            this.senderAdapter.sendMessage(event.getPlayer(), Messages.cannot_speak_while_muted);
+
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

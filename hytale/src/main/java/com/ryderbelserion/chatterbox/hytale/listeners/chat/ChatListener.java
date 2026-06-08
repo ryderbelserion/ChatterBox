@@ -3,6 +3,9 @@ package com.ryderbelserion.chatterbox.hytale.listeners.chat;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.enums.server.ServerState;
+import com.ryderbelserion.chatterbox.common.api.adapters.ServerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
 import com.ryderbelserion.chatterbox.common.configs.discord.features.alerts.PlayerAlertConfig;
@@ -13,6 +16,7 @@ import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.hytale.api.listeners.EventListener;
+import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleSenderAdapter;
 import com.ryderbelserion.discord.api.enums.alerts.PlayerAlert;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -26,6 +30,10 @@ public class ChatListener implements EventListener<PlayerChatEvent> {
 
     private final ChatterBoxHytale platform = this.instance.getPlatform();
 
+    private final HytaleSenderAdapter senderAdapter = this.platform.getSenderAdapter();
+
+    private final ServerAdapter serverAdapter = this.platform.getServerAdapter();
+
     private final DiscordManager discordManager = this.platform.getDiscordManager();
 
     private final HytaleUserRegistry userRegistry = this.platform.getUserRegistry();
@@ -37,9 +45,18 @@ public class ChatListener implements EventListener<PlayerChatEvent> {
     @Override
     public void init(final EventRegistry registry) {
         registry.registerGlobal(PlayerChatEvent.class, event -> {
+            final PlayerRef player = event.getSender();
+
+            if (this.serverAdapter.hasState(ServerState.chat_muted)) {
+                this.senderAdapter.sendMessage(player, Messages.cannot_speak_while_muted);
+
+                event.setCancelled(true);
+
+                return;
+            }
+
             final CommentedConfigurationNode config = FileKeys.chat.getYamlConfig();
 
-            final PlayerRef player = event.getSender();
             final String content = event.getContent();
             final UUID uuid = player.getUuid();
 

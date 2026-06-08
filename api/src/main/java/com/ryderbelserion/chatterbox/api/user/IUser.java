@@ -1,6 +1,7 @@
 package com.ryderbelserion.chatterbox.api.user;
 
 import com.ryderbelserion.chatterbox.api.adapters.IGroupAdapter;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,7 @@ public interface IUser {
 
     @NotNull String getUsername();
 
-    @NotNull Key getLocaleKey();
+    @NotNull FusionKey getLocaleKey();
 
     IGroupAdapter getGroupAdapter();
 

@@ -1,6 +1,8 @@
 package com.ryderbelserion.chatterbox.common.api.discord.listeners;
 
+import com.ryderbelserion.chatterbox.api.enums.server.ServerState;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.common.api.adapters.ServerAdapter;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
 import com.ryderbelserion.chatterbox.common.configs.discord.features.alerts.PlayerAlertConfig;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
@@ -17,9 +19,11 @@ import java.util.Map;
 public class DiscordChatListener extends ListenerAdapter {
 
     private final ConfigManager configManager;
+    private final ServerAdapter serverAdapter;
 
     public DiscordChatListener(@NotNull final ChatterBoxPlugin instance) {
         this.configManager = instance.getConfigManager();
+        this.serverAdapter = instance.getServerAdapter();
     }
 
     @Override
@@ -43,6 +47,12 @@ public class DiscordChatListener extends ListenerAdapter {
         final Member member = event.getMember();
 
         if (member == null) {
+            return;
+        }
+
+        if (this.serverAdapter.hasState(ServerState.chat_muted)) {
+            //todo() send message that chat is muted in-game.
+
             return;
         }
 
