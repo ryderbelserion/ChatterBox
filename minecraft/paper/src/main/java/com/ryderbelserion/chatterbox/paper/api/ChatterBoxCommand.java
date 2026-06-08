@@ -1,5 +1,6 @@
 package com.ryderbelserion.chatterbox.paper.api;
 
+import com.ryderbelserion.chatterbox.common.api.adapters.ServerAdapter;
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperMessageRegistry;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
@@ -19,6 +20,8 @@ public abstract class ChatterBoxCommand extends PaperCommand {
     protected final PaperMessageRegistry messageRegistry = this.platform.getMessageRegistry();
 
     protected final PaperUserRegistry userRegistry = this.platform.getUserRegistry();
+
+    protected final ServerAdapter serverAdapter = this.platform.getServerAdapter();
 
     protected final FusionPaper fusion =  this.instance.getFusion();
 

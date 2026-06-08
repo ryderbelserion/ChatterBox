@@ -17,7 +17,7 @@
   "entrypoints" : {
     "client" : [],
     "server": [
-      "com.ryderbelserion.chatterbox.fabric.GradleTemplate"
+      "com.ryderbelserion.chatterbox.fabric.ChatterBox"
     ]
   },
   "depends" : {

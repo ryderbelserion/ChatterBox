@@ -7,6 +7,7 @@ import com.ryderbelserion.chatterbox.api.adapters.IPlayerAdapter;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.api.user.IUser;
+import com.ryderbelserion.chatterbox.common.api.adapters.ServerAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
@@ -23,6 +24,7 @@ import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.apache.logging.log4j.core.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.io.*;
 import java.nio.file.Files;
@@ -35,9 +37,11 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
     public static final String CONSOLE_NAME = "Console";
 
-    private ConfigManager configManager;
-    private DiscordManager discordManager;
-    private IPlayerAdapter<?> adapter;
+    protected DiscordManager discordManager;
+    protected ConfigManager configManager;
+
+    protected ServerAdapter serverAdapter;
+    protected IPlayerAdapter<?> adapter;
 
     public ChatterBoxPlugin(@NotNull final FusionKyori fusion) {
         super(fusion);
@@ -128,6 +132,8 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
         List.of(
                 new LuckPermsSupport(platform)
         ).forEach(mod -> registry.addMod(mod.getKey(), mod));
+
+        this.serverAdapter = new ServerAdapter();
     }
 
     @Override
@@ -183,6 +189,11 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
     @Override
     public @NotNull <C> IPlayerAdapter<C> getPlayerAdapter(@NotNull final Class<C> object) {
         return (IPlayerAdapter<C>) this.adapter;
+    }
+
+    @Override
+    public @NonNull final ServerAdapter getServerAdapter() {
+        return this.serverAdapter;
     }
 
     public @NotNull final Map<String, String> getPlaceholders(@Nullable final IUser user, @NotNull final String playerName) {

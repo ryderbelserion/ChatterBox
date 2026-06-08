@@ -12,7 +12,7 @@ listOf(
     "hytale" to "hytale",
 
     "minecraft/velocity" to "velocity",
-    "minecraft/fabric" to "fabric",
+    //"minecraft/fabric" to "fabric",
     "minecraft/paper" to "paper",
 
     "discord" to "discord",

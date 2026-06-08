@@ -1,5 +1,7 @@
 package com.ryderbelserion.chatterbox.paper.listeners.chat;
 
+import com.ryderbelserion.chatterbox.api.enums.server.ServerState;
+import com.ryderbelserion.chatterbox.common.api.adapters.ServerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
 import com.ryderbelserion.chatterbox.common.configs.discord.features.alerts.PlayerAlertConfig;
@@ -30,6 +32,8 @@ public class ChatListener implements Listener {
 
     private final ChatterBoxPaper platform = this.plugin.getPlatform();
 
+    private final ServerAdapter serverAdapter = this.platform.getServerAdapter();
+
     private final PaperUserRegistry userRegistry = this.platform.getUserRegistry();
 
     private final DiscordManager discordManager = this.platform.getDiscordManager();
@@ -37,7 +41,16 @@ public class ChatListener implements Listener {
     private final ConfigManager configManager = this.platform.getConfigManager();
 
     @EventHandler(ignoreCancelled = true)
+    public void onMuteChat(AsyncChatEvent event) {
+        event.setCancelled(this.serverAdapter.hasState(ServerState.chat_muted));
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerChat(AsyncChatEvent event) {
+        if (this.serverAdapter.hasState(ServerState.chat_muted)) {
+            return;
+        }
+
         final CommentedConfigurationNode configuration = FileKeys.chat.getYamlConfig();
 
         if (!configuration.node("chat", "format", "toggle").getBoolean(true)) return;
@@ -77,6 +90,10 @@ public class ChatListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onDiscordChat(AsyncChatEvent event) {
+        if (this.serverAdapter.hasState(ServerState.chat_muted)) {
+            return;
+        }
+
         final DiscordConfig config = this.configManager.getDiscord();
 
         if (config.isEnabled() && config.isPlayerAlertsEnabled()) {
