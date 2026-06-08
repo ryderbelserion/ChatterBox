@@ -2,7 +2,6 @@ package com.ryderbelserion.chatterbox.hytale.api.registry.adapters;
 
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import com.ryderbelserion.chatterbox.api.ChatterBox;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.constants.Support;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
@@ -16,15 +15,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
-public class HytaleUserAdapter implements IUser {
+public class HytaleUserAdapter extends IUser {
 
     private final FusionHytale fusion = (FusionHytale) FusionProvider.getInstance();
 
     private final ModRegistry registry = this.fusion.getModRegistry();
 
-    protected PlayerRef player;
-
-    protected FusionKey locale = Messages.default_locale;
+    private PlayerRef player;
 
     public HytaleUserAdapter(@Nullable final IMessageReceiver sender) {
         if (sender instanceof PlayerRef reference) {
@@ -54,19 +51,5 @@ public class HytaleUserAdapter implements IUser {
     @Override
     public @NotNull final GroupAdapter getGroupAdapter() {
         return this.registry.getMod(Support.luckperms_hytale).isEnabled() ? new GroupAdapter(getUniqueId()) : new GroupAdapter();
-    }
-
-    @Override
-    public void setLocale(@NotNull final String locale) {
-        final String[] splitter = locale.split("-");
-
-        final String language = splitter[0];
-        final String country = splitter[1];
-
-        final String value = "%s_%s.yml".formatted(language, country).toLowerCase();
-
-        if (!value.equalsIgnoreCase("en_us.yml")) {
-            this.locale = FusionKey.key(ChatterBox.namespace, value);
-        }
     }
 }

@@ -1,6 +1,5 @@
 package com.ryderbelserion.chatterbox.paper.api.registry.adapters;
 
-import com.ryderbelserion.chatterbox.api.ChatterBox;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.constants.Support;
 import com.ryderbelserion.chatterbox.api.user.IUser;
@@ -17,15 +16,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
-public class PaperUserAdapter implements IUser {
+public class PaperUserAdapter extends IUser {
 
     private final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
 
     private final ModRegistry registry = this.fusion.getModRegistry();
 
-    protected Player player;
-
-    protected FusionKey locale;
+    private Player player;
 
     public PaperUserAdapter(@Nullable final CommandSender sender) {
         if (sender instanceof Player reference) {
@@ -61,19 +58,5 @@ public class PaperUserAdapter implements IUser {
         }
 
         return new GroupAdapter(getUniqueId());
-    }
-
-    @Override
-    public void setLocale(@NotNull final String locale) {
-        final String[] splitter = locale.contains("-") ? locale.split("-") : locale.split("_");
-
-        final String language = splitter[0];
-        final String country = splitter[1];
-
-        final String value = "%s_%s.yml".formatted(language, country).toLowerCase();
-
-        if (!value.equalsIgnoreCase("en_us.yml")) {
-            this.locale = FusionKey.key(ChatterBox.namespace, value);
-        }
     }
 }
