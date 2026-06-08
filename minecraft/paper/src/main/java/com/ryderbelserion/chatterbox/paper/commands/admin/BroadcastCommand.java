@@ -15,6 +15,7 @@ import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
+import java.util.Map;
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class BroadcastCommand extends ChatterBoxCommand {
@@ -23,7 +24,9 @@ public class BroadcastCommand extends ChatterBoxCommand {
     public void run(@NotNull final PaperCommandContext context) {
         final CommandSender sender = context.getSender();
 
-        context.getStringArgument("message").ifPresentOrElse(message -> this.server.broadcast(this.fusion.asComponent(sender, message)), () -> this.adapter.sendMessage(sender, Messages.msg_cannot_be_blank));
+        context.getStringArgument("message").ifPresentOrElse(message -> this.adapter.broadcast(sender, Messages.broadcast_format, Map.of(
+                "{message}", message
+        )), () -> this.adapter.sendMessage(sender, Messages.msg_cannot_be_blank));
     }
 
     @Override

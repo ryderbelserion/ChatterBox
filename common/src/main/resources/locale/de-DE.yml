@@ -56,6 +56,10 @@ messages:
     chat_format: "<yellow>[<green>Mitarbeiter-Chat</green>]</yellow> <green>{player}</green> <gray>></gray> <blue>{message}</blue>"
     # Available Placeholders: {prefix}
     chat_cannot_enable: "{prefix}<red>Du kannst den Mitarbeiter-Chat nicht aktivieren!"
+  # All messages related to /cb broadcast
+  broadcast:
+    # Available Placeholders: {prefix}
+    format: " <red>[<dark_red>Alert</dark_red>]</red> {message}"
   # Available placeholders: {player}
   motd:
     - "<gray>------------------------------------"

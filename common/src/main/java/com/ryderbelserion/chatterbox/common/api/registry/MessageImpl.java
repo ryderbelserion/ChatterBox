@@ -73,6 +73,8 @@ public class MessageImpl {
                     action.addKey(key, Messages.cannot_msg_yourself, new YamlMessageAdapter(configuration, "{prefix}<red>You cannot message yourself!", "messages", "msg", "cannot-message-yourself"));
                     action.addKey(key, Messages.msg_cannot_be_blank, new YamlMessageAdapter(configuration, "{prefix}<red>You cannot send a blank message!", "messages", "msg", "cannot-be-blank"));
 
+                    action.addKey(key, Messages.broadcast_format, new YamlMessageAdapter(configuration, " <red>[<dark_red>Alert</dark_red>]</red> {message}", "messages", "broadcast", "format"));
+
                     switch (platform) {
                         case VELOCITY -> {
                             action.addKey(key, Messages.server_name_blank, new YamlMessageAdapter(configuration, "{prefix}<red>Server name cannot be blank!", "messages", "hub", "server-name-blank"));

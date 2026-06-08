@@ -46,6 +46,10 @@ messages:
       server-unmuted-sender: "{prefix}<red>You have unmuted the server chat!"
       # Available Placeholders: {prefix}
       cannot-speak-while-muted: "{prefix}<red>You cannot speak while the server chat is muted!"
+  # All messages related to /cb broadcast
+  broadcast:
+    # Available Placeholders: {prefix}
+    format: " <red>[<dark_red>Alert</dark_red>]</red> {message}"
   # All messages related to /cb staffchat
   staff:
     # Available Placeholders: {prefix}

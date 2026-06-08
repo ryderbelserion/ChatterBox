@@ -22,6 +22,8 @@ public class Messages {
 
     public static final FusionKey message_of_the_day = FusionKey.key(namespace, "message_of_the_day");
 
+    public static final FusionKey broadcast_format = FusionKey.key(namespace, "broadcast_format");
+
     // /cb mutechat
     public static final FusionKey server_muted_broadcast = FusionKey.key(namespace, "server_muted_broadcast");
 

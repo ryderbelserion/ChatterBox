@@ -11,8 +11,10 @@ import com.ryderbelserion.fusion.velocity.FusionVelocity;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.ConsoleCommandSource;
 import com.velocitypowered.api.proxy.Player;
+import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +27,7 @@ public class VelocitySenderAdapter extends ISenderAdapter<Component, CommandSour
     private final VelocityUserRegistry userRegistry;
     private final MessageRegistry messageRegistry;
     private final FusionVelocity fusion;
+    private final ProxyServer server;
 
     public VelocitySenderAdapter(@NotNull final ChatterBoxVelocity platform) {
         super();
@@ -33,6 +36,7 @@ public class VelocitySenderAdapter extends ISenderAdapter<Component, CommandSour
 
         this.fusion = (FusionVelocity) platform.getFusion();
         this.messageRegistry = this.fusion.getMessageRegistry();
+        this.server = platform.getServer();
     }
 
     @Override
@@ -55,7 +59,24 @@ public class VelocitySenderAdapter extends ISenderAdapter<Component, CommandSour
 
     @Override
     public void sendMessage(@NotNull final CommandSource sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
-        sender.sendMessage(getComponent(sender, id, placeholders));
+        final Component component = getComponent(sender, id, placeholders);
+
+        if (component.equals(Component.empty())) {
+            return;
+        }
+
+        sender.sendMessage(component);
+    }
+
+    @Override
+    public void broadcast(@NonNull final CommandSource sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
+        final Component component = getComponent(sender, id, placeholders);
+
+        if (component.equals(Component.empty())) {
+            return;
+        }
+
+        this.server.sendMessage(component);
     }
 
     @Override

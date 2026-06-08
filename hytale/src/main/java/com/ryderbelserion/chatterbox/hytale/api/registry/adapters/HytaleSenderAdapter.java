@@ -4,6 +4,7 @@ import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.console.ConsoleSender;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.Universe;
 import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
@@ -12,7 +13,9 @@ import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +58,24 @@ public class HytaleSenderAdapter extends ISenderAdapter<Message, IMessageReceive
 
     @Override
     public void sendMessage(@NotNull final IMessageReceiver sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
-        sender.sendMessage(getComponent(sender, id, placeholders));
+        final Message component = getComponent(sender, id, placeholders);
+
+        if (component.equals(Message.empty())) {
+            return;
+        }
+
+        sender.sendMessage(component);
+    }
+
+    @Override
+    public void broadcast(@NonNull final IMessageReceiver sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
+        final Message component = getComponent(sender, id, placeholders);
+
+        if (component.equals(Message.empty())) {
+            return;
+        }
+
+        Universe.get().sendMessage(component);
     }
 
     @Override

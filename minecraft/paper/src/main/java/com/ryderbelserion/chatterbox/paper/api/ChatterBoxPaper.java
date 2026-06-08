@@ -166,4 +166,8 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, FoliaSchedu
                 fadeOut
         ));
     }
+
+    public @NotNull final Server getServer() {
+        return this.server;
+    }
 }

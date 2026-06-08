@@ -1,7 +1,6 @@
 package com.ryderbelserion.chatterbox.common.api.adapters.sender;
 
 import com.ryderbelserion.fusion.core.api.FusionKey;
-import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +14,8 @@ public abstract class ISenderAdapter<C, S> {
 
     public abstract void sendMessage(@NotNull final S sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders);
 
+    public abstract void broadcast(@NotNull final S sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders);
+
     public abstract C getComponent(@NotNull final S sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders);
 
     public C getComponent(@NotNull final S sender, @NotNull final FusionKey id) {
@@ -23,6 +24,10 @@ public abstract class ISenderAdapter<C, S> {
 
     public void sendMessage(@NotNull final S sender, @NotNull final FusionKey id) {
         sendMessage(sender, id, new HashMap<>());
+    }
+
+    public void broadcast(@NotNull final S sender, @NotNull final FusionKey id) {
+        broadcast(sender, id, new HashMap<>());
     }
 
     public abstract boolean isConsole(S sender);

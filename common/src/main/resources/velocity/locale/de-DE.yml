@@ -20,6 +20,10 @@ messages:
     target-same-player: "{prefix}<red>Sie können diesen Befehl nicht auf sich selbst anwenden."
     # Available placeholders: {prefix}
     no-permission: "{prefix}<red>Sie haben nicht die Erlaubnis, diesen Befehl zu benutzen!"
+  # All messages related to /cbv broadcast
+  broadcast:
+    # Available Placeholders: {prefix}
+    format: " <red>[<dark_red>Alert</dark_red>]</red> {message}"
   # All messages related to /hub
   hub:
     # Available placeholders: {prefix}

@@ -9,6 +9,7 @@ import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -26,6 +27,8 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
     private final PaperUserRegistry userRegistry;
     private final FusionPaper fusion;
 
+    private final Server server;
+
     public PaperSenderAdapter(@NotNull final ChatterBoxPaper platform) {
         super();
 
@@ -33,6 +36,8 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
         this.userRegistry = platform.getUserRegistry();
 
         this.fusion = (FusionPaper) platform.getFusion();
+
+        this.server = platform.getServer();
     }
 
     @Override
@@ -55,7 +60,24 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
 
     @Override
     public void sendMessage(@NotNull final CommandSender sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
-        sender.sendMessage(getComponent(sender, id, placeholders));
+        final Component component = getComponent(sender, id, placeholders);
+
+        if (component.equals(Component.empty())) {
+            return;
+        }
+
+        sender.sendMessage(component);
+    }
+
+    @Override
+    public void broadcast(@NotNull final CommandSender sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
+        final Component component = getComponent(sender, id, placeholders);
+
+        if (component.equals(Component.empty())) {
+            return;
+        }
+
+        this.server.broadcast(component);
     }
 
     @Override

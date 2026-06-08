@@ -40,6 +40,8 @@ public class BroadcastCommand extends CommandBase {
 
         final String message = this.message.get(context);
 
-        this.platform.broadcast(message, Map.of());
+        this.adapter.broadcast(context.sender(), Messages.broadcast_format, Map.of(
+                "{message}", message
+        ));
     }
 }

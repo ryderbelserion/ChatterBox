@@ -139,4 +139,8 @@ public class ChatterBoxVelocity extends ChatterBoxPlugin<CommandSource, Schedule
     ) {
         super.sendTitle(sender, notifyServer, title, subtitle, duration, fadeIn, fadeOut, placeholders);
     }
+
+    public @NotNull final ProxyServer getServer() {
+        return this.server;
+    }
 }

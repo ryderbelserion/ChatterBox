@@ -14,6 +14,7 @@ import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
+import java.util.Map;
 
 public class BroadcastCommand extends ChatterCommand {
 
@@ -21,9 +22,9 @@ public class BroadcastCommand extends ChatterCommand {
     public void run(@NotNull final VelocityCommandContext context) {
         final CommandSource sender = context.getSender();
 
-        context.getStringArgument("message").ifPresentOrElse(message -> {
-            this.server.getAllPlayers().forEach(player -> player.sendMessage(this.fusion.asComponent(sender, message)));
-        }, () -> this.adapter.sendMessage(sender, Messages.msg_cannot_be_blank));
+        context.getStringArgument("message").ifPresentOrElse(message -> this.adapter.broadcast(sender, Messages.broadcast_format, Map.of(
+                "{message}", message
+        )), () -> this.adapter.sendMessage(sender, Messages.msg_cannot_be_blank));
     }
 
     @Override
