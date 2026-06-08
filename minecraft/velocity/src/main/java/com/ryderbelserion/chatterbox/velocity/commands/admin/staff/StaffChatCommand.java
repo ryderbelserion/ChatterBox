@@ -78,7 +78,7 @@ public class StaffChatCommand extends ChatterBoxCommand {
                     return Command.SINGLE_SUCCESS;
                 });
 
-        final RequiredArgumentBuilder<CommandSource, String> arg1 = BrigadierCommand.requiredArgumentBuilder("message", StringArgumentType.greedyString()).suggests((context, builder) -> builder.buildFuture())
+        final RequiredArgumentBuilder<CommandSource, String> arg1 = BrigadierCommand.requiredArgumentBuilder("message", StringArgumentType.greedyString()).suggests((_, builder) -> builder.buildFuture())
                 .executes(context -> {
                     run(new VelocityCommandContext(context));
 
