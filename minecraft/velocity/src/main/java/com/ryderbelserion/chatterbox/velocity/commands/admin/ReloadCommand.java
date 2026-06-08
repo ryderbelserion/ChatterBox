@@ -4,7 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
-import com.ryderbelserion.chatterbox.velocity.api.ChatterCommand;
+import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.velocity.commands.context.VelocityCommandContext;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.velocitypowered.api.command.BrigadierCommand;
@@ -12,7 +12,7 @@ import com.velocitypowered.api.command.CommandSource;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
-public class ReloadCommand extends ChatterCommand {
+public class ReloadCommand extends ChatterBoxCommand {
 
     @Override
     public void run(@NotNull final VelocityCommandContext context) {

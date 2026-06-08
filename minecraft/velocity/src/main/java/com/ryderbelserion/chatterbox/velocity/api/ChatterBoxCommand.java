@@ -7,7 +7,7 @@ import com.ryderbelserion.fusion.velocity.FusionVelocity;
 import com.ryderbelserion.fusion.velocity.commands.VelocityCommand;
 import com.velocitypowered.api.proxy.ProxyServer;
 
-public abstract class ChatterCommand extends VelocityCommand {
+public abstract class ChatterBoxCommand extends VelocityCommand {
 
     protected final ChatterBox plugin = ChatterBox.getInstance();
 
@@ -20,4 +20,5 @@ public abstract class ChatterCommand extends VelocityCommand {
     protected final FusionVelocity fusion = this.plugin.getFusion();
 
     protected final ProxyServer server = this.plugin.getServer();
+
 }

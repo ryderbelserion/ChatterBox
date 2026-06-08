@@ -5,7 +5,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
-import com.ryderbelserion.chatterbox.velocity.api.ChatterCommand;
+import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.velocity.commands.context.VelocityCommandContext;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.velocitypowered.api.command.BrigadierCommand;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class HubCommand extends ChatterCommand {
+public class HubCommand extends ChatterBoxCommand {
 
     @Override
     public void run(@NotNull final VelocityCommandContext context) {

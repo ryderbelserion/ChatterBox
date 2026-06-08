@@ -14,6 +14,7 @@ import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.identity.Identity;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +30,9 @@ public class StaffChatCommand extends ChatterBoxCommand {
     public void run(@NotNull final PaperCommandContext context) {
         final CommandSender sender = context.getSender();
 
+        final UUID uuid = sender.get(Identity.UUID).orElse(ChatterBoxPlugin.CONSOLE_UUID);
+        final String username = sender.get(Identity.NAME).orElse("Console");
+
         if (context.hasArgument("message")) {
             context.getStringArgument("message").ifPresent(message -> {
                 if (message.isBlank()) {
@@ -36,20 +40,14 @@ public class StaffChatCommand extends ChatterBoxCommand {
 
                     return;
                 }
-
-                final UUID uuid = sender instanceof Player player ? player.getUniqueId() : ChatterBoxPlugin.CONSOLE_UUID;
                 final String asString = uuid.toString();
-
-                final String username = sender.getName();
 
                 final Map<String, String> placeholders = Map.of(
                         "{message}", message,
                         "{player}", username
                 );
 
-                if (context.isPlayer()) { // if player, send to me.
-                    final Player player = context.getPlayer();
-
+                if (sender instanceof Player player) { // if player, send to me.
                     this.adapter.sendMessage(player, Messages.staff_chat_format, placeholders);
 
                     this.adapter.sendMessage(this.server.getConsoleSender(), Messages.staff_chat_format, placeholders);
@@ -79,7 +77,7 @@ public class StaffChatCommand extends ChatterBoxCommand {
 
         final Player player = context.getPlayer();
 
-        this.userRegistry.getUser(player.getUniqueId()).ifPresentOrElse(user -> {
+        this.userRegistry.getUser(uuid).ifPresentOrElse(user -> {
             final boolean isStaffChat = user.hasUserState(UserState.staff_chat);
 
             if (isStaffChat) {

@@ -10,6 +10,7 @@ import com.ryderbelserion.chatterbox.velocity.api.registry.adapters.VelocitySend
 import com.ryderbelserion.chatterbox.velocity.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.velocity.commands.admin.BroadcastCommand;
 import com.ryderbelserion.chatterbox.velocity.commands.admin.ReloadCommand;
+import com.ryderbelserion.chatterbox.velocity.commands.admin.staff.StaffChatCommand;
 import com.ryderbelserion.chatterbox.velocity.commands.player.HubCommand;
 import com.ryderbelserion.fusion.velocity.FusionVelocity;
 import com.velocitypowered.api.command.*;
@@ -71,6 +72,9 @@ public class ChatterBoxVelocity extends ChatterBoxPlugin<CommandSource, Schedule
 
         List.of(
                 new BroadcastCommand(),
+
+                new StaffChatCommand(),
+
                 new ReloadCommand()
         ).forEach(key -> root.then(key.registerPermissions().literal()));
 

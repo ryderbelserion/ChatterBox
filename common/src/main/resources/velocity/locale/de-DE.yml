@@ -24,6 +24,16 @@ messages:
   broadcast:
     # Available Placeholders: {prefix}
     format: " <red>[<dark_red>Alert</dark_red>]</red> {message}"
+  # All messages related to /cbv staffchat
+  staff:
+    # Available Placeholders: {prefix}
+    chat_enabled: "{prefix}<green>Sie haben den Mitarbeiter-Chat aktiviert!"
+    # Available Placeholders: {prefix}
+    chat_disabled: "{prefix}<red>Du hast den Mitarbeiter-Chat deaktiviert!"
+    # Available Placeholders: {prefix}, {player}, {message}
+    chat_format: "<yellow>[<red>Mitarbeiter-Chat</red>]</yellow> <green>{player}</green> <gray>></gray> <blue>{message}</blue>"
+    # Available Placeholders: {prefix}
+    chat_cannot_enable: "{prefix}<red>Du kannst den Mitarbeiter-Chat nicht aktivieren!"
   # All messages related to /hub
   hub:
     # Available placeholders: {prefix}
