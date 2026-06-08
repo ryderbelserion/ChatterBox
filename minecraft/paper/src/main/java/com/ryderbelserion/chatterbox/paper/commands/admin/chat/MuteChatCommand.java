@@ -3,10 +3,10 @@ package com.ryderbelserion.chatterbox.paper.commands.admin.chat;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.api.enums.server.ServerState;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
-import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
@@ -46,11 +46,7 @@ public class MuteChatCommand extends ChatterBoxCommand {
     @Override
     public @NotNull final List<PermissionContext> getPermissions() {
         return List.of(
-                new PermissionContext(
-                        "chatterbox.mutechat",
-                        "Mutes the server chat!",
-                        PermissionType.OP
-                )
+                Permissions.mute_chat.getContext()
         );
     }
 

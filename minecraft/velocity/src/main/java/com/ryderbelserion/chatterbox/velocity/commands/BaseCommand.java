@@ -1,6 +1,7 @@
 package com.ryderbelserion.chatterbox.velocity.commands;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterCommand;
 import com.ryderbelserion.fusion.velocity.commands.context.VelocityCommandContext;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
@@ -19,6 +20,8 @@ public class BaseCommand extends ChatterCommand {
     @Override
     public @NotNull final List<PermissionContext> getPermissions() {
         return List.of(
+                Permissions.use.getContext(),
+
                 new PermissionContext(
                         "chatterbox.use",
                         "Allows you to use /cbv"
@@ -28,7 +31,19 @@ public class BaseCommand extends ChatterCommand {
 
     @Override
     public final boolean requirement(@NotNull final CommandSource context) {
-        return context.hasPermission(getPermissions().getFirst().getPermission());
+        boolean hasPermission = false;
+
+        for (final PermissionContext permissionContext : getPermissions()) {
+            final String permission = permissionContext.getPermission();
+
+            hasPermission = context.hasPermission(permission);
+
+            if (hasPermission) {
+                break;
+            }
+        }
+
+        return hasPermission;
     }
 
     @Override

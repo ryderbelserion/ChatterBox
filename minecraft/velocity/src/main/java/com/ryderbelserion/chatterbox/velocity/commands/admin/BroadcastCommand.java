@@ -6,6 +6,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.velocity.commands.context.VelocityCommandContext;
@@ -41,6 +42,8 @@ public class BroadcastCommand extends ChatterCommand {
     @Override
     public @NotNull final List<PermissionContext> getPermissions() {
         return List.of(
+                Permissions.broadcast.getContext(),
+
                 new PermissionContext(
                         "chatterbox.broadcast",
                         "Sends a message to the server!"
@@ -50,6 +53,18 @@ public class BroadcastCommand extends ChatterCommand {
 
     @Override
     public final boolean requirement(@NotNull final CommandSource context) {
-        return context.hasPermission(getPermissions().getFirst().getPermission());
+        boolean hasPermission = false;
+
+        for (final PermissionContext permissionContext : getPermissions()) {
+            final String permission = permissionContext.getPermission();
+
+            hasPermission = context.hasPermission(permission);
+
+            if (hasPermission) {
+                break;
+            }
+        }
+
+        return hasPermission;
     }
 }

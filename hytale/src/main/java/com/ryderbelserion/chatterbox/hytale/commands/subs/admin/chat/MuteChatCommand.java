@@ -5,6 +5,7 @@ import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.api.enums.server.ServerState;
 import com.ryderbelserion.chatterbox.common.api.adapters.ServerAdapter;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
@@ -25,7 +26,7 @@ public class MuteChatCommand extends CommandBase {
     public MuteChatCommand() {
         super("mutechat", "Mutes the server chat!", false);
 
-        requirePermission("chatterbox.command.mutechat");
+        requirePermission(Permissions.mute_chat.getPermissionNode());
     }
 
     @Override

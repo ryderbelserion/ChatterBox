@@ -3,6 +3,7 @@ package com.ryderbelserion.chatterbox.velocity.commands.player;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterCommand;
 import com.ryderbelserion.fusion.velocity.commands.context.VelocityCommandContext;
@@ -88,15 +89,29 @@ public class HubCommand extends ChatterCommand {
     @Override
     public @NotNull final List<PermissionContext> getPermissions() {
         return List.of(
+                Permissions.hub.getContext(),
+
                 new PermissionContext(
                         "chatterbox.hub",
-                        "Sends the player to the hub server!"
+                        "Sends you to the hub server!"
                 )
         );
     }
 
     @Override
     public final boolean requirement(@NotNull final CommandSource context) {
-        return context.hasPermission(getPermissions().getFirst().getPermission());
+        boolean hasPermission = false;
+
+        for (final PermissionContext permissionContext : getPermissions()) {
+            final String permission = permissionContext.getPermission();
+
+            hasPermission = context.hasPermission(permission);
+
+            if (hasPermission) {
+                break;
+            }
+        }
+
+        return hasPermission;
     }
 }

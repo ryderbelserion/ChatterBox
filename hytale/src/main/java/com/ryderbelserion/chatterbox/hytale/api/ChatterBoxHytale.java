@@ -2,6 +2,7 @@ package com.ryderbelserion.chatterbox.hytale.api;
 
 import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
@@ -16,6 +17,7 @@ import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.bstats.hytale.Metrics;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
@@ -75,6 +77,11 @@ public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Runnabl
     @Override
     public @NotNull final Platform getPlatform() {
         return Platform.HYTALE;
+    }
+
+    @Override
+    public final boolean hasPermission(@NonNull final String permission, @NonNull final IMessageReceiver sender) {
+        return sender instanceof CommandSender source && source.hasPermission(permission);
     }
 
     @Override

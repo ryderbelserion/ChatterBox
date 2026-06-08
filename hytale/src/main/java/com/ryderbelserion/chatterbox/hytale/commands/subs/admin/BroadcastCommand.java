@@ -5,6 +5,7 @@ import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredAr
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
 import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleSenderAdapter;
@@ -22,11 +23,11 @@ public class BroadcastCommand extends CommandBase {
     private final RequiredArg<String> message;
 
     public BroadcastCommand() {
-        super("broadcast", "Sends a message to the server!", false);
+        super("broadcast", "Broadcasts a message to the server!", false);
 
-        requirePermission("chatterbox.command.broadcast");
+        requirePermission(Permissions.broadcast.getPermissionNode());
 
-        this.message = withRequiredArg("message", "The message to send to the server!", ArgTypes.GREEDY_STRING);
+        this.message = withRequiredArg("message", "The message to broadcast to the server!", ArgTypes.GREEDY_STRING);
     }
 
     @Override

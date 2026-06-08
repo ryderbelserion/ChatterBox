@@ -1,6 +1,5 @@
 package com.ryderbelserion.chatterbox.api;
 
-import com.ryderbelserion.chatterbox.api.adapters.IPlayerAdapter;
 import com.ryderbelserion.chatterbox.api.adapters.IServerAdapter;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.api.registry.IContextRegistry;
@@ -10,7 +9,6 @@ import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
-
 import java.nio.file.Path;
 
 public abstract class ChatterBox<S> {
@@ -30,17 +28,17 @@ public abstract class ChatterBox<S> {
         this.fileManager = this.fusion.getFileManager();
     }
 
-    public abstract <C> @NotNull IPlayerAdapter<C> getPlayerAdapter(@NotNull final Class<C> object);
+    public abstract @NonNull IContextRegistry getContextRegistry();
 
     public abstract @NonNull MessageRegistry getMessageRegistry();
 
-    public abstract @NonNull IContextRegistry getContextRegistry();
+    public abstract @NonNull IServerAdapter getServerAdapter();
 
     public abstract @NonNull IUserRegistry getUserRegistry();
 
-    public abstract @NonNull IServerAdapter getServerAdapter();
-
     public abstract @NonNull Platform getPlatform();
+
+    public abstract boolean hasPermission(@NonNull final String permission, @NonNull final S sender);
 
     public abstract void init();
 

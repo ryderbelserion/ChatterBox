@@ -25,6 +25,7 @@ import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,11 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, FoliaSchedu
     @Override
     public @NotNull final Platform getPlatform() {
         return Platform.MINECRAFT;
+    }
+
+    @Override
+    public final boolean hasPermission(@NonNull final String permission, @NonNull final CommandSender sender) {
+        return sender.hasPermission(permission);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.ryderbelserion.chatterbox.paper.listeners.chat.renderers;
 
+import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import io.papermc.paper.chat.ChatRenderer;
 import net.kyori.adventure.audience.Audience;
@@ -48,42 +49,42 @@ public class ChatRender implements ChatRenderer {
     private @NotNull TagResolver message(@NotNull final Player player, @NotNull final String message) {
         final List<TagResolver> resolvers = new ArrayList<>();
 
-        if (player.hasPermission("chatterbox.color")) {
+        if (Permissions.standard_colors.hasPermission(player)) {
             resolvers.add(StandardTags.color());
         }
 
-        if (player.hasPermission("chatterbox.gradient")) {
+        if (Permissions.gradient_colors.hasPermission(player)) {
             resolvers.add(StandardTags.gradient());
         }
 
-        if (player.hasPermission("chatterbox.rainbow")) {
+        if (Permissions.rainbow_colors.hasPermission(player)) {
             resolvers.add(StandardTags.rainbow());
         }
 
-        if (player.hasPermission("chatterbox.font")) {
+        if (Permissions.decoration_font.hasPermission(player)) {
             resolvers.add(StandardTags.font());
         }
 
-        if (player.hasPermission("chatterbox.decoration")) {
+        if (Permissions.decoration_wildcard.hasPermission(player)) {
             resolvers.add(StandardTags.decorations());
         } else {
-            if (player.hasPermission("chatterbox.decoration.bold")) {
+            if (Permissions.decoration_bold.hasPermission(player)) {
                 resolvers.add(StandardTags.decorations(TextDecoration.BOLD));
             }
 
-            if (player.hasPermission("chatterbox.decoration.italic")) {
+            if (Permissions.decoration_italic.hasPermission(player)) {
                 resolvers.add(StandardTags.decorations(TextDecoration.ITALIC));
             }
 
-            if (player.hasPermission("chatterbox.decoration.underlined")) {
+            if (Permissions.decoration_underlined.hasPermission(player)) {
                 resolvers.add(StandardTags.decorations(TextDecoration.UNDERLINED));
             }
 
-            if (player.hasPermission("chatterbox.decoration.strikethrough")) {
+            if (Permissions.decoration_strikethrough.hasPermission(player)) {
                 resolvers.add(StandardTags.decorations(TextDecoration.STRIKETHROUGH));
             }
 
-            if (player.hasPermission("chatterbox.decoration.obfuscated")) {
+            if (Permissions.decoration_obfuscated.hasPermission(player)) {
                 resolvers.add(StandardTags.decorations(TextDecoration.OBFUSCATED));
             }
         }

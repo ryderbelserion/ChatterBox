@@ -3,6 +3,7 @@ package com.ryderbelserion.chatterbox.hytale.commands.subs;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
+import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
 import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
@@ -26,7 +27,7 @@ public class MotdCommand extends CommandBase {
     public MotdCommand() {
         super("motd", "Shows the message of the day!", false);
 
-        requirePermission("chatterbox.command.motd");
+        requirePermission(Permissions.motd.getPermissionNode());
     }
 
     @Override

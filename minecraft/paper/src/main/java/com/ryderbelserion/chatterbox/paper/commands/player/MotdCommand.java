@@ -3,6 +3,7 @@ package com.ryderbelserion.chatterbox.paper.commands.player;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
@@ -55,6 +56,8 @@ public class MotdCommand extends ChatterBoxCommand {
     @Override
     public @NotNull final List<PermissionContext> getPermissions() {
         return List.of(
+                Permissions.motd.getContext(),
+
                 new PermissionContext(
                         "chatterbox.motd",
                         "Shows the message of the day!",
@@ -65,6 +68,20 @@ public class MotdCommand extends ChatterBoxCommand {
 
     @Override
     public final boolean requirement(@NotNull final CommandSourceStack context) {
-        return context.getSender().hasPermission(getPermissions().getFirst().getPermission());
+        boolean hasPermission = false;
+
+        final CommandSender sender = context.getSender();
+
+        for (final PermissionContext permissionContext : getPermissions()) {
+            final String permission = permissionContext.getPermission();
+
+            hasPermission = sender.hasPermission(permission);
+
+            if (hasPermission) {
+                break;
+            }
+        }
+
+        return hasPermission;
     }
 }

@@ -16,16 +16,14 @@ import com.velocitypowered.api.command.*;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.scheduler.ScheduledTask;
 import com.velocitypowered.api.scheduler.Scheduler;
-import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, ScheduledTask> {
+public class ChatterBoxVelocity extends ChatterBoxPlugin<CommandSource, ScheduledTask> {
 
     private final ChatterBox instance;
     private final ProxyServer server;
@@ -104,6 +102,11 @@ public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, ScheduledTask
     }
 
     @Override
+    public final boolean hasPermission(@NonNull final String permission, @NonNull final CommandSource sender) {
+        return sender.hasPermission(permission);
+    }
+
+    @Override
     public final int getPlayerCount() {
         return this.server.getPlayerCount();
     }
@@ -130,7 +133,7 @@ public class ChatterBoxVelocity extends ChatterBoxPlugin<Audience, ScheduledTask
 
     @Override
     public void sendTitle(
-            final @NonNull Audience sender, final boolean notifyServer,
+            final @NonNull CommandSource sender, final boolean notifyServer,
             final @NotNull String title, final @NotNull String subtitle, final int duration, final int fadeIn, final int fadeOut,
             final @NotNull Map<String, String> placeholders
     ) {

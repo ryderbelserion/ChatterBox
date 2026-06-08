@@ -3,13 +3,12 @@ package com.ryderbelserion.chatterbox.common;
 import com.ryderbelserion.chatterbox.api.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.ChatterBox;
 import com.ryderbelserion.chatterbox.api.adapters.IGroupAdapter;
-import com.ryderbelserion.chatterbox.api.adapters.IPlayerAdapter;
 import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.api.adapters.ServerAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
-import com.ryderbelserion.chatterbox.common.api.adapters.PlayerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
 import com.ryderbelserion.chatterbox.common.api.adapters.filter.types.RegexFilterAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.filter.types.SimpleFilterAdapter;
@@ -44,7 +43,6 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
     protected ConfigManager configManager;
 
     protected ServerAdapter serverAdapter;
-    protected IPlayerAdapter<?> adapter;
     protected MessageImpl messageImpl;
 
     public ChatterBoxPlugin(@NotNull final FusionKyori fusion) {
@@ -145,8 +143,6 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
     @Override
     public void post() {
-        this.adapter = new PlayerAdapter<>(getUserRegistry(), getContextRegistry());
-
         this.configManager = new ConfigManager();
         this.configManager.init();
 
@@ -168,6 +164,10 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
             } else {
                 logger.addFilter(new SimpleFilterAdapter(config));
             }
+        }
+
+        for (final Permissions permission : Permissions.values()) {
+            permission.registerPermission();
         }
     }
 
@@ -196,11 +196,6 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
         if (this.discordManager != null) {
             this.discordManager.stop();
         }
-    }
-
-    @Override
-    public @NotNull <C> IPlayerAdapter<C> getPlayerAdapter(@NotNull final Class<C> object) {
-        return (IPlayerAdapter<C>) this.adapter;
     }
 
     @Override

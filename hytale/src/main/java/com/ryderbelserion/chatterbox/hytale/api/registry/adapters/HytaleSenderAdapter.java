@@ -31,6 +31,7 @@ public class HytaleSenderAdapter extends ISenderAdapter<Message, IMessageReceive
 
         this.messageRegistry = platform.getMessageRegistry();
         this.userRegistry = platform.getUserRegistry();
+
         this.fusion = (FusionHytale) platform.getFusion();
     }
 
