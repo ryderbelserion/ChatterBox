@@ -7,9 +7,7 @@ project.group = "${rootProject.group}.paper"
 dependencies {
     implementation(project(":chatterbox-common"))
 
-    implementation(libs.fusion.paper) {
-        exclude(module = "configurate-yaml")
-    }
+    implementation(libs.fusion.paper)
 
     implementation(libs.bstats.paper)
 }
@@ -28,21 +26,5 @@ tasks {
 
     build {
         dependsOn(shadowJar)
-    }
-
-    shadowJar {
-        archiveClassifier.set("")
-
-        listOf(
-            "com.ryderbelserion.fusion"
-        ).forEach {
-            relocate(it, "libs.$it")
-        }
-
-        relocate("org.bstats", project.group.toString())
-
-        minimize {
-            exclude(dependency("com.ryderbelserion.fusion:.*"))
-        }
     }
 }

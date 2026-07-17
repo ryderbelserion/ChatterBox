@@ -5,7 +5,10 @@ on:
 
   push:
     branches:
-      - dev
+      - main
+
+env:
+  version_status: "beta"
 
 jobs:
   build:
@@ -15,6 +18,6 @@ jobs:
       branch: dev
 
     secrets:
-      webhook: ${{ secrets.CM_WEBHOOK }}
+      webhook: ${{ secrets.CB_WEBHOOK }}
       modrinth_token: ${{ secrets.MODRINTH_TOKEN }}
       hangar_token: ${{ secrets.HANGAR_KEY }}

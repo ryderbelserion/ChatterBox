@@ -4,13 +4,16 @@ plugins {
     `java-library`
 }
 
-val libs: VersionCatalog = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
+val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
 
 repositories {
     maven("https://repo.codemc.io/repository/maven-public/")
 
+    maven("https://repo.opencollab.dev/maven-snapshots/")
+
+    maven("https://repo.triumphteam.dev/snapshots/")
+
     maven("https://repo.crazycrew.us/snapshots/")
-    maven("https://repo.crazycrew.us/libraries/")
     maven("https://repo.crazycrew.us/releases/")
 
     maven("https://jitpack.io/")
@@ -34,22 +37,24 @@ tasks {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
         inputs.properties(
-            // global
-            "group" to project.group.toString(),
             "artifact" to rootProject.name,
             "version" to rootProject.version,
             "description" to rootProject.description.toString(),
+            "minecraft" to libs.findVersion("minecraft").get(),
+            "website" to "https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}",
+            "group" to project.group,
 
             // fabric
             "id" to rootProject.name.lowercase(),
             "fabricloader" to libs.findVersion("fabric-loader").get(),
 
-            // generic
-            "minecraft" to libs.findVersion("minecraft").get(),
+            "current_commit" to rootProject.ext.get("current_commit").toString(),
+            "previous_commit" to rootProject.ext.get("previous_commit").toString()
         )
 
         with(copySpec {
-            include("*manifest.json", "*paper-plugin.yml", "*fabric.mod.json")
+            include("*paper-plugin.yml", "*version.json")
+
             from("src/main/resources") {
                 expand(inputs.properties)
             }

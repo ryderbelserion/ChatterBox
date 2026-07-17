@@ -15,12 +15,12 @@ public abstract class ChatterBox<S> {
 
     public static final String namespace = "chatterbox";
 
-    protected final FusionKyori<S> fusion;
+    protected final FusionKyori<S, FileManager> fusion;
     protected final FileManager fileManager;
 
     protected final Path dataPath;
 
-    public ChatterBox(@NotNull final FusionKyori<S> fusion) {
+    public ChatterBox(@NotNull final FusionKyori<S, FileManager> fusion) {
         this.fusion = fusion;
 
         this.dataPath = this.fusion.getDataPath();

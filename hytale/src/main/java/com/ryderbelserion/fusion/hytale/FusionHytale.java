@@ -8,6 +8,7 @@ import com.hypixel.hytale.server.core.plugin.PluginManager;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.hytale.utils.ColorUtils;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
@@ -17,12 +18,12 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FusionHytale extends FusionKyori<IMessageReceiver> {
+public class FusionHytale extends FusionKyori<IMessageReceiver, FileManager> {
 
     private final HytaleLogger logger;
 
     public FusionHytale(@NotNull final HytaleLogger logger, @NotNull final Path path) {
-        super(path);
+        super(new FileManager(path), path);
 
         this.logger = logger;
     }
