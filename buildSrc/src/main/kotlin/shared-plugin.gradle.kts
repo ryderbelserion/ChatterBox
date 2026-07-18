@@ -15,7 +15,7 @@ val branch = utils.getRemoteBranch()
 val hash = utils.getRemoteCommitHash()
 val commit = utils.getRemoteCommitMessage(hash, "%B")
 
-val status: String = System.getenv().getOrDefault("version_status", "release").lowercase()
+val status: String = System.getenv().getOrDefault("version_status", "beta").lowercase()
 
 val buildNumber: String = System.getenv("BUILD_NUMBER") ?: "N/A"
 val isJenkins: Boolean = buildNumber != "N/A"
