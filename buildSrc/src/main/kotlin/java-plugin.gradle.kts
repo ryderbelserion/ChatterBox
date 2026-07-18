@@ -37,16 +37,20 @@ tasks {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
         inputs.properties(
+            // global
             "artifact" to rootProject.name,
+            "group" to project.group,
             "version" to rootProject.version,
             "description" to rootProject.description.toString(),
-            "minecraft" to libs.findVersion("minecraft").get(),
-            "website" to "https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}",
-            "group" to project.group,
 
             // fabric
             "id" to rootProject.name.lowercase(),
             "fabricloader" to libs.findVersion("fabric-loader").get(),
+
+            // generic
+            "minecraft" to libs.findVersion("minecraft").get(),
+
+            "website" to "https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}",
 
             "current_commit" to rootProject.ext.get("current_commit").toString(),
             "previous_commit" to rootProject.ext.get("previous_commit").toString()

@@ -15,7 +15,7 @@ jobs:
     uses: ryderbelserion/ryderbelserion/.github/workflows/build.yml@main
 
     with:
-      branch: dev
+      branch: main
 
     secrets:
       webhook: ${{ secrets.CB_WEBHOOK }}
