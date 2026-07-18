@@ -2,9 +2,9 @@ package com.ryderbelserion.chatterbox.paper.commands.admin.chat;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.api.enums.server.ServerState;
+import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
@@ -29,11 +29,11 @@ public class MuteChatCommand extends ChatterBoxCommand {
             this.serverAdapter.addState(ServerState.chat_muted);
         }
 
-        this.server.broadcast(this.adapter.getComponent(sender, isMuted ? Messages.server_unmuted_broadcast : Messages.server_muted_broadcast, Map.of(
+        this.server.broadcast(this.adapter.getComponent(sender, isMuted ? Messages.server_unmuted_broadcast.getKey() : Messages.server_muted_broadcast.getKey(), Map.of(
                 "{player}", sender.getName()
         )));
 
-        this.adapter.sendMessage(sender, isMuted ? Messages.server_unmuted_sender : Messages.server_muted_sender);
+        this.adapter.sendMessage(sender, isMuted ? Messages.server_unmuted_sender.getKey() : Messages.server_muted_sender.getKey());
     }
 
     @Override

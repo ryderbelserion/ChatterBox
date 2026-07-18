@@ -3,7 +3,6 @@ package com.ryderbelserion.chatterbox.common;
 import com.ryderbelserion.chatterbox.api.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.ChatterBox;
 import com.ryderbelserion.chatterbox.api.adapters.IGroupAdapter;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.api.user.IUser;
@@ -12,12 +11,14 @@ import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
 import com.ryderbelserion.chatterbox.common.api.adapters.filter.types.RegexFilterAdapter;
 import com.ryderbelserion.chatterbox.common.api.adapters.filter.types.SimpleFilterAdapter;
-import com.ryderbelserion.chatterbox.common.api.registry.MessageImpl;
 import com.ryderbelserion.chatterbox.common.configs.FilterConfig;
 import com.ryderbelserion.chatterbox.common.configs.ServerConfig;
+import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
+import com.ryderbelserion.fusion.core.api.FusionKey;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
 import com.ryderbelserion.fusion.files.enums.FileType;
@@ -29,6 +30,7 @@ import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -38,12 +40,10 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
     public static final String CONSOLE_NAME = "Console";
 
-    protected MessageRegistry messageRegistry;
     protected DiscordManager discordManager;
     protected ConfigManager configManager;
 
     protected ServerAdapter serverAdapter;
-    protected MessageImpl messageImpl;
 
     public ChatterBoxPlugin(@NotNull final FusionKyori fusion) {
         super(fusion);
@@ -88,12 +88,12 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
             final ISenderAdapter adapter = getSenderAdapter();
 
             if (delay > 0) {
-                runDelayedTask(_ -> adapter.sendMessage(sender, Messages.message_of_the_day, placeholders), delay);
+                runDelayedTask(_ -> adapter.sendMessage(sender, Messages.message_of_the_day.getKey(), placeholders), delay);
 
                 return;
             }
 
-            adapter.sendMessage(sender, Messages.message_of_the_day, placeholders);
+            adapter.sendMessage(sender, Messages.message_of_the_day.getKey(), placeholders);
         }
     }
 
@@ -129,9 +129,6 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
         files.forEach(file -> this.fileManager.addFile(this.dataPath.resolve(file), jarFolder, FileType.YAML));
 
-        this.messageImpl = new MessageImpl(this.messageRegistry = this.fusion.getMessageRegistry());
-        this.messageImpl.init();
-
         final ModRegistry registry = this.fusion.getModRegistry();
 
         List.of(
@@ -142,9 +139,40 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
     }
 
     @Override
+    public void loadMessages() {
+        this.messageRegistry.init(action -> {
+            final List<Path> paths = this.fileManager.getFilesByPath(this.dataPath.resolve("locale"), ".yml", 1);
+
+            paths.add(this.dataPath.resolve("messages.yml")); // add to list
+
+            final Platform platform = getPlatform();
+
+            for (final Path path : paths) {
+                this.fileManager.getYamlFile(path).ifPresentOrElse(file -> {
+                    final String fileName = file.getFileName();
+
+                    final FusionKey key = FusionKey.key(ChatterBox.namespace, fileName.equalsIgnoreCase("messages.yml") ? "default" : fileName.toLowerCase());
+
+                    final CommentedConfigurationNode configuration = file.getConfiguration();
+
+                    for (final Messages message : Messages.values()) {
+                        switch (platform) {
+                            case MINECRAFT, HYTALE -> message.addMinecraftKey(action, configuration, key);
+                            case VELOCITY -> message.addVelocityKey(action, configuration, key);
+                            default -> message.addKey(action, configuration, key);
+                        }
+                    }
+                }, () -> this.fusion.log(Level.INFO, "Path %s not found in cache.".formatted(path)));
+            }
+        });
+    }
+
+    @Override
     public void post() {
         this.configManager = new ConfigManager();
         this.configManager.init();
+
+        loadMessages();
 
         final DiscordConfig discordConfig = this.configManager.getDiscord();
 
@@ -179,7 +207,7 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
         this.configManager.reload();
 
-        this.messageImpl.reload();
+        loadMessages();
 
         if (this.discordManager != null) {
             this.discordManager.init();
@@ -227,9 +255,5 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
     public @NotNull final ConfigManager getConfigManager() {
         return this.configManager;
-    }
-
-    public @NonNull final MessageImpl getMessageImpl() {
-        return this.messageImpl;
     }
 }

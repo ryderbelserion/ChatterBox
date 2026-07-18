@@ -2,8 +2,8 @@ package com.ryderbelserion.chatterbox.paper.commands.admin;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
+import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
@@ -20,7 +20,7 @@ public class ReloadCommand extends ChatterBoxCommand {
     public void run(@NotNull final PaperCommandContext context) {
         this.platform.reload();
 
-        this.adapter.sendMessage(context.getSender(), Messages.reload_plugin);
+        Messages.reload_plugin.sendMessage(context.getSender());
     }
 
     @Override

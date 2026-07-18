@@ -1,12 +1,11 @@
 package com.ryderbelserion.chatterbox.paper.listeners.staff;
 
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.api.enums.user.UserState;
+import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;
-import com.ryderbelserion.chatterbox.paper.api.registry.adapters.PaperSenderAdapter;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -20,8 +19,6 @@ public class StaffListener implements Listener {
     private final ChatterBox plugin = ChatterBox.getInstance();
 
     private final ChatterBoxPaper platform = this.plugin.getPlatform();
-
-    private final PaperSenderAdapter senderAdapter = this.platform.getSenderAdapter();
 
     private final PaperUserRegistry userRegistry = this.platform.getUserRegistry();
 
@@ -46,12 +43,12 @@ public class StaffListener implements Listener {
             if (!Permissions.staff_chat.hasPermission(player)) {
                 origin.removeUserState(UserState.staff_chat);
 
-                this.senderAdapter.sendMessage(player, Messages.staff_chat_disabled);
+                Messages.staff_chat_disabled.sendMessage(player);
 
                 return;
             }
 
-            this.senderAdapter.sendMessage(player, Messages.staff_chat_format, Map.of(
+            Messages.staff_chat_format.sendMessage(player, Map.of(
                     "{message}", message,
                     "{player}", username
             ));
@@ -63,13 +60,13 @@ public class StaffListener implements Listener {
 
                 if (!Permissions.staff_chat.hasPermission(target)) continue;
 
-                this.userRegistry.getUser(id).ifPresent(_ -> this.senderAdapter.sendMessage(target, Messages.staff_chat_format, Map.of(
+                this.userRegistry.getUser(id).ifPresent(_ -> Messages.staff_chat_format.sendMessage(target, Map.of(
                         "{message}", message,
                         "{player}", username
                 )));
             }
 
-            this.senderAdapter.sendMessage(this.server.getConsoleSender(), Messages.staff_chat_format, Map.of(
+            Messages.staff_chat_format.sendMessage(this.server.getConsoleSender(), Map.of(
                     "{message}", message,
                     "{player}", username
             ));

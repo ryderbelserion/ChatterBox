@@ -4,8 +4,8 @@ import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
+import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
 import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleSenderAdapter;
@@ -33,14 +33,14 @@ public class BroadcastCommand extends CommandBase {
     @Override
     protected void executeSync(@NotNull final CommandContext context) {
         if (!this.message.provided(context)) {
-            this.adapter.sendMessage(context.sender(), Messages.msg_cannot_be_blank);
+            this.adapter.sendMessage(context.sender(), Messages.msg_cannot_be_blank.getKey());
 
             return;
         }
 
         final String message = this.message.get(context);
 
-        this.adapter.broadcast(context.sender(), Messages.broadcast_format, Map.of(
+        this.adapter.broadcast(context.sender(), Messages.broadcast_format.getKey(), Map.of(
                 "{message}", message
         ));
     }

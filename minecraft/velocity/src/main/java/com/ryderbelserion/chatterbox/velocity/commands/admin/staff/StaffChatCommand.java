@@ -5,9 +5,9 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.velocity.commands.context.VelocityCommandContext;
@@ -30,14 +30,14 @@ public class StaffChatCommand extends ChatterBoxCommand {
         final String username = sender.get(Identity.NAME).orElse("Console");
 
         if (!context.hasArgument("message")) {
-            this.adapter.sendMessage(sender, Messages.msg_cannot_be_blank);
+            Messages.msg_cannot_be_blank.sendMessage(sender);
 
             return;
         }
 
         context.getStringArgument("message").ifPresent(message -> {
             if (message.isBlank()) {
-                this.adapter.sendMessage(sender, Messages.msg_cannot_be_blank);
+                Messages.msg_cannot_be_blank.sendMessage(sender);
 
                 return;
             }
@@ -49,12 +49,12 @@ public class StaffChatCommand extends ChatterBoxCommand {
                     "{player}", username
             );
 
-            if (sender instanceof Player player) { // if player, send to me.
-                this.adapter.sendMessage(player, Messages.staff_chat_format, placeholders);
+            if (sender instanceof Player player) { // if player, send to me.;
+                Messages.staff_chat_format.sendMessage(player, placeholders);
 
-                this.adapter.sendMessage(this.server.getConsoleCommandSource(), Messages.staff_chat_format, placeholders);
+                Messages.staff_chat_format.sendMessage(this.server.getConsoleCommandSource(), placeholders);
             } else { // console sender
-                this.adapter.sendMessage(sender, Messages.staff_chat_format, placeholders);
+                Messages.staff_chat_format.sendMessage(sender, placeholders);
             }
 
             for (final Player target : this.server.getAllPlayers()) {
@@ -64,7 +64,7 @@ public class StaffChatCommand extends ChatterBoxCommand {
 
                 if (!Permissions.staff_chat.hasPermission(target)) continue;
 
-                this.adapter.sendMessage(target, Messages.staff_chat_format, placeholders);
+                Messages.staff_chat_format.sendMessage(target, placeholders);
             }
         });
     }

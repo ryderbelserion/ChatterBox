@@ -2,9 +2,9 @@ package com.ryderbelserion.chatterbox.paper.commands.player;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
+import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
@@ -40,7 +40,7 @@ public class MotdCommand extends ChatterBoxCommand {
             });
         }
 
-        this.adapter.sendMessage(sender, Messages.message_of_the_day, placeholders);
+        Messages.message_of_the_day.sendMessage(sender, placeholders);
     }
 
     @Override

@@ -2,9 +2,9 @@ package com.ryderbelserion.chatterbox.velocity.commands.player;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
+import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.velocity.commands.context.VelocityCommandContext;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
@@ -26,7 +26,7 @@ public class HubCommand extends ChatterBoxCommand {
         final CommandSource source = context.getSource();
 
         if (!context.isPlayer()) {
-            this.adapter.sendMessage(source, Messages.must_be_player);
+            Messages.must_be_player.sendMessage(source);
 
             return;
         }
@@ -38,7 +38,7 @@ public class HubCommand extends ChatterBoxCommand {
         final Player player = context.getPlayer();
 
         if (serverName.isBlank()) {
-            this.adapter.sendMessage(source, Messages.server_name_blank);
+            Messages.server_name_blank.sendMessage(source);
 
             return;
         }
@@ -46,7 +46,7 @@ public class HubCommand extends ChatterBoxCommand {
         final Optional<RegisteredServer> registeredServer = this.server.getServer(serverName);
 
         if (registeredServer.isEmpty()) {
-            this.adapter.sendMessage(source, Messages.server_doesnt_exist);
+            Messages.server_doesnt_exist.sendMessage(source);
 
             return;
         }
@@ -56,27 +56,27 @@ public class HubCommand extends ChatterBoxCommand {
         final String name = optional.isPresent() ? optional.get().getServer().getServerInfo().getName() : "";
 
         if (name.isBlank()) {
-            this.adapter.sendMessage(source, Messages.server_name_blank);
+            Messages.server_name_blank.sendMessage(source);
 
             return;
         }
 
         if (name.equals(serverName)) {
-            this.adapter.sendMessage(source, Messages.server_already_there);
+            Messages.server_already_there.sendMessage(source);
 
             return;
         }
 
         player.createConnectionRequest(registeredServer.get()).connect().whenComplete((result, throwable) -> {
             if (result.isSuccessful()) {
-                this.adapter.sendMessage(source, Messages.server_transfer_success, Map.of(
+                Messages.server_transfer_success.sendMessage(source, Map.of(
                         "{server}", serverName
                 ));
 
                 return;
             }
 
-            this.adapter.sendMessage(source, Messages.server_transfer_failed, Map.of(
+            Messages.server_transfer_failed.sendMessage(source, Map.of(
                     "{server}", serverName
             ));
         });

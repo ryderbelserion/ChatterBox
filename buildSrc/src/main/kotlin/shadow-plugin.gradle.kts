@@ -5,6 +5,8 @@ plugins {
 
 tasks {
     shadowJar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
         archiveClassifier.set("")
 
         exclude("META-INF/**")
@@ -12,28 +14,28 @@ tasks {
         listOf(
             "com.ryderbelserion.fusion",
             "org.spongepowered",
-            "org.apache",
-            "org.slf4j",
+            //"org.apache",
+            //"org.slf4j",
 
-            "com.neovisionaries",
-            "com.fasterxml",
+            //"com.neovisionaries",
+            //"com.fasterxml",
             "com.google",
 
-            "google.protobuf",
+            //"google.protobuf",
             "io.leangen",
-            "gnu.trove",
+            //"gnu.trove",
 
-            "org.jetbrains",
+            //"org.jetbrains",
             "org.jspecify",
-            "org.intellij",
+            //"org.intellij",
 
-            "net.dv8tion",
+            //"net.dv8tion",
             "org.bstats",
 
-            "okhttp3",
-            "kotlin",
-            "javax",
-            "okio"
+            //"okhttp3",
+            //"kotlin",
+            //"javax",
+            //"okio"
         ).forEach {
             relocate(it, "libs.$it")
         }

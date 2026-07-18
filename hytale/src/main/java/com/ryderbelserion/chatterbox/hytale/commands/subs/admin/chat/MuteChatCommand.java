@@ -4,10 +4,10 @@ import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.CommandSender;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.universe.Universe;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.api.enums.server.ServerState;
 import com.ryderbelserion.chatterbox.common.api.adapters.ServerAdapter;
+import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
 import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.hytale.api.registry.adapters.HytaleSenderAdapter;
@@ -41,8 +41,8 @@ public class MuteChatCommand extends CommandBase {
             this.serverAdapter.addState(ServerState.chat_muted);
         }
 
-        Universe.get().sendMessage(this.adapter.getComponent(sender, isMuted ? Messages.server_unmuted_broadcast : Messages.server_muted_broadcast));
+        Universe.get().sendMessage(this.adapter.getComponent(sender, isMuted ? Messages.server_unmuted_broadcast.getKey() : Messages.server_muted_broadcast.getKey()));
 
-        this.adapter.sendMessage(sender, isMuted ? Messages.server_muted_sender : Messages.server_unmuted_sender);
+        this.adapter.sendMessage(sender, isMuted ? Messages.server_muted_sender.getKey() : Messages.server_unmuted_sender.getKey());
     }
 }

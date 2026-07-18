@@ -2,7 +2,6 @@ package com.ryderbelserion.chatterbox.api.user;
 
 import com.ryderbelserion.chatterbox.api.ChatterBox;
 import com.ryderbelserion.chatterbox.api.adapters.IGroupAdapter;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.user.UserState;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import org.jetbrains.annotations.ApiStatus;
@@ -15,7 +14,7 @@ public abstract class IUser {
 
     protected final List<UserState> states = new ArrayList<>();
 
-    protected FusionKey locale = Messages.default_locale;
+    protected FusionKey locale = ChatterBox.default_locale;
 
     public @NotNull abstract UUID getUniqueId();
 

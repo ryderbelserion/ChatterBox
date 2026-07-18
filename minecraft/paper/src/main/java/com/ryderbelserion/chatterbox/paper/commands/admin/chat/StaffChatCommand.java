@@ -5,10 +5,10 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.api.enums.user.UserState;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
+import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class StaffChatCommand extends ChatterBoxCommand {
@@ -36,7 +35,7 @@ public class StaffChatCommand extends ChatterBoxCommand {
         if (context.hasArgument("message")) {
             context.getStringArgument("message").ifPresent(message -> {
                 if (message.isBlank()) {
-                    this.adapter.sendMessage(sender, Messages.msg_cannot_be_blank);
+                    Messages.msg_cannot_be_blank.sendMessage(sender);
 
                     return;
                 }
@@ -48,11 +47,11 @@ public class StaffChatCommand extends ChatterBoxCommand {
                 );
 
                 if (sender instanceof Player player) { // if player, send to me.
-                    this.adapter.sendMessage(player, Messages.staff_chat_format, placeholders);
+                    Messages.staff_chat_format.sendMessage(player, placeholders);
 
-                    this.adapter.sendMessage(this.server.getConsoleSender(), Messages.staff_chat_format, placeholders);
+                    Messages.staff_chat_format.sendMessage(this.server.getConsoleSender(), placeholders);
                 } else { // console sender
-                    this.adapter.sendMessage(sender, Messages.staff_chat_format, placeholders);
+                    Messages.staff_chat_format.sendMessage(sender, placeholders);
                 }
 
                 for (final Player target : this.server.getOnlinePlayers()) {
@@ -62,7 +61,7 @@ public class StaffChatCommand extends ChatterBoxCommand {
 
                     if (!Permissions.staff_chat.hasPermission(target)) continue;
 
-                    this.adapter.sendMessage(target, Messages.staff_chat_format, placeholders);
+                    Messages.staff_chat_format.sendMessage(target, placeholders);
                 }
             });
 
@@ -70,7 +69,7 @@ public class StaffChatCommand extends ChatterBoxCommand {
         }
 
         if (!context.isPlayer()) {
-            this.adapter.sendMessage(sender, Messages.must_be_player);
+            Messages.must_be_player.sendMessage(sender);
 
             return;
         }
@@ -86,8 +85,10 @@ public class StaffChatCommand extends ChatterBoxCommand {
                 user.addUserState(UserState.staff_chat);
             }
 
-            this.adapter.sendMessage(player, isStaffChat ? Messages.staff_chat_disabled : Messages.staff_chat_enabled);
-        }, () -> this.adapter.sendMessage(player, Messages.staff_chat_cannot_enable));
+            final Messages message = isStaffChat ? Messages.staff_chat_disabled : Messages.staff_chat_enabled;
+
+            message.sendMessage(player);
+        }, () -> Messages.staff_chat_cannot_enable.sendMessage(player));
     }
 
     @Override

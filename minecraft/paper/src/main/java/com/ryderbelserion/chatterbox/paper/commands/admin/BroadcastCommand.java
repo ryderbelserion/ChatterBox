@@ -5,8 +5,8 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
+import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
@@ -24,9 +24,9 @@ public class BroadcastCommand extends ChatterBoxCommand {
     public void run(@NotNull final PaperCommandContext context) {
         final CommandSender sender = context.getSender();
 
-        context.getStringArgument("message").ifPresentOrElse(message -> this.adapter.broadcast(sender, Messages.broadcast_format, Map.of(
+        context.getStringArgument("message").ifPresentOrElse(message -> this.adapter.broadcast(sender, Messages.broadcast_format.getKey(), Map.of(
                 "{message}", message
-        )), () -> this.adapter.sendMessage(sender, Messages.msg_cannot_be_blank));
+        )), () -> Messages.msg_cannot_be_blank.sendMessage(sender));
     }
 
     @Override

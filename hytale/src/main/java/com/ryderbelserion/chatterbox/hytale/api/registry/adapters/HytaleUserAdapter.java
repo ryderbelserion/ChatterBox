@@ -2,7 +2,7 @@ package com.ryderbelserion.chatterbox.hytale.api.registry.adapters;
 
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.api.ChatterBox;
 import com.ryderbelserion.chatterbox.api.constants.Support;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.api.user.IUser;
@@ -45,7 +45,7 @@ public class HytaleUserAdapter extends IUser {
 
     @Override
     public @NotNull final FusionKey getLocaleKey() {
-        return this.player == null ? Messages.default_locale : this.locale;
+        return this.player == null ? ChatterBox.default_locale : this.locale;
     }
 
     @Override

@@ -3,12 +3,12 @@ package com.ryderbelserion.chatterbox.hytale.listeners.chat;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
 import com.ryderbelserion.chatterbox.api.enums.server.ServerState;
 import com.ryderbelserion.chatterbox.common.api.adapters.ServerAdapter;
 import com.ryderbelserion.chatterbox.common.api.discord.DiscordManager;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
 import com.ryderbelserion.chatterbox.common.configs.discord.features.alerts.PlayerAlertConfig;
+import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.hytale.ChatterBox;
 import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
@@ -48,7 +48,7 @@ public class ChatListener implements EventListener<PlayerChatEvent> {
             final PlayerRef player = event.getSender();
 
             if (this.serverAdapter.hasState(ServerState.chat_muted)) {
-                this.senderAdapter.sendMessage(player, Messages.cannot_speak_while_muted);
+                this.senderAdapter.sendMessage(player, Messages.cannot_speak_while_muted.getKey());
 
                 event.setCancelled(true);
 

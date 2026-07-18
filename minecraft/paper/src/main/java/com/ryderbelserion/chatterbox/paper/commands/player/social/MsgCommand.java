@@ -5,7 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.chatterbox.api.constants.Messages;
+import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class MsgCommand extends ChatterBoxCommand {
@@ -30,7 +29,7 @@ public class MsgCommand extends ChatterBoxCommand {
             final String name = sender.getName();
 
             if (arg1.equalsIgnoreCase(name)) {
-                this.adapter.sendMessage(sender, Messages.cannot_msg_yourself);
+                Messages.cannot_msg_yourself.sendMessage(sender);
 
                 return;
             }
@@ -38,27 +37,25 @@ public class MsgCommand extends ChatterBoxCommand {
             Optional.ofNullable(this.server.getPlayerExact(arg1)).ifPresentOrElse(player -> {
                 context.getStringArgument("msg").ifPresent(message -> {
                     if (message.isBlank()) {
-                        this.adapter.sendMessage(sender, Messages.msg_cannot_be_blank);
+                        Messages.msg_cannot_be_blank.sendMessage(sender);
 
                         return;
                     }
 
-                    this.adapter.sendMessage(sender, Messages.sender_format, Map.of(
+                    Messages.sender_format.sendMessage(sender, Map.of(
                             "{message}", message,
                             "{player}", arg1
                     ));
 
-                    this.adapter.sendMessage(player, Messages.receiver_format, Map.of(
+                    Messages.receiver_format.sendMessage(player, Map.of(
                             "{message}", message,
                             "{player}", name
                     ));
                 });
-            }, () -> {
-                this.adapter.sendMessage(sender, Messages.target_not_online, Map.of(
-                        "{player}",
-                        arg1
-                ));
-            });
+            }, () -> Messages.target_not_online.sendMessage(sender, Map.of(
+                    "{player}",
+                    arg1
+            )));
         });
     }
 

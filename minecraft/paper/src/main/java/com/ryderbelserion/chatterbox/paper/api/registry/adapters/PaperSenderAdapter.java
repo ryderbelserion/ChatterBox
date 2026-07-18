@@ -15,7 +15,9 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -113,6 +115,29 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
         this.messageRegistry.getMessageByLocale(user.getLocaleKey(), id).ifPresent(value -> reference.set(value.getValue()));
 
         return this.fusion.asComponent(player, reference.get(), map);
+    }
+
+    @Override
+    public String getMessage(@NotNull final CommandSender sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
+        final List<String> values = new ArrayList<>();
+
+        this.messageRegistry.getMessage(id).ifPresent(value -> values.add(value.getValue()));
+
+        if (values.isEmpty()) {
+            return "";
+        }
+
+        final Map<String, String> map = new HashMap<>(placeholders);
+
+        final CommentedConfigurationNode configuration = FileKeys.config.getYamlConfig();
+
+        final String prefix = configuration.node("root", "prefix").getString(" <gold>ChatterBox <reset>");
+
+        if (!prefix.isEmpty()) {
+            map.putIfAbsent("{prefix}", prefix);
+        }
+
+        return this.fusion.replacePlaceholders(this.fusion.papi(sender, values.getFirst()), map);
     }
 
     @Override

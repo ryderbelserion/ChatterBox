@@ -4,6 +4,7 @@ import com.ryderbelserion.chatterbox.api.adapters.IServerAdapter;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.api.registry.IContextRegistry;
 import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
@@ -14,8 +15,10 @@ import java.nio.file.Path;
 public abstract class ChatterBox<S> {
 
     public static final String namespace = "chatterbox";
+    public static final FusionKey default_locale = FusionKey.key(namespace, "default");
 
     protected final FusionKyori<S, FileManager> fusion;
+    protected final MessageRegistry messageRegistry;
     protected final FileManager fileManager;
 
     protected final Path dataPath;
@@ -26,6 +29,8 @@ public abstract class ChatterBox<S> {
         this.dataPath = this.fusion.getDataPath();
 
         this.fileManager = this.fusion.getFileManager();
+
+        this.messageRegistry = this.fusion.getMessageRegistry();
     }
 
     public abstract @NonNull IContextRegistry getContextRegistry();
@@ -39,6 +44,8 @@ public abstract class ChatterBox<S> {
     public abstract @NonNull Platform getPlatform();
 
     public abstract boolean hasPermission(@NonNull final String permission, @NonNull final S sender);
+
+    public abstract void loadMessages();
 
     public abstract void init();
 
