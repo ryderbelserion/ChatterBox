@@ -15,7 +15,7 @@ val branch = utils.getRemoteBranch()
 val hash = utils.getRemoteCommitHash()
 val commit = utils.getRemoteCommitMessage(hash, "%B")
 
-val status: String = System.getenv().getOrDefault("version_status", "beta").lowercase()
+val status: String = System.getenv().getOrDefault("version_status", "release").lowercase()
 
 val buildNumber: String = System.getenv("BUILD_NUMBER") ?: "N/A"
 val isJenkins: Boolean = buildNumber != "N/A"
@@ -33,7 +33,7 @@ val content: String = if (isRelease) changelog else if (isBeta || isAlpha || isJ
 val minecraft = libs.findVersion("minecraft").get()
 
 rootProject.description = rootProject.property("project_description").toString()
-rootProject.version = if (isBeta) "$minecraft-$commitHash" else if (isAlpha) "${rootProject.property("plugin_version")}-SNAPSHOT" else rootProject.property("plugin_version").toString()
+rootProject.version = if (isBeta || isJenkins) "$minecraft-$commitHash" else if (isAlpha) "${rootProject.property("plugin_version")}-SNAPSHOT" else rootProject.property("plugin_version").toString()
 rootProject.group = rootProject.property("project_group").toString()
 
 rootProject.ext {
