@@ -5,7 +5,7 @@ on:
 
   push:
     branches:
-      - main
+      - dev
 
 env:
   version_status: "beta"
@@ -15,7 +15,7 @@ jobs:
     uses: ryderbelserion/ryderbelserion/.github/workflows/build.yml@main
 
     with:
-      branch: main
+      branch: dev
 
     secrets:
       webhook: ${{ secrets.CB_WEBHOOK }}
