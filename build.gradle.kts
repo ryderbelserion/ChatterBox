@@ -8,8 +8,6 @@ plugins {
     `java-plugin`
 }
 
-rootProject.version = rootProject.property("plugin_version") as String
-
 val git = feather.getBuilder()
 
 // https://github.com/granny/Pl3xMap/blob/0547bbba3f0b7468db17983412e95bf59a1a0b7d/build.gradle.kts#L10
