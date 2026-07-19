@@ -5,18 +5,19 @@ on:
 
   push:
     branches:
-      - dev
+      - main
 
 env:
   GIT_PREVIOUS_SUCCESSFUL_COMMIT: ${{ github.event.before }}
-  version_status: "beta"
 
 jobs:
   build:
     uses: ryderbelserion/ryderbelserion/.github/workflows/build.yml@main
 
     with:
-      branch: dev
+      platforms: modrinth
+      status: "beta"
+      branch: main
 
     secrets:
       webhook: ${{ secrets.CB_WEBHOOK }}

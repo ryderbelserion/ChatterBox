@@ -8,7 +8,6 @@ on:
 
 env:
   GIT_PREVIOUS_SUCCESSFUL_COMMIT: ${{ github.event.before }}
-  version_status: "release"
 
 jobs:
   build:
@@ -16,6 +15,7 @@ jobs:
 
     with:
       branch: main
+      publish: modrinth
 
     secrets:
       webhook: ${{ secrets.BUILD_WEBHOOK }}
