@@ -4,7 +4,6 @@ import utils.updateMarkdown
 plugins {
     id("curseforge-plugin")
     id("modrinth-plugin")
-    id("hangar-plugin")
 
     `java-plugin`
 }
