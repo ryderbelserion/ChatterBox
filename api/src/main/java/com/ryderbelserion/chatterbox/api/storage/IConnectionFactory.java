@@ -15,6 +15,8 @@ public abstract class IConnectionFactory {
 
     public abstract String getUrl();
 
+    public abstract void reload();
+
     public abstract void init();
 
     public abstract void stop();

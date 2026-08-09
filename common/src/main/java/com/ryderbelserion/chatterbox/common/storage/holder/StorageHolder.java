@@ -171,6 +171,13 @@ public final class StorageHolder implements IStorageHolder {
     }
 
     @Override
+    public StorageHolder reload() {
+        this.factory.reload();
+
+        return this;
+    }
+
+    @Override
     public StorageHolder stop() {
         this.factory.stop();
 

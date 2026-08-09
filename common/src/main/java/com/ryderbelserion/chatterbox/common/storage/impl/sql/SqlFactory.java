@@ -22,8 +22,8 @@ public abstract class SqlFactory extends FlatFactory {
             "uuid varchar(36) primary key not null, " +
             "message_id varchar(16), " + // unique identifier if we need to remove a message.
             "message_value text not null, " + // the text to send, limit: 1gb unless we use some other value for 4gb... but if you need 4gb, rethink your life.
-            "is_enabled integer not null check (is_enabled in (0,1)), " +
-            "foreign key(uuid) references chatterbox_players(uuid) on delete cascade)"; // 0 is false, 1 is true.
+            "is_enabled integer not null check (is_enabled in (0,1)), " + // 0 is false, 1 is true.
+            "foreign key(uuid) references chatterbox_players(uuid) on delete cascade)";
 
     protected final String index_message_id = "create unique index if not exists idx_message_id on chatterbox_messages(message_id)";
 
@@ -38,6 +38,8 @@ public abstract class SqlFactory extends FlatFactory {
         CompletableFuture.runAsync(() -> {
             try (final Connection connection = getConnection()) {
                 try (final Statement statement = connection.createStatement()) {
+                    //todo() add missing columns automatically in a way that just isn't ass?
+
                     statement.addBatch(this.create_users_table);
 
                     statement.addBatch(this.create_messages_table);
@@ -49,6 +51,11 @@ public abstract class SqlFactory extends FlatFactory {
                 exception.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void reload() {
+        //todo() add missing columns automatically
     }
 
     @Override

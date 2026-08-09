@@ -21,6 +21,8 @@ public interface IStorageHolder {
 
     boolean hasUser(final UUID uuid);
 
+    IStorageHolder reload();
+
     IStorageHolder init();
 
     IStorageHolder stop();

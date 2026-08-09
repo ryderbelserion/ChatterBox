@@ -221,6 +221,10 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
         if (this.discordManager != null) {
             this.discordManager.init();
         }
+
+        if (this.storageHolder != null) {
+            this.storageHolder.reload();
+        }
     }
 
     @Override
