@@ -11,11 +11,11 @@ import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import java.util.UUID;
 
-public class HytaleUserAdapter extends IUser {
+public final class HytaleUserAdapter extends IUser {
 
     private final FusionHytale fusion = (FusionHytale) FusionProvider.getInstance();
 
@@ -34,22 +34,22 @@ public class HytaleUserAdapter extends IUser {
     }
 
     @Override
-    public @NotNull final UUID getUniqueId() {
+    public @NonNull UUID getUniqueId() {
         return this.player == null ? ChatterBoxPlugin.CONSOLE_UUID : this.player.getUuid();
     }
 
     @Override
-    public @NotNull final String getUsername() {
+    public @NonNull String getUsername() {
         return this.player == null ? ChatterBoxPlugin.CONSOLE_NAME : this.player.getUsername();
     }
 
     @Override
-    public @NotNull final FusionKey getLocaleKey() {
+    public @NonNull FusionKey getLocaleKey() {
         return this.player == null ? ChatterBox.default_locale : this.locale;
     }
 
     @Override
-    public @NotNull final GroupAdapter getGroupAdapter() {
+    public @NonNull GroupAdapter getGroupAdapter() {
         return this.registry.getMod(Support.luckperms_hytale).isEnabled() ? new GroupAdapter(getUniqueId()) : new GroupAdapter();
     }
 }

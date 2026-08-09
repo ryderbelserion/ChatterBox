@@ -1,18 +1,18 @@
 package com.ryderbelserion.chatterbox.velocity.api.registry;
 
 import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
-import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.velocity.api.registry.adapters.VelocityUserAdapter;
 import com.velocitypowered.api.proxy.Player;
 import net.kyori.adventure.identity.Identity;
-import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class VelocityUserRegistry implements IUserRegistry<Player> {
+@NullMarked
+public final class VelocityUserRegistry implements IUserRegistry<Player> {
 
-    private final Map<UUID, VelocityUserAdapter> users = new HashMap<>();
+    private final Map<UUID, VelocityUserAdapter> users = new ConcurrentHashMap<>();
 
     @Override
     public void init() {
@@ -20,32 +20,28 @@ public class VelocityUserRegistry implements IUserRegistry<Player> {
     }
 
     @Override
-    public VelocityUserAdapter addUser(@NonNull final Player player) {
-        final Optional<Locale> locale = player.get(Identity.LOCALE);
-
-        final UUID uuid = player.getUniqueId();
-
+    public VelocityUserAdapter addUser(final Player player) {
         final VelocityUserAdapter user = new VelocityUserAdapter(player);
 
-        user.setLocale(locale.orElse(Locale.US).toString());
+        user.setLocale(player.get(Identity.LOCALE).orElse(Locale.US).toString()).init();
 
-        this.users.putIfAbsent(uuid, user);
+        this.users.putIfAbsent(player.getUniqueId(), user);
 
         return user;
     }
 
     @Override
-    public VelocityUserAdapter removeUser(@NotNull final UUID uuid) {
+    public VelocityUserAdapter removeUser(final UUID uuid) {
         return this.users.remove(uuid);
     }
 
     @Override
-    public Optional<VelocityUserAdapter> getUser(@NotNull UUID uuid) {
+    public Optional<VelocityUserAdapter> getUser(UUID uuid) {
         return Optional.of(this.users.get(uuid));
     }
 
     @Override
-    public @NotNull final IUser getConsole() {
+    public VelocityUserAdapter getConsole() {
         return this.users.get(ChatterBoxPlugin.CONSOLE_UUID);
     }
 }

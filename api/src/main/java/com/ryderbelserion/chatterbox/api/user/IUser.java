@@ -71,7 +71,7 @@ public abstract class IUser {
     }
 
     @ApiStatus.Internal
-    public void setLocale(final String locale) {
+    public IUser setLocale(final String locale) {
         final String[] splitter = locale.contains("-") ? locale.split("-") : locale.split("_");
 
         final String language = splitter[0];
@@ -82,6 +82,8 @@ public abstract class IUser {
         if (!value.equalsIgnoreCase("en_us.yml")) {
             this.locale = FusionKey.key(ChatterBox.namespace, value);
         }
+
+        return this;
     }
 
     public String getLocale() {
