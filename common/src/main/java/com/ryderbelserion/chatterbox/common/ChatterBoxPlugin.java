@@ -17,6 +17,8 @@ import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
 import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
+import com.ryderbelserion.chatterbox.common.storage.StorageManager;
+import com.ryderbelserion.chatterbox.common.storage.holder.StorageHolder;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
@@ -40,6 +42,7 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
     public static final String CONSOLE_NAME = "Console";
 
+    protected StorageHolder storageHolder;
     protected DiscordManager discordManager;
     protected ConfigManager configManager;
 
@@ -136,6 +139,12 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
         ).forEach(mod -> registry.addMod(mod.getKey(), mod));
 
         this.serverAdapter = new ServerAdapter();
+
+        try {
+            this.storageHolder = new StorageManager(this).init();
+        } catch (final Exception exception) {
+            this.fusion.log(Level.ERROR, "Failed to initialize storage impl", exception);
+        }
     }
 
     @Override
@@ -224,6 +233,15 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
         if (this.discordManager != null) {
             this.discordManager.stop();
         }
+
+        if (this.storageHolder != null) {
+            this.storageHolder.stop();
+        }
+    }
+
+    @Override
+    public @NonNull final StorageHolder getStorageHolder() {
+        return this.storageHolder;
     }
 
     @Override

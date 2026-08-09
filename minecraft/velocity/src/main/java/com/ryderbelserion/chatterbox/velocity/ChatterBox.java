@@ -46,6 +46,8 @@ public class ChatterBox {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
+        this.fusion.post();
+
         this.platform = new ChatterBoxVelocity(this.fusion, this);
         this.platform.init();
 

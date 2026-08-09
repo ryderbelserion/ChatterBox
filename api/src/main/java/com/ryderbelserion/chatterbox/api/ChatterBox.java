@@ -4,6 +4,7 @@ import com.ryderbelserion.chatterbox.api.adapters.IServerAdapter;
 import com.ryderbelserion.chatterbox.api.enums.Platform;
 import com.ryderbelserion.chatterbox.api.registry.IContextRegistry;
 import com.ryderbelserion.chatterbox.api.registry.IUserRegistry;
+import com.ryderbelserion.chatterbox.api.storage.IStorageHolder;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.files.FileManager;
@@ -36,6 +37,8 @@ public abstract class ChatterBox<S> {
     public abstract @NonNull IContextRegistry getContextRegistry();
 
     public abstract @NonNull MessageRegistry getMessageRegistry();
+
+    public abstract @NonNull IStorageHolder getStorageHolder();
 
     public abstract @NonNull IServerAdapter getServerAdapter();
 

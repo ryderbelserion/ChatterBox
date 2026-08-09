@@ -7,19 +7,19 @@ log4j2 = "2.25.4" # https://github.com/apache/logging-log4j2
 paperweight = "2.0.0-beta.21" # https://github.com/PaperMC/paperweight
 adventure = "5.2.0" # https://github.com/KyoriPowered/adventure
 run-paper = "3.0.2" # https://github.com/jpenilla/run-task
-velocity = "3.5.0-SNAPSHOT" # https://github.com/PaperMC/Velocity
-paper = "26.1.2.build.+" # https://github.com/PaperMC/Paper
+velocity = "4.1.0-SNAPSHOT" # https://github.com/PaperMC/Velocity
+paper = "26.2.build.+" # https://github.com/PaperMC/Paper
 
 ## Fabric API
-fabric-loader = "0.19.2" # https://fabricmc.net/develop/
-fabric-loom = "1.16-SNAPSHOT" # https://fabricmc.net/develop/
-fabric-api = "0.150.0+26.1.2" # https://fabricmc.net/develop/
+fabric-loader = "0.19.3" # https://fabricmc.net/develop/
+fabric-loom = "1.17-SNAPSHOT" # https://fabricmc.net/develop/
+fabric-api = "0.156.0+26.2" # https://fabricmc.net/develop/
 
 ## Minecraft API
-minecraft = "26.1.2" # https://minecraft.net
+minecraft = "26.2" # https://minecraft.net
 
 ## Other API
-fusion = "4.44.0" # https://github.com/ryderbelserion/Fusion
+fusion = "4.47.2" # https://github.com/ryderbelserion/Fusion
 
 ## Metrics API
 bstats = "3.2.1" # https://bstats.org/docs

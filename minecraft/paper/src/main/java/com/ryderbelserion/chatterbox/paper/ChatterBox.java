@@ -24,7 +24,7 @@ public class ChatterBox extends JavaPlugin {
         instance = this;
 
         this.fusion = new FusionPaper(this);
-        this.fusion.init();
+        this.fusion.init().post();
 
         this.platform = new ChatterBoxPaper(this, this.fusion);
         this.platform.init();
