@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.RoleColors;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.awt.*;
 import java.time.LocalDateTime;
@@ -26,7 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlayerAlertConfig {
+@NullMarked
+public final class PlayerAlertConfig {
 
     private final ChatterBoxPlugin plugin = (ChatterBoxPlugin) ChatterBoxProvider.getInstance();
 
@@ -36,7 +37,7 @@ public class PlayerAlertConfig {
     private final CommentedConfigurationNode configuration;
     private final String timezone;
 
-    public PlayerAlertConfig(@NotNull final String timezone, @NotNull final CommentedConfigurationNode configuration) {
+    public PlayerAlertConfig(final String timezone, final CommentedConfigurationNode configuration) {
         this.channels.put("chat_alert", StringUtils.getStringList(configuration.node("chat-alert", "channels")));
         this.channels.put("join_alert", StringUtils.getStringList(configuration.node("join-alert", "channels")));
         this.channels.put("quit_alert", StringUtils.getStringList(configuration.node("quit-alert", "channels")));
@@ -45,7 +46,7 @@ public class PlayerAlertConfig {
         this.timezone = timezone;
     }
 
-    public void sendMinecraft(@NotNull final Member member, @NotNull final String id, @NotNull final String message, @NotNull final PlayerAlert alert, @NotNull final Map<String, String> placeholders) {
+    public void sendMinecraft(final Member member, final String id, final String message, final PlayerAlert alert, final Map<String, String> placeholders) {
         if (this.channels.isEmpty()) {
             return;
         }
@@ -97,11 +98,11 @@ public class PlayerAlertConfig {
         }
     }
 
-    public void sendMinecraft(@NotNull final Member member, @NotNull final String id, @NotNull final String message, @NotNull final PlayerAlert alert) {
+    public void sendMinecraft(final Member member, final String id, final String message, final PlayerAlert alert) {
         sendMinecraft(member, id, message, alert, Map.of());
     }
 
-    public <S> void sendDiscord(@NotNull final S sender, @NotNull final Guild guild, @NotNull final PlayerAlert status, @NotNull final Map<String, String> placeholders) {
+    public <S> void sendDiscord(final S sender, final Guild guild, final PlayerAlert status, final Map<String, String> placeholders) {
         if (this.channels.isEmpty()) {
             return;
         }
@@ -183,11 +184,11 @@ public class PlayerAlertConfig {
         }
     }
 
-    public <S> void sendDiscord(@NotNull final S sender, @NotNull final Guild guild, final PlayerAlert status) {
+    public <S> void sendDiscord(final S sender, final Guild guild, final PlayerAlert status) {
         sendDiscord(sender, guild, status, Map.of());
     }
 
-    public <S> Embed buildEmbed(@NotNull final S sender, @NotNull final CommentedConfigurationNode configuration, @NotNull final Map<String, String> placeholders) {
+    public <S> Embed buildEmbed(final S sender, final CommentedConfigurationNode configuration, final Map<String, String> placeholders) {
         final Embed embed = new Embed();
 
         embed.title(this.fusion.parse(sender, configuration.node("title").getString(""), placeholders));

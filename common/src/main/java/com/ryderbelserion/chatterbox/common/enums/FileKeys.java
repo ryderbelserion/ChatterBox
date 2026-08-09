@@ -6,12 +6,13 @@ import com.ryderbelserion.fusion.files.FileException;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.nio.file.Path;
 import java.util.Optional;
 
+@NullMarked
 public enum FileKeys {
 
     discord("config.yml", "discord"),
@@ -29,22 +30,22 @@ public enum FileKeys {
     private final Path location; // the file location
     private final Path folder;
 
-    FileKeys(@NotNull final String fileName, @NotNull final String folder) {
+    FileKeys(final String fileName, final String folder) {
         this.folder = this.path.resolve(folder);
         this.location = this.folder.resolve(fileName);
     }
 
-    FileKeys(@NotNull final String name) {
+    FileKeys(final String name) {
         this.location = this.path.resolve(name);
         this.folder = this.path;
     }
 
-    public @NotNull final BasicConfigurationNode getJsonConfig() {
+    public  final BasicConfigurationNode getJsonConfig() {
         return getJsonCustomFile().getConfiguration();
     }
 
     public JsonCustomFile getJsonCustomFile() {
-        @NotNull final Optional<JsonCustomFile> customFile = this.fileManager.getJsonFile(this.location);
+         final Optional<JsonCustomFile> customFile = this.fileManager.getJsonFile(this.location);
 
         if (customFile.isEmpty()) {
             throw new FileException("Could not find custom file for " + this.location);
@@ -53,12 +54,12 @@ public enum FileKeys {
         return customFile.get();
     }
 
-    public @NotNull final CommentedConfigurationNode getYamlConfig() {
+    public final CommentedConfigurationNode getYamlConfig() {
         return getYamlCustomFile().getConfiguration();
     }
 
-    public @NotNull final YamlCustomFile getYamlCustomFile() {
-        @NotNull final Optional<YamlCustomFile> customFile = this.fileManager.getYamlFile(this.location);
+    public final YamlCustomFile getYamlCustomFile() {
+         final Optional<YamlCustomFile> customFile = this.fileManager.getYamlFile(this.location);
 
         if (customFile.isEmpty()) {
             throw new FileException("Could not find custom file for " + this.location);
@@ -67,7 +68,7 @@ public enum FileKeys {
         return customFile.get();
     }
 
-    public @NotNull final Path getPath() {
+    public final Path getPath() {
         return this.location;
     }
 }

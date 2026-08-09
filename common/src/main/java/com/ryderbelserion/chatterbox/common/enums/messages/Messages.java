@@ -11,11 +11,13 @@ import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.audience.Audience;
+import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.List;
 import java.util.Map;
 import static com.ryderbelserion.chatterbox.api.ChatterBox.namespace;
 
+@NullMarked
 public enum Messages {
 
     reload_plugin("messages.reload-plugin", "{prefix}<yellow>You have reloaded the plugin!", "messages", "reload-plugin"),

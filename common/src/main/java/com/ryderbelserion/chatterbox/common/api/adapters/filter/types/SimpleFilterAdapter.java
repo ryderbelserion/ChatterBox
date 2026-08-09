@@ -3,20 +3,21 @@ package com.ryderbelserion.chatterbox.common.api.adapters.filter.types;
 import com.ryderbelserion.chatterbox.common.api.adapters.filter.FilterAdapter;
 import com.ryderbelserion.chatterbox.common.configs.FilterConfig;
 import org.apache.logging.log4j.Level;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public class SimpleFilterAdapter extends FilterAdapter {
 
     private final String[] values;
 
-    public SimpleFilterAdapter(@NotNull final FilterConfig config) {
+    public SimpleFilterAdapter(final FilterConfig config) {
         super(config.getLevel().intLevel());
 
         this.values = config.getMessages().toArray(new String[0]);
     }
 
     @Override
-    protected Result execute(@NotNull final String message, @NotNull final Level level) {
+    protected Result execute(final String message, final Level level) {
         if (level.intLevel() > this.minimumLevel) {
             return Result.DENY;
         }

@@ -1,10 +1,10 @@
 package com.ryderbelserion.chatterbox.common.configs;
 
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
 
-public class ServerConfig {
+public final class ServerConfig {
 
     private FilterConfig filterConfig;
 
@@ -16,7 +16,7 @@ public class ServerConfig {
         return this;
     }
 
-    public @NotNull final FilterConfig getFilterConfig() {
+    public @NonNull FilterConfig getFilterConfig() {
         return this.filterConfig;
     }
 }

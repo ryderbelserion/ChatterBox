@@ -6,19 +6,21 @@ import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.model.user.UserManager;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class GroupAdapter implements IGroupAdapter {
+@NullMarked
+public final class GroupAdapter implements IGroupAdapter {
 
     private String primaryGroup = "";
     private String prefix = "";
     private String suffix = "";
 
-    public GroupAdapter(@NotNull final UUID uuid) {
+    public GroupAdapter(final UUID uuid) {
         final LuckPerms luckperms = LuckPermsProvider.get();
 
         final UserManager userManager = luckperms.getUserManager();
@@ -53,7 +55,7 @@ public class GroupAdapter implements IGroupAdapter {
     }
 
     @Override
-    public @NotNull final Map<String, String> getPlaceholders() {
+    public Map<String, String> getPlaceholders() {
         final Map<String, String> placeholders = new HashMap<>();
 
         if (!this.primaryGroup.isBlank()) {
@@ -72,17 +74,17 @@ public class GroupAdapter implements IGroupAdapter {
     }
 
     @Override
-    public @NotNull final String getPrimaryGroup() {
+    public String getPrimaryGroup() {
         return this.primaryGroup;
     }
 
     @Override
-    public @NotNull final String getPrefix() {
+    public String getPrefix() {
         return this.prefix;
     }
 
     @Override
-    public @NotNull final String getSuffix() {
+    public String getSuffix() {
         return this.suffix;
     }
 }

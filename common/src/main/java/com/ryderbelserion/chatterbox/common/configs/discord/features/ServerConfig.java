@@ -9,8 +9,8 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.apache.commons.collections4.map.HashedMap;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -20,7 +20,8 @@ import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Map;
 
-public class ServerConfig {
+@NullMarked
+public final class ServerConfig {
 
     private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
@@ -32,7 +33,7 @@ public class ServerConfig {
     private final String server;
     private final String timezone;
 
-    public ServerConfig(@NotNull final String timezone, @NotNull final String server, @NotNull final CommentedConfigurationNode configuration) {
+    public ServerConfig(final String timezone, final String server, final CommentedConfigurationNode configuration) {
         this.channels = StringUtils.getStringList(configuration.node("channels"), List.of());
         this.timezone = timezone;
         this.server = server;
@@ -43,19 +44,19 @@ public class ServerConfig {
         this.configuration = configuration;
     }
 
-    public @NotNull final List<String> getChannels() {
+    public List<String> getChannels() {
         return this.channels;
     }
 
-    public @NotNull final String getOfflineText() {
+    public String getOfflineText() {
         return this.offlineText;
     }
 
-    public @NotNull final String getOnlineText() {
+    public String getOnlineText() {
         return this.onlineText;
     }
 
-    public <S> void sendMessage(@Nullable final S sender, @NotNull final Guild guild, @NotNull final Environment environment, @NotNull final Map<String, String> placeholders) {
+    public <S> void sendMessage(@Nullable final S sender, final Guild guild, final Environment environment, final Map<String, String> placeholders) {
         if (this.channels.isEmpty()) {
             return;
         }
@@ -110,11 +111,11 @@ public class ServerConfig {
         }
     }
 
-    public <S> void sendMessage(@Nullable final S sender, @NotNull final Guild guild, final Environment environment) {
+    public <S> void sendMessage(@Nullable final S sender, final Guild guild, final Environment environment) {
         sendMessage(sender, guild, environment, Map.of());
     }
 
-    public <S> Embed buildEmbed(@Nullable final S sender, @NotNull final CommentedConfigurationNode configuration, @NotNull final Map<String, String> placeholders) {
+    public <S> Embed buildEmbed(@Nullable final S sender, final CommentedConfigurationNode configuration, final Map<String, String> placeholders) {
         final Embed embed = new Embed();
 
         embed.title(this.fusion.parse(sender, configuration.node("title").getString(""), placeholders));
@@ -144,7 +145,7 @@ public class ServerConfig {
         return embed;
     }
 
-    public @NotNull final String getServer() {
+    public String getServer() {
         return this.server;
     }
 }

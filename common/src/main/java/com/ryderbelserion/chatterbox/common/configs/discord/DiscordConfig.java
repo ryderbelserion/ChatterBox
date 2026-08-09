@@ -4,14 +4,14 @@ import com.ryderbelserion.chatterbox.common.configs.discord.features.PresenceCon
 import com.ryderbelserion.chatterbox.common.configs.discord.features.ServerConfig;
 import com.ryderbelserion.chatterbox.common.configs.discord.features.alerts.PlayerAlertConfig;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class DiscordConfig {
+public final class DiscordConfig {
 
     private final Map<String, ServerConfig> servers = new HashMap<>();
 
@@ -22,7 +22,7 @@ public class DiscordConfig {
 
     private final CommentedConfigurationNode config;
 
-    public DiscordConfig(@NotNull final String timezone) {
+    public DiscordConfig(@NonNull final String timezone) {
         final CommentedConfigurationNode config = FileKeys.discord.getYamlConfig();
 
         this.isServerAlertsEnabled = config.node("root", "alerts", "server").getBoolean(true);
@@ -73,43 +73,43 @@ public class DiscordConfig {
         }
     }
 
-    public @NotNull final Map<String, ServerConfig> getServers() {
+    public @NonNull Map<String, ServerConfig> getServers() {
         return Collections.unmodifiableMap(this.servers);
     }
 
-    public @NotNull final PresenceConfig getPresenceConfig() {
+    public @NonNull PresenceConfig getPresenceConfig() {
         return this.presenceConfig;
     }
 
-    public @NotNull final PlayerAlertConfig getAlertConfig() {
+    public @NonNull PlayerAlertConfig getAlertConfig() {
         return this.alertConfig;
     }
 
-    public @NotNull final ServerConfig getDefault() {
+    public @NonNull ServerConfig getDefault() {
         return this.servers.get("default");
     }
 
-    public @NotNull final Optional<ServerConfig> getServer(@NotNull final String name) {
+    public @NonNull Optional<ServerConfig> getServer(@NonNull final String name) {
         return Optional.ofNullable(this.servers.get(name));
     }
 
-    public final boolean isPlayerAlertsEnabled() {
+    public boolean isPlayerAlertsEnabled() {
         return this.isPlayerAlertsEnabled;
     }
 
-    public final boolean isServerAlertsEnabled() {
+    public boolean isServerAlertsEnabled() {
         return this.isServerAlertsEnabled;
     }
 
-    public @NotNull final String getToken() {
+    public @NonNull String getToken() {
         return this.token;
     }
 
-    public final boolean isEnabled() {
+    public boolean isEnabled() {
         return this.isEnabled;
     }
 
-    public final long getGuildId() {
+    public long getGuildId() {
         return this.guildId;
     }
 }

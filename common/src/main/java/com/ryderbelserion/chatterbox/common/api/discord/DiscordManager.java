@@ -12,16 +12,18 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import java.util.List;
 import java.util.Map;
 
-public class DiscordManager {
+public final class DiscordManager {
 
     private final ChatterBoxPlugin instance;
     private final FusionKyori fusion;
 
-    public DiscordManager(@NotNull final FusionKyori fusion, @NotNull final ChatterBoxPlugin instance) {
+    @NullMarked
+    public DiscordManager(final FusionKyori fusion, final ChatterBoxPlugin instance) {
         this.instance = instance;
         this.fusion = fusion;
     }
@@ -94,11 +96,11 @@ public class DiscordManager {
     }
 
     @ApiStatus.Internal
-    public @NotNull final DiscordBot getBot() {
+    public @NonNull DiscordBot getBot() {
         return this.bot;
     }
 
-    public @NotNull final Guild getGuild() {
+    public @NonNull Guild getGuild() {
         return this.bot.getGuild();
     }
 }

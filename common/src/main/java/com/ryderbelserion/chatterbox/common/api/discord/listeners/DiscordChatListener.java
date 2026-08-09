@@ -13,21 +13,22 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 import java.util.Map;
 
+@NullMarked
 public class DiscordChatListener extends ListenerAdapter {
 
     private final ConfigManager configManager;
     private final ServerAdapter serverAdapter;
 
-    public DiscordChatListener(@NotNull final ChatterBoxPlugin instance) {
+    public DiscordChatListener(final ChatterBoxPlugin instance) {
         this.configManager = instance.getConfigManager();
         this.serverAdapter = instance.getServerAdapter();
     }
 
     @Override
-    public void onMessageReceived(@NotNull final MessageReceivedEvent event) {
+    public void onMessageReceived(final MessageReceivedEvent event) {
         if (event.isWebhookMessage() || !event.isFromGuild()) {
             return;
         }

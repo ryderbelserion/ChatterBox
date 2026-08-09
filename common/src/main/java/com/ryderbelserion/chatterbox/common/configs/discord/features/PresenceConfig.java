@@ -1,27 +1,28 @@
 package com.ryderbelserion.chatterbox.common.configs.discord.features;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 
-public class PresenceConfig {
+@NullMarked
+public final class PresenceConfig {
 
-    private boolean isEnabled;
-    private String status;
+    private boolean isEnabled = false;
+    private String status = "";
 
-    public PresenceConfig(@NotNull final CommentedConfigurationNode configuration) {
+    public PresenceConfig(final CommentedConfigurationNode configuration) {
         init(configuration);
     }
 
-    public void init(@NotNull final CommentedConfigurationNode configuration) {
+    public void init(final CommentedConfigurationNode configuration) {
         this.isEnabled = configuration.node("enabled").getBoolean(false);
         this.status = configuration.node("status").getString("");
     }
 
-    public @NotNull final String getStatus() {
+    public String getStatus() {
         return this.status;
     }
 
-    public final boolean isEnabled() {
+    public boolean isEnabled() {
         return this.isEnabled && !this.status.isBlank();
     }
 }

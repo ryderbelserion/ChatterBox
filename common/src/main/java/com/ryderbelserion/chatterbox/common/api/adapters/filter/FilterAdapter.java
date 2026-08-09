@@ -6,7 +6,7 @@ import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.core.filter.AbstractFilter;
 import org.apache.logging.log4j.message.Message;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public abstract class FilterAdapter extends AbstractFilter {
 
@@ -48,6 +48,6 @@ public abstract class FilterAdapter extends AbstractFilter {
         return event == null ? Result.NEUTRAL : execute(event.getMessage().getFormattedMessage(), event.getLevel());
     }
 
-    protected abstract Result execute(@NotNull final String message, @NotNull final Level level);
+    protected abstract Result execute(@NonNull final String message, @NonNull final Level level);
 
 }

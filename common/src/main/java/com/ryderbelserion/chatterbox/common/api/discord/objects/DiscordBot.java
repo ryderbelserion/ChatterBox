@@ -14,19 +14,21 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import java.util.List;
 import java.util.Map;
 
-public class DiscordBot extends DiscordPlugin {
+public final class DiscordBot extends DiscordPlugin {
 
     private final ConfigManager configManager;
     private final ChatterBoxPlugin instance;
 
-    public DiscordBot(@NotNull final FusionKyori fusion,
-                      @NotNull final ChatterBoxPlugin instance, @NotNull final List<GatewayIntent> intents,
-                      @NotNull final List<CacheFlag> flags,
-                      @NotNull final String token
+    @NullMarked
+    public DiscordBot(final FusionKyori fusion,
+                      final ChatterBoxPlugin instance, final List<GatewayIntent> intents,
+                      final List<CacheFlag> flags,
+                      final String token
     ) {
         super(fusion, intents, flags, token);
 
@@ -45,7 +47,7 @@ public class DiscordBot extends DiscordPlugin {
     }
 
     @Override
-    public void onReady(@NotNull final JDA jda) {
+    public void onReady(@NonNull final JDA jda) {
         final PresenceConfig config = this.configManager.getDiscord().getPresenceConfig();
 
         if (config.isEnabled()) {
@@ -60,7 +62,7 @@ public class DiscordBot extends DiscordPlugin {
     }
 
     @Override
-    public void onGuildReady(@NotNull final Guild guild) { // no multi guild support yet.
+    public void onGuildReady(@NonNull final Guild guild) { // no multi guild support yet.
         this.guild = guild;
 
         final DiscordConfig config = this.configManager.getDiscord();
@@ -75,12 +77,12 @@ public class DiscordBot extends DiscordPlugin {
     }
 
     @Override
-    public void onReload(@NotNull final JDA jda) {
+    public void onReload(@NonNull final JDA jda) {
 
     }
 
     @Override
-    public void onStop(@NotNull final JDA jda) {
+    public void onStop(@NonNull final JDA jda) {
 
     }
 
@@ -96,7 +98,7 @@ public class DiscordBot extends DiscordPlugin {
         jda.getPresence().setPresence(customStatus, false);
     }
 
-    public @NotNull final Guild getGuild() {
+    public @NonNull Guild getGuild() {
         return this.guild;
     }
 }

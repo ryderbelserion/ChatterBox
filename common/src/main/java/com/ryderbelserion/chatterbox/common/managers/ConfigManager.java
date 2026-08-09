@@ -4,9 +4,10 @@ import com.ryderbelserion.chatterbox.common.configs.ServerConfig;
 import com.ryderbelserion.chatterbox.common.enums.FileKeys;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 
-public class ConfigManager {
+public final class ConfigManager {
 
     private DiscordConfig discord;
     private ServerConfig server;
@@ -36,19 +37,19 @@ public class ConfigManager {
         this.server = new ServerConfig().init();
     }
 
-    public @NotNull final DiscordConfig getDiscord() {
+    public @NonNull DiscordConfig getDiscord() {
         return this.discord;
     }
 
-    public @NotNull final ServerConfig getServer() {
+    public @NonNull ServerConfig getServer() {
         return this.server;
     }
 
-    public @NotNull final String getServerName() {
+    public @NonNull String getServerName() {
         return this.serverName;
     }
 
-    public @NotNull final String getTimezone() {
+    public @NonNull String getTimezone() {
         return this.timezone;
     }
 }

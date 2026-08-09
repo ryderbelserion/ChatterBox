@@ -6,12 +6,13 @@ import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.apache.logging.log4j.spi.StandardLevel;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import java.util.List;
 
-public class FilterConfig {
+@NullMarked
+public final class FilterConfig {
 
     private final ChatterBoxPlugin plugin = (ChatterBoxPlugin) ChatterBoxProvider.getInstance();
 
@@ -22,7 +23,7 @@ public class FilterConfig {
     private final boolean isEnabled;
     private final boolean useRegex;
 
-    public FilterConfig(@NotNull final BasicConfigurationNode configuration) {
+    public FilterConfig(final BasicConfigurationNode configuration) {
         this.isEnabled = configuration.node("enabled").getBoolean(false);
         this.messages = StringUtils.getStringList(configuration.node("blocked"), List.of());
         this.useRegex = configuration.node("use-regex").getBoolean(false);
@@ -34,19 +35,19 @@ public class FilterConfig {
         }
     }
 
-    public @NotNull final List<String> getMessages() {
+    public List<String> getMessages() {
         return this.messages;
     }
 
-    public @NotNull final StandardLevel getLevel() {
+    public StandardLevel getLevel() {
         return this.level;
     }
 
-    public final boolean isUseRegex() {
+    public boolean isUseRegex() {
         return this.useRegex;
     }
 
-    public final boolean isEnabled() {
+    public boolean isEnabled() {
         return this.isEnabled;
     }
 }
