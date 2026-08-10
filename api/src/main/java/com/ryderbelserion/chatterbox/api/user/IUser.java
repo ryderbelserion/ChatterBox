@@ -8,13 +8,15 @@ import com.ryderbelserion.chatterbox.api.storage.IStorageHolder;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
-
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 @NullMarked
 public abstract class IUser {
@@ -23,6 +25,7 @@ public abstract class IUser {
 
     protected final IStorageHolder storage = this.provider.getStorageHolder();
 
+    protected final Map<String, String> messages = new ConcurrentHashMap<>();
     protected final List<UserState> states = new ArrayList<>();
 
     protected FusionKey locale = ChatterBox.default_locale;
@@ -54,8 +57,28 @@ public abstract class IUser {
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a"));
     }
 
+    public String getCreationDate() {
+        return this.creationDate;
+    }
+
     public void setTimezone(final String timezone) {
         this.timezone = timezone;
+    }
+
+    public void addMessage(final String id, final String message) {
+        this.messages.put(id, message);
+    }
+
+    public boolean isMessagesEmpty() {
+        return this.messages.isEmpty();
+    }
+
+    public String getMessage() {
+        if (this.messages.isEmpty()) {
+            return "";
+        }
+
+        return this.messages.values().stream().toList().get(ThreadLocalRandom.current().nextInt(this.messages.size()));
     }
 
     public final ZoneId getTimezone() {

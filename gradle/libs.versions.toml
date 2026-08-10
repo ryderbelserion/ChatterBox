@@ -28,6 +28,10 @@ bstats = "3.2.1" # https://bstats.org/docs
 hikari = "7.0.2" # https://github.com/brettwooldridge/HikariCP
 postgres = "42.7.8" # https://github.com/postgres/postgres
 
+## Plugin API
+headdatabaseapi = "1.3.2" # https://github.com/Arcaniax-Development/HeadDatabase-API
+placeholderapi = "2.12.2" # https://github.com/placeholderapi
+
 ## LuckPerms API
 luckperms = "5.4" # https://github.com/LuckPerms/LuckPerms
 
@@ -83,6 +87,11 @@ postgres = { module = "'org.postgresql:postgresql", version.ref = "postgres" }
 # https://github.com/brettwooldridge/HikariCP
 hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 
+# https://github.com/Arcaniax-Development/HeadDatabase-API
+headdatabaseapi = { module = "com.arcaniax:HeadDatabase-API", version.ref = "headdatabaseapi" }
+# https://github.com/placeholderapi
+placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
+
 # https://github.com/ryderbelserion/Fusion
 fusion-velocity = { module = "com.ryderbelserion.fusion:fusion-velocity", version.ref = "fusion" }
 fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref = "fusion" }
@@ -125,6 +134,11 @@ kyori = [
     "kyori-logger",
     "kyori-text",
     "kyori-api"
+]
+
+shared = [
+    "headdatabaseapi",
+    "placeholderapi"
 ]
 
 build = [

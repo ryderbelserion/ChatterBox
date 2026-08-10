@@ -22,6 +22,28 @@ public final class StorageHolder implements IStorageHolder {
     }
 
     @Override
+    public void populateCache(final IUser user) {
+        final UUID uuid = user.getUniqueId();
+
+        CompletableFuture.runAsync(() -> {
+            try (final Connection connection = this.factory.getConnection(); final PreparedStatement statement =
+                    connection.prepareStatement("select players.creation_date, players.timezone from chatterbox_players players where players.uuid=?")) {
+                statement.setString(1, uuid.toString());
+
+                final ResultSet resultSet = statement.executeQuery();
+
+                while (resultSet.next()) {
+                    user.setTimezone(resultSet.getString("timezone"));
+
+                    user.setCreationDate(resultSet.getLong("creation_date"));
+                }
+            } catch (final SQLException exception) {
+                exception.printStackTrace();
+            }
+        });
+    }
+
+    @Override
     public void insertUser(final IUser user) {
         final UUID uuid = user.getUniqueId();
 
@@ -67,6 +89,8 @@ public final class StorageHolder implements IStorageHolder {
                 }
             });
 
+            user.addMessage(id, message);
+
             return;
         }
 
@@ -90,6 +114,45 @@ public final class StorageHolder implements IStorageHolder {
                 statement.setString(1, id);
 
                 statement.executeUpdate();
+            } catch (final SQLException exception) {
+                exception.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public String getMessage(final IUser user) {
+        final UUID uuid = user.getUniqueId();
+
+        if (user.isMessagesEmpty()) { // if empty, we clearly want to populate it.
+            CompletableFuture.runAsync(() -> {
+                try (final Connection connection = this.factory.getConnection(); final PreparedStatement statement =
+                        connection.prepareStatement("select (message_value, message_id) from chatterbox_messages where uuid=?")) {
+                    statement.setString(1, uuid.toString());
+
+                    final ResultSet resultSet = statement.executeQuery();
+
+                    while (resultSet.next()) {
+                        user.addMessage(resultSet.getString(1), resultSet.getString(2));
+                    }
+                } catch (final SQLException exception) {
+                    exception.printStackTrace();
+                }
+            });
+        }
+
+        return user.getMessage();
+    }
+
+    @Override
+    public void setTimezone(final IUser user) {
+        final UUID uuid = user.getUniqueId();
+
+        CompletableFuture.runAsync(() -> {
+            try (final Connection connection = this.factory.getConnection(); final PreparedStatement statement =
+                    connection.prepareStatement("update chatterbox_players set timezone=? where uuid=?")) {
+                statement.setString(1, user.getTimezone().getId());
+                statement.setString(2, uuid.toString());
             } catch (final SQLException exception) {
                 exception.printStackTrace();
             }

@@ -266,6 +266,12 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
             if (!map.isEmpty()) {
                 placeholders.putAll(map);
             }
+
+            //final String message = user.getMessage();
+
+            //if (!message.isEmpty()) {
+            //    placeholders.putIfAbsent("{custom_message}", message);
+            //}
         }
 
         return placeholders;

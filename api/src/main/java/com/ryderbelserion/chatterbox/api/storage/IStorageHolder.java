@@ -7,6 +7,8 @@ import java.util.UUID;
 @NullMarked
 public interface IStorageHolder {
 
+    void populateCache(final IUser user);
+
     void insertUser(final IUser user);
 
     void removeUser(final UUID uuid);
@@ -15,7 +17,11 @@ public interface IStorageHolder {
 
     void removeMessage(final String id);
 
+    String getMessage(final IUser user);
+
     void setCreationDate(final IUser user);
+
+    void setTimezone(final IUser user);
 
     boolean hasMessage(final String id);
 

@@ -14,6 +14,8 @@ import com.ryderbelserion.chatterbox.paper.commands.admin.chat.MuteChatCommand;
 import com.ryderbelserion.chatterbox.paper.commands.admin.chat.StaffChatCommand;
 import com.ryderbelserion.chatterbox.paper.commands.player.MotdCommand;
 import com.ryderbelserion.chatterbox.paper.commands.player.social.MsgCommand;
+import com.ryderbelserion.chatterbox.paper.support.PlaceholderSupport;
+import com.ryderbelserion.fusion.core.api.constants.ModSupport;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
@@ -59,6 +61,10 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, FoliaSchedu
         this.userRegistry.init();
 
         this.userAdapter = new PaperSenderAdapter(this);
+
+        if (this.fusion.isModReady(ModSupport.placeholder_api)) {
+            new PlaceholderSupport().register();
+        }
 
         post();
     }

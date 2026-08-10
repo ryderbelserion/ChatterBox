@@ -4,12 +4,26 @@ plugins {
 
 project.group = "${rootProject.group}.paper"
 
+repositories {
+    maven("https://repo.fancyinnovations.com/releases/")
+
+    maven("https://repo.momirealms.net/releases/")
+
+    maven("https://repo.hibiscusmc.com/releases/")
+
+    maven("https://repo.nexomc.com/releases/")
+
+    maven("https://repo.oraxen.com/releases/")
+}
+
 dependencies {
     implementation(project(":chatterbox-common"))
 
     implementation(libs.fusion.paper)
 
     implementation(libs.bstats.paper)
+
+    compileOnly(libs.bundles.shared)
 }
 
 tasks {
