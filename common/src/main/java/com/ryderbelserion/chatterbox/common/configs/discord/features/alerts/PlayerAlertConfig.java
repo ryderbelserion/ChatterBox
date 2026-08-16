@@ -1,13 +1,14 @@
 package com.ryderbelserion.chatterbox.common.configs.discord.features.alerts;
 
 import com.ryderbelserion.chatterbox.api.ChatterBoxProvider;
+import com.ryderbelserion.chatterbox.api.configs.types.discord.features.alerts.IPlayerAlertConfig;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.discord.api.embeds.Embed;
-import com.ryderbelserion.discord.api.enums.alerts.PlayerAlert;
+import com.ryderbelserion.chatterbox.api.enums.discord.PlayerAlert;
 import com.ryderbelserion.discord.api.utils.RoleUtils;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
+import com.ryderbelserion.fusion.api.FusionApi;
+import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
-import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -27,11 +28,11 @@ import java.util.List;
 import java.util.Map;
 
 @NullMarked
-public final class PlayerAlertConfig {
+public final class PlayerAlertConfig implements IPlayerAlertConfig<Member, Guild, Embed> {
 
     private final ChatterBoxPlugin plugin = (ChatterBoxPlugin) ChatterBoxProvider.getInstance();
 
-    private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
+    private final FusionApi fusion = FusionProvider.api();
 
     private final Map<String, List<String>> channels = new HashMap<>();
     private final CommentedConfigurationNode configuration;
@@ -46,6 +47,7 @@ public final class PlayerAlertConfig {
         this.timezone = timezone;
     }
 
+    @Override
     public void sendMinecraft(final Member member, final String id, final String message, final PlayerAlert alert, final Map<String, String> placeholders) {
         if (this.channels.isEmpty()) {
             return;
@@ -98,10 +100,7 @@ public final class PlayerAlertConfig {
         }
     }
 
-    public void sendMinecraft(final Member member, final String id, final String message, final PlayerAlert alert) {
-        sendMinecraft(member, id, message, alert, Map.of());
-    }
-
+    @Override
     public <S> void sendDiscord(final S sender, final Guild guild, final PlayerAlert status, final Map<String, String> placeholders) {
         if (this.channels.isEmpty()) {
             return;
@@ -184,10 +183,7 @@ public final class PlayerAlertConfig {
         }
     }
 
-    public <S> void sendDiscord(final S sender, final Guild guild, final PlayerAlert status) {
-        sendDiscord(sender, guild, status, Map.of());
-    }
-
+    @Override
     public <S> Embed buildEmbed(final S sender, final CommentedConfigurationNode configuration, final Map<String, String> placeholders) {
         final Embed embed = new Embed();
 

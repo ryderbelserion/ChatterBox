@@ -3,17 +3,18 @@ package com.ryderbelserion.chatterbox.common.api.discord.objects;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.api.discord.listeners.DiscordChatListener;
 import com.ryderbelserion.chatterbox.common.configs.discord.features.PresenceConfig;
-import com.ryderbelserion.chatterbox.common.configs.discord.features.ServerConfig;
+import com.ryderbelserion.chatterbox.common.configs.discord.features.PerServerConfig;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.discord.DiscordPlugin;
 import com.ryderbelserion.discord.api.enums.Environment;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
-import com.ryderbelserion.fusion.kyori.FusionKyori;
+import com.ryderbelserion.fusion.core.FusionCore;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import net.kyori.adventure.audience.Audience;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
 import java.util.List;
@@ -25,7 +26,7 @@ public final class DiscordBot extends DiscordPlugin {
     private final ChatterBoxPlugin instance;
 
     @NullMarked
-    public DiscordBot(final FusionKyori fusion,
+    public DiscordBot(final FusionCore fusion,
                       final ChatterBoxPlugin instance, final List<GatewayIntent> intents,
                       final List<CacheFlag> flags,
                       final String token
@@ -68,9 +69,9 @@ public final class DiscordBot extends DiscordPlugin {
         final DiscordConfig config = this.configManager.getDiscord();
 
         if (config.isServerAlertsEnabled()) {
-            final ServerConfig serverConfig = config.getDefault();
+            final PerServerConfig serverConfig = config.getDefault();
 
-            serverConfig.sendMessage(null, this.guild, this.environment, Map.of(
+            serverConfig.sendMessage(Audience.empty(), this.guild, this.environment, Map.of(
                     "{server}", this.configManager.getServerName()
             ));
         }

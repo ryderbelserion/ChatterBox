@@ -1,16 +1,18 @@
 package com.ryderbelserion.chatterbox.common.api.discord;
 
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
-import com.ryderbelserion.chatterbox.common.configs.discord.features.ServerConfig;
+import com.ryderbelserion.chatterbox.common.configs.discord.features.PerServerConfig;
+import com.ryderbelserion.chatterbox.api.enums.FileKeys;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.common.api.discord.objects.DiscordBot;
 import com.ryderbelserion.discord.api.enums.Environment;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
-import com.ryderbelserion.fusion.core.api.enums.Level;
-import com.ryderbelserion.fusion.kyori.FusionKyori;
+import com.ryderbelserion.fusion.api.enums.Level;
+import com.ryderbelserion.fusion.core.FusionCore;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
@@ -20,10 +22,10 @@ import java.util.Map;
 public final class DiscordManager {
 
     private final ChatterBoxPlugin instance;
-    private final FusionKyori fusion;
+    private final FusionCore fusion;
 
     @NullMarked
-    public DiscordManager(final FusionKyori fusion, final ChatterBoxPlugin instance) {
+    public DiscordManager(final FusionCore fusion, final ChatterBoxPlugin instance) {
         this.instance = instance;
         this.fusion = fusion;
     }
@@ -43,16 +45,16 @@ public final class DiscordManager {
             return;
         }
 
-        final String token = config.getToken();
+        final String token = FileKeys.discord.getYamlConfig().node("root", "token").getString("");
 
         if (token.isBlank()) {
-            this.fusion.log(Level.WARNING, "Bot Token not provided! We are not starting the bot.");
+            this.fusion.log(Level.warn, "Bot Token not provided! We are not starting the bot.");
 
             return;
         }
 
         if (this.bot != null) {
-            this.fusion.log(Level.WARNING, "Bot is already in use! We are not starting the bot again.");
+            this.fusion.log(Level.warn, "Bot is already in use! We are not starting the bot again.");
 
             return;
         }
@@ -87,9 +89,9 @@ public final class DiscordManager {
         final DiscordConfig config = configManager.getDiscord();
 
         if (config.isServerAlertsEnabled()) {
-            final ServerConfig serverConfig = config.getDefault();
+            final PerServerConfig serverConfig = config.getDefault();
 
-            serverConfig.sendMessage(null, getGuild(), Environment.SHUTDOWN, Map.of(
+            serverConfig.sendMessage(Audience.empty(), getGuild(), Environment.SHUTDOWN, Map.of(
                     "{server}", configManager.getServerName()
             ));
         }

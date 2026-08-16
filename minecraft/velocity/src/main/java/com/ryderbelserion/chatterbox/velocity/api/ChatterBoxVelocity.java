@@ -17,6 +17,8 @@ import com.velocitypowered.api.command.*;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.scheduler.ScheduledTask;
 import com.velocitypowered.api.scheduler.Scheduler;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import java.util.List;
@@ -24,7 +26,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class ChatterBoxVelocity extends ChatterBoxPlugin<CommandSource, ScheduledTask> {
+public class ChatterBoxVelocity extends ChatterBoxPlugin<CommandSource, Component, TagResolver, ScheduledTask> {
 
     private final ChatterBox instance;
     private final ProxyServer server;

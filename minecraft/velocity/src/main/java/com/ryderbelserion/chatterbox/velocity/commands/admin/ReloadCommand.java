@@ -3,7 +3,7 @@ package com.ryderbelserion.chatterbox.velocity.commands.admin;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
-import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
+import com.ryderbelserion.chatterbox.common.enums.Messages;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxCommand;
 import com.ryderbelserion.fusion.velocity.commands.context.VelocityCommandContext;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;

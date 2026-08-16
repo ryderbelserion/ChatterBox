@@ -9,8 +9,8 @@ import com.ryderbelserion.chatterbox.hytale.api.ChatterBoxHytale;
 import com.ryderbelserion.chatterbox.hytale.api.registry.HytaleUserRegistry;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
-import com.ryderbelserion.chatterbox.common.enums.FileKeys;
-import com.ryderbelserion.fusion.core.api.FusionKey;
+import com.ryderbelserion.chatterbox.api.enums.FileKeys;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +40,7 @@ public class HytaleSenderAdapter extends ISenderAdapter<Message, IMessageReceive
     }
 
     @Override
-    public UUID getUniqueId(@NotNull final IMessageReceiver sender) {
+    public @NonNull UUID getUniqueId(@NotNull final IMessageReceiver sender) {
         if (sender instanceof PlayerRef player) {
             return player.getUuid();
         }
@@ -49,7 +49,7 @@ public class HytaleSenderAdapter extends ISenderAdapter<Message, IMessageReceive
     }
 
     @Override
-    public String getName(@NotNull final IMessageReceiver sender) {
+    public @NonNull String getName(@NotNull final IMessageReceiver sender) {
         if (sender instanceof PlayerRef player) {
             return player.getUsername();
         }
@@ -80,7 +80,7 @@ public class HytaleSenderAdapter extends ISenderAdapter<Message, IMessageReceive
     }
 
     @Override
-    public Message getComponent(@NotNull final IMessageReceiver sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
+    public @NonNull Message getComponent(@NotNull final IMessageReceiver sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
         final Map<String, String> map = new HashMap<>(placeholders);
 
         final CommentedConfigurationNode configuration = FileKeys.config.getYamlConfig();
@@ -115,7 +115,7 @@ public class HytaleSenderAdapter extends ISenderAdapter<Message, IMessageReceive
     }
 
     @Override
-    public String getMessage(@NotNull final IMessageReceiver sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
+    public @NonNull String getMessage(@NotNull final IMessageReceiver sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
         final List<String> values = new ArrayList<>();
 
         this.messageRegistry.getMessage(id).ifPresent(value -> values.add(value.getValue()));

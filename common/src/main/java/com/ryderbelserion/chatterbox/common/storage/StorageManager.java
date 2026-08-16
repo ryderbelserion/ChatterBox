@@ -1,12 +1,12 @@
 package com.ryderbelserion.chatterbox.common.storage;
 
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
-import com.ryderbelserion.chatterbox.common.enums.FileKeys;
+import com.ryderbelserion.chatterbox.api.enums.FileKeys;
 import com.ryderbelserion.chatterbox.common.storage.holder.StorageHolder;
 import com.ryderbelserion.chatterbox.common.storage.impl.StorageCredentials;
 import com.ryderbelserion.chatterbox.common.storage.impl.sql.types.PostgresFactory;
 import com.ryderbelserion.chatterbox.common.storage.impl.sql.types.SqliteFactory;
-import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 

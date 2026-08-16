@@ -1,6 +1,6 @@
 package com.ryderbelserion.chatterbox.common.api.adapters.sender;
 
-import com.ryderbelserion.fusion.core.api.FusionKey;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
 import org.jspecify.annotations.NullMarked;
 import java.util.HashMap;
 import java.util.Map;

@@ -5,11 +5,8 @@ import com.ryderbelserion.chatterbox.api.constants.Support;
 import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
-import com.ryderbelserion.fusion.core.api.FusionKey;
-import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
-import com.ryderbelserion.fusion.core.api.registry.mods.objects.Mod;
-import com.ryderbelserion.fusion.velocity.FusionVelocity;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
+import com.ryderbelserion.fusion.api.interfaces.mods.IMod;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import org.jetbrains.annotations.NotNull;
@@ -17,10 +14,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class VelocityUserAdapter extends IUser {
-
-    private final FusionVelocity fusion = (FusionVelocity) FusionProvider.getInstance();
-
-    private final ModRegistry registry = this.fusion.getModRegistry();
 
     private Player player;
 
@@ -51,7 +44,7 @@ public class VelocityUserAdapter extends IUser {
 
     @Override
     public @NotNull final GroupAdapter getGroupAdapter() {
-        final Mod mod = (Mod) this.registry.getMod(Support.luckperms_minecraft);
+        final IMod mod = this.registry.getMod(Support.luckperms_minecraft);
 
         if (!mod.isEnabled()) {
             return new GroupAdapter();

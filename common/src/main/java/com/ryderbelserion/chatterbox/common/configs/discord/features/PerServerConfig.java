@@ -1,16 +1,16 @@
 package com.ryderbelserion.chatterbox.common.configs.discord.features;
 
+import com.ryderbelserion.chatterbox.api.configs.types.discord.features.IPerServerConfig;
 import com.ryderbelserion.discord.api.embeds.Embed;
 import com.ryderbelserion.discord.api.enums.Environment;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
+import com.ryderbelserion.fusion.api.FusionApi;
+import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
-import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.apache.commons.collections4.map.HashedMap;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 @NullMarked
-public final class ServerConfig {
+public final class PerServerConfig implements IPerServerConfig<Environment, Guild, Embed> {
 
-    private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
+    private final FusionApi fusion = FusionProvider.api();
 
     private final CommentedConfigurationNode configuration;
 
@@ -33,7 +33,7 @@ public final class ServerConfig {
     private final String server;
     private final String timezone;
 
-    public ServerConfig(final String timezone, final String server, final CommentedConfigurationNode configuration) {
+    public PerServerConfig(final String timezone, final String server, final CommentedConfigurationNode configuration) {
         this.channels = StringUtils.getStringList(configuration.node("channels"), List.of());
         this.timezone = timezone;
         this.server = server;
@@ -44,19 +44,23 @@ public final class ServerConfig {
         this.configuration = configuration;
     }
 
+    @Override
     public List<String> getChannels() {
         return this.channels;
     }
 
+    @Override
     public String getOfflineText() {
         return this.offlineText;
     }
 
+    @Override
     public String getOnlineText() {
         return this.onlineText;
     }
 
-    public <S> void sendMessage(@Nullable final S sender, final Guild guild, final Environment environment, final Map<String, String> placeholders) {
+    @Override
+    public <S> void sendMessage(final S sender, final Guild guild, final Environment environment, final Map<String, String> placeholders) {
         if (this.channels.isEmpty()) {
             return;
         }
@@ -111,11 +115,8 @@ public final class ServerConfig {
         }
     }
 
-    public <S> void sendMessage(@Nullable final S sender, final Guild guild, final Environment environment) {
-        sendMessage(sender, guild, environment, Map.of());
-    }
-
-    public <S> Embed buildEmbed(@Nullable final S sender, final CommentedConfigurationNode configuration, final Map<String, String> placeholders) {
+    @Override
+    public <S> Embed buildEmbed(final S sender, final CommentedConfigurationNode configuration, final Map<String, String> placeholders) {
         final Embed embed = new Embed();
 
         embed.title(this.fusion.parse(sender, configuration.node("title").getString(""), placeholders));
@@ -145,6 +146,7 @@ public final class ServerConfig {
         return embed;
     }
 
+    @Override
     public String getServer() {
         return this.server;
     }

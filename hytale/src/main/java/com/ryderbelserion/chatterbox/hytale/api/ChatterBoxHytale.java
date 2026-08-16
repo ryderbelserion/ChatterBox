@@ -24,7 +24,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Runnable> {
+public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Message, String, Runnable> {
 
     private HytaleContextRegistry contextRegistry;
     private HytaleSenderAdapter userAdapter;
@@ -116,9 +116,7 @@ public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Runnabl
 
     @Override
     public void broadcast(@NotNull final IMessageReceiver sender, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
-        final FusionHytale fusion = (FusionHytale) this.fusion;
-
-        sender.sendMessage(fusion.asMessage(sender, message, placeholders));
+        sender.sendMessage(this.fusion.asComponent(sender, message, placeholders));
     }
 
     @Override
@@ -135,15 +133,13 @@ public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Runnabl
     ) {
         final Universe universe = Universe.get();
 
-        final FusionHytale fusion = (FusionHytale) this.fusion;
-
         if (alertServer) {
-            final Message header = fusion.asMessage(sender,
+            final Message header = this.fusion.asComponent(sender,
                     title,
                     placeholders
             );
 
-            final Message footer = fusion.asMessage(
+            final Message footer = this.fusion.asComponent(
                     sender,
                     subtitle,
                     placeholders
@@ -183,12 +179,12 @@ public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Runnabl
             final World world = universe.getWorld(uuid);
 
             if (world != null) {
-                final Message header = fusion.asMessage(sender,
+                final Message header = this.fusion.asComponent(sender,
                         title,
                         placeholders
                 );
 
-                final Message footer = fusion.asMessage(
+                final Message footer = this.fusion.asComponent(
                         sender,
                         title,
                         placeholders

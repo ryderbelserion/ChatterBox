@@ -6,7 +6,7 @@ import com.ryderbelserion.chatterbox.common.api.adapters.ServerAdapter;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
 import com.ryderbelserion.chatterbox.common.configs.discord.features.alerts.PlayerAlertConfig;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
-import com.ryderbelserion.discord.api.enums.alerts.PlayerAlert;
+import com.ryderbelserion.chatterbox.api.enums.discord.PlayerAlert;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;

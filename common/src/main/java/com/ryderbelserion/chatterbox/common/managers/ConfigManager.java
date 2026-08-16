@@ -1,13 +1,14 @@
 package com.ryderbelserion.chatterbox.common.managers;
 
+import com.ryderbelserion.chatterbox.api.configs.IConfigManager;
 import com.ryderbelserion.chatterbox.common.configs.ServerConfig;
-import com.ryderbelserion.chatterbox.common.enums.FileKeys;
+import com.ryderbelserion.chatterbox.common.configs.discord.features.PerServerConfig;
+import com.ryderbelserion.chatterbox.api.enums.FileKeys;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 
-public final class ConfigManager {
+public final class ConfigManager implements IConfigManager<PerServerConfig> {
 
     private DiscordConfig discord;
     private ServerConfig server;
@@ -37,18 +38,22 @@ public final class ConfigManager {
         this.server = new ServerConfig().init();
     }
 
+    @Override
     public @NonNull DiscordConfig getDiscord() {
         return this.discord;
     }
 
+    @Override
     public @NonNull ServerConfig getServer() {
         return this.server;
     }
 
+    @Override
     public @NonNull String getServerName() {
         return this.serverName;
     }
 
+    @Override
     public @NonNull String getTimezone() {
         return this.timezone;
     }

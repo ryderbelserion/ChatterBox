@@ -2,10 +2,10 @@ package com.ryderbelserion.chatterbox.velocity.api.registry.adapters;
 
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.api.adapters.sender.ISenderAdapter;
-import com.ryderbelserion.chatterbox.common.enums.FileKeys;
+import com.ryderbelserion.chatterbox.api.enums.FileKeys;
 import com.ryderbelserion.chatterbox.velocity.api.ChatterBoxVelocity;
 import com.ryderbelserion.chatterbox.velocity.api.registry.VelocityUserRegistry;
-import com.ryderbelserion.fusion.core.api.FusionKey;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.velocity.FusionVelocity;
 import com.velocitypowered.api.command.CommandSource;
@@ -42,7 +42,7 @@ public class VelocitySenderAdapter extends ISenderAdapter<Component, CommandSour
     }
 
     @Override
-    public UUID getUniqueId(@NotNull final CommandSource sender) {
+    public @NonNull UUID getUniqueId(@NotNull final CommandSource sender) {
         if (sender instanceof Player player) {
             return player.getUniqueId();
         }
@@ -51,7 +51,7 @@ public class VelocitySenderAdapter extends ISenderAdapter<Component, CommandSour
     }
 
     @Override
-    public String getName(@NotNull final CommandSource sender) {
+    public @NonNull String getName(@NotNull final CommandSource sender) {
         if (sender instanceof Player player) {
             return player.getUsername();
         }
@@ -82,7 +82,7 @@ public class VelocitySenderAdapter extends ISenderAdapter<Component, CommandSour
     }
 
     @Override
-    public Component getComponent(@NotNull final CommandSource sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
+    public @NonNull Component getComponent(@NotNull final CommandSource sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
         final Map<String, String> map = new HashMap<>(placeholders);
 
         final CommentedConfigurationNode configuration = FileKeys.config.getYamlConfig();
@@ -117,7 +117,7 @@ public class VelocitySenderAdapter extends ISenderAdapter<Component, CommandSour
     }
 
     @Override
-    public String getMessage(@NotNull final CommandSource sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
+    public @NonNull String getMessage(@NotNull final CommandSource sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
         final List<String> values = new ArrayList<>();
 
         this.messageRegistry.getMessage(id).ifPresent(value -> values.add(value.getValue()));

@@ -5,7 +5,10 @@ import com.ryderbelserion.chatterbox.api.ChatterBoxProvider;
 import com.ryderbelserion.chatterbox.api.adapters.IGroupAdapter;
 import com.ryderbelserion.chatterbox.api.enums.user.UserState;
 import com.ryderbelserion.chatterbox.api.storage.IStorageHolder;
-import com.ryderbelserion.fusion.core.api.FusionKey;
+import com.ryderbelserion.fusion.api.FusionApi;
+import com.ryderbelserion.fusion.api.FusionProvider;
+import com.ryderbelserion.fusion.api.interfaces.IModRegistry;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
 import java.time.Instant;
@@ -21,9 +24,12 @@ import java.util.concurrent.ThreadLocalRandom;
 @NullMarked
 public abstract class IUser {
 
-    protected final ChatterBox provider = ChatterBoxProvider.getInstance();
+    protected final FusionApi fusion = FusionProvider.api();
+    protected final IModRegistry registry = this.fusion.getModRegistry();
 
-    protected final IStorageHolder storage = this.provider.getStorageHolder();
+    protected final ChatterBox instance = ChatterBoxProvider.getInstance();
+
+    protected final IStorageHolder storage = this.instance.getStorageHolder();
 
     protected final Map<String, String> messages = new ConcurrentHashMap<>();
     protected final List<UserState> states = new ArrayList<>();

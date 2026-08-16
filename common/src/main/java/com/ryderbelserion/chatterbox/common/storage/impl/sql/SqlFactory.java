@@ -2,7 +2,7 @@ package com.ryderbelserion.chatterbox.common.storage.impl.sql;
 
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.common.storage.impl.file.FlatFactory;
-import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.zaxxer.hikari.HikariDataSource;
 import org.jspecify.annotations.NonNull;
 import java.sql.Connection;

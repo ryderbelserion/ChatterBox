@@ -19,7 +19,7 @@ fabric-api = "0.156.0+26.2" # https://fabricmc.net/develop/
 minecraft = "26.2" # https://minecraft.net
 
 ## Other API
-fusion = "4.47.2" # https://github.com/ryderbelserion/Fusion
+fusion = "4.50.0" # https://github.com/ryderbelserion/Fusion
 
 ## Metrics API
 bstats = "3.2.1" # https://bstats.org/docs
@@ -94,9 +94,11 @@ placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholder
 
 # https://github.com/ryderbelserion/Fusion
 fusion-velocity = { module = "com.ryderbelserion.fusion:fusion-velocity", version.ref = "fusion" }
+fusion-hytale = { module = "com.ryderbelserion.fusion:fusion-hytale", version.ref = "fusion" }
 fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref = "fusion" }
 fusion-kyori = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref = "fusion" }
-fusion-core = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref = "fusion" }
+fusion-core = { module = "com.ryderbelserion.fusion:fusion-core", version.ref = "fusion" }
+fusion-api = { module = "com.ryderbelserion.fusion:fusion-api", version.ref = "fusion" }
 
 # https://fabricmc.net/develop/
 fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabric-api" }

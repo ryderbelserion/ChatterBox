@@ -2,7 +2,7 @@ package com.ryderbelserion.chatterbox.paper.listeners.staff;
 
 import com.ryderbelserion.chatterbox.api.enums.Permissions;
 import com.ryderbelserion.chatterbox.api.enums.user.UserState;
-import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
+import com.ryderbelserion.chatterbox.common.enums.Messages;
 import com.ryderbelserion.chatterbox.paper.ChatterBox;
 import com.ryderbelserion.chatterbox.paper.api.ChatterBoxPaper;
 import com.ryderbelserion.chatterbox.paper.api.registry.PaperUserRegistry;

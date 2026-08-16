@@ -29,11 +29,7 @@ public class ChatRender implements ChatRenderer {
 
         map.put("{player}", player.getName());
 
-        final List<TagResolver> resolvers = new ArrayList<>();
-
-        resolvers.add(message(player, message.message()));
-
-        this.renderedMessage = fusion.asComponent(player, value, map, resolvers);
+        this.renderedMessage = fusion.asComponent(player, value, map, TagResolver.resolver(message(player, message.message())));
     }
 
     @Override

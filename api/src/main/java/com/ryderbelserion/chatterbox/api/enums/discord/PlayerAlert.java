@@ -1,4 +1,4 @@
-package com.ryderbelserion.discord.api.enums.alerts;
+package com.ryderbelserion.chatterbox.api.enums.discord;
 
 public enum PlayerAlert {
 

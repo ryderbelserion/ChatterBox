@@ -8,10 +8,9 @@ import com.ryderbelserion.chatterbox.hytale.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.hytale.listeners.DisconnectListener;
 import com.ryderbelserion.chatterbox.hytale.listeners.PostConnectListener;
 import com.ryderbelserion.chatterbox.hytale.listeners.chat.ChatListener;
+import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
-import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class ChatterBox extends JavaPlugin {
 
     private static ChatterBox instance;
 
-    public ChatterBox(@NonNullDecl final JavaPluginInit init) {
+    public ChatterBox(@NonNull final JavaPluginInit init) {
         super(init);
 
         instance = this;
@@ -33,7 +32,7 @@ public class ChatterBox extends JavaPlugin {
     protected void start() {
         final Path dataPath = getDataDirectory();
 
-        this.fusion = new FusionHytale(getLogger(), dataPath.getParent().resolve(dataPath.getFileName().toString().split("_")[0]));
+        this.fusion = new FusionHytale(this, dataPath.getParent().resolve(dataPath.getFileName().toString().split("_")[0]));
         this.fusion.init().post();
 
         this.plugin = new ChatterBoxHytale(this, this.fusion);
@@ -53,15 +52,14 @@ public class ChatterBox extends JavaPlugin {
         getCommandRegistry().registerCommand(new BaseCommand());
     }
 
-    public @NotNull final ChatterBoxHytale getPlatform() {
+    public @NonNull final ChatterBoxHytale getPlatform() {
         return this.plugin;
     }
 
-    public @NotNull final FusionHytale getFusion() {
+    public @NonNull final FusionHytale getFusion() {
         return this.fusion;
     }
 
-    @ApiStatus.Internal
     public static ChatterBox getInstance() {
         return instance;
     }

@@ -7,19 +7,12 @@ import com.ryderbelserion.chatterbox.api.constants.Support;
 import com.ryderbelserion.chatterbox.common.ChatterBoxPlugin;
 import com.ryderbelserion.chatterbox.api.user.IUser;
 import com.ryderbelserion.chatterbox.common.api.adapters.GroupAdapter;
-import com.ryderbelserion.fusion.core.api.FusionKey;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
-import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
-import com.ryderbelserion.fusion.hytale.FusionHytale;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import java.util.UUID;
 
 public final class HytaleUserAdapter extends IUser {
-
-    private final FusionHytale fusion = (FusionHytale) FusionProvider.getInstance();
-
-    private final ModRegistry registry = this.fusion.getModRegistry();
 
     private PlayerRef player;
 

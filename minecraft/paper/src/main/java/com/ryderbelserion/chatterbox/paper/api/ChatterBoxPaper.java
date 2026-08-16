@@ -15,7 +15,7 @@ import com.ryderbelserion.chatterbox.paper.commands.admin.chat.StaffChatCommand;
 import com.ryderbelserion.chatterbox.paper.commands.player.MotdCommand;
 import com.ryderbelserion.chatterbox.paper.commands.player.social.MsgCommand;
 import com.ryderbelserion.chatterbox.paper.support.PlaceholderSupport;
-import com.ryderbelserion.fusion.core.api.constants.ModSupport;
+import com.ryderbelserion.fusion.api.enums.constants.ModSupport;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
@@ -23,6 +23,8 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import io.papermc.paper.util.Tick;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.title.Title;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Server;
@@ -35,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, FoliaScheduler> {
+public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, Component, TagResolver, FoliaScheduler> {
 
     private final ChatterBox plugin;
     private final Server server;

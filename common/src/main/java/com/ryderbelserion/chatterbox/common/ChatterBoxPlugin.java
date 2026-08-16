@@ -13,18 +13,18 @@ import com.ryderbelserion.chatterbox.common.api.adapters.filter.types.RegexFilte
 import com.ryderbelserion.chatterbox.common.api.adapters.filter.types.SimpleFilterAdapter;
 import com.ryderbelserion.chatterbox.common.configs.FilterConfig;
 import com.ryderbelserion.chatterbox.common.configs.ServerConfig;
-import com.ryderbelserion.chatterbox.common.enums.messages.Messages;
+import com.ryderbelserion.chatterbox.common.enums.Messages;
 import com.ryderbelserion.chatterbox.common.groups.LuckPermsSupport;
 import com.ryderbelserion.chatterbox.common.managers.ConfigManager;
 import com.ryderbelserion.chatterbox.common.configs.discord.DiscordConfig;
 import com.ryderbelserion.chatterbox.common.storage.StorageManager;
 import com.ryderbelserion.chatterbox.common.storage.holder.StorageHolder;
-import com.ryderbelserion.fusion.core.api.FusionKey;
-import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.api.enums.Level;
+import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
+import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
-import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
-import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.kyori.FusionKyori;
+import com.ryderbelserion.fusion.core.mods.ModRegistry;
 import org.apache.logging.log4j.core.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +36,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
 
-public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
+public abstract class ChatterBoxPlugin<S, C, TR, R> extends ChatterBox<S, C, TR> {
 
     public static final UUID CONSOLE_UUID = new UUID(0, 0);
 
@@ -48,7 +48,7 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
     protected ServerAdapter serverAdapter;
 
-    public ChatterBoxPlugin(@NotNull final FusionKyori fusion) {
+    public ChatterBoxPlugin(@NotNull final FusionCore fusion) {
         super(fusion);
     }
 
@@ -74,14 +74,6 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
 
     public void runDelayedTask(@NotNull final Consumer<R> consumer, final long delay) {
         runTask(consumer, 0, delay);
-    }
-
-    public void sendTitle(
-            @NotNull final S sender, final boolean notifyServer,
-            @NotNull final String title, @NotNull final String subtitle, final int duration, final int fadeIn, final int fadeOut,
-            @NotNull final Map<String, String> placeholders
-    ) {
-
     }
 
     public void sendMessageOfTheDay(@NotNull final CommentedConfigurationNode config, @NotNull final S sender, @NotNull final Map<String, String> placeholders) {
@@ -143,14 +135,14 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
         try {
             this.storageHolder = new StorageManager(this).init();
         } catch (final Exception exception) {
-            this.fusion.log(Level.ERROR, "Failed to initialize storage impl", exception);
+            this.fusion.log(Level.error, "Failed to initialize storage impl", exception);
         }
     }
 
     @Override
     public void loadMessages() {
         this.messageRegistry.init(action -> {
-            final List<Path> paths = this.fileManager.getFilesByPath(this.dataPath.resolve("locale"), ".yml", 1);
+            final List<Path> paths = this.fileManager.getFilesByPath(this.dataPath.resolve("locale"), ".yml");
 
             paths.add(this.dataPath.resolve("messages.yml")); // add to list
 
@@ -171,7 +163,7 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
                             default -> message.addKey(action, configuration, key);
                         }
                     }
-                }, () -> this.fusion.log(Level.INFO, "Path %s not found in cache.".formatted(path)));
+                }, () -> this.fusion.log(Level.info, "Path %s not found in cache.".formatted(path)));
             }
         });
     }
@@ -253,6 +245,7 @@ public abstract class ChatterBoxPlugin<S, R> extends ChatterBox<S> {
         return this.serverAdapter;
     }
 
+    @Override
     public @NotNull final Map<String, String> getPlaceholders(@Nullable final IUser user, @NotNull final String playerName) {
         final Map<String, String> placeholders = new HashMap<>();
 

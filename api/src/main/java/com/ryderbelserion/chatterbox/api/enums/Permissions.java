@@ -2,7 +2,7 @@ package com.ryderbelserion.chatterbox.api.enums;
 
 import com.ryderbelserion.chatterbox.api.ChatterBox;
 import com.ryderbelserion.chatterbox.api.ChatterBoxProvider;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
+import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
@@ -86,7 +86,7 @@ public enum Permissions {
         this(permissionType, permissionNode, permissionDesc, new HashMap<>(), false);
     }
 
-    private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
+    private final FusionKyori fusion = (FusionKyori) FusionProvider.api();
 
     private final ChatterBox plugin = ChatterBoxProvider.getInstance();
 

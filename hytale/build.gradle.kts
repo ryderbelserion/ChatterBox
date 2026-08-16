@@ -3,7 +3,7 @@ plugins {
 }
 
 project.group = "${rootProject.group}.hytale"
-project.version = "1.3.1"
+project.version = "1.4.0"
 
 repositories {
     maven("https://maven.hytale.com/release/")
@@ -12,9 +12,8 @@ repositories {
 dependencies {
     implementation(project(":chatterbox-common"))
 
-    implementation(libs.bundles.kyori)
     implementation(libs.bstats.hytale)
-    implementation(libs.fusion.kyori)
+    implementation(libs.fusion.hytale)
     implementation(libs.log4j2)
 
     compileOnly(libs.luckperms)
@@ -33,8 +32,7 @@ tasks {
         destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
 
         listOf(
-            "com.ryderbelserion.fusion",
-            "net.kyori.adventure"
+            "com.ryderbelserion.fusion"
         ).forEach {
             relocate(it, "libs.$it")
         }
@@ -43,7 +41,6 @@ tasks {
 
         minimize {
             exclude(dependency("com.ryderbelserion.fusion:.*"))
-            exclude(dependency("net.kyori.adventure:.*"))
         }
     }
 }
