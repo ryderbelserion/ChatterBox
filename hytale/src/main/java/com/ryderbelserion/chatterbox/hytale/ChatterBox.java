@@ -8,10 +8,8 @@ import com.ryderbelserion.chatterbox.hytale.commands.BaseCommand;
 import com.ryderbelserion.chatterbox.hytale.listeners.DisconnectListener;
 import com.ryderbelserion.chatterbox.hytale.listeners.PostConnectListener;
 import com.ryderbelserion.chatterbox.hytale.listeners.chat.ChatListener;
-import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.hytale.FusionHytale;
 import org.jspecify.annotations.NonNull;
-import java.nio.file.Path;
 import java.util.List;
 
 public class ChatterBox extends JavaPlugin {
@@ -30,9 +28,7 @@ public class ChatterBox extends JavaPlugin {
 
     @Override
     protected void start() {
-        final Path dataPath = getDataDirectory();
-
-        this.fusion = new FusionHytale(this, dataPath.getParent().resolve(dataPath.getFileName().toString().split("_")[0]));
+        this.fusion = new FusionHytale(this, getFile());
         this.fusion.init().post();
 
         this.plugin = new ChatterBoxHytale(this, this.fusion);
