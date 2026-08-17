@@ -19,7 +19,7 @@ fabric-api = "0.156.0+26.2" # https://fabricmc.net/develop/
 minecraft = "26.2" # https://minecraft.net
 
 ## Other API
-fusion = "4.50.0" # https://github.com/ryderbelserion/Fusion
+fusion = "4.50.1" # https://github.com/ryderbelserion/Fusion
 
 ## Metrics API
 bstats = "3.2.1" # https://bstats.org/docs

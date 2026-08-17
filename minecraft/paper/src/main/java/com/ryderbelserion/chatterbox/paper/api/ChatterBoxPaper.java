@@ -152,7 +152,7 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, Component, 
 
     @Override
     public void broadcast(@NotNull final CommandSender sender, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
-        this.server.broadcast(this.fusion.asComponent(sender, message, placeholders));
+        this.server.broadcast(this.fusion.asComponent(sender, message, placeholders, List.of()));
     }
 
     @Override
@@ -168,8 +168,8 @@ public class ChatterBoxPaper extends ChatterBoxPlugin<CommandSender, Component, 
             @NotNull final Map<String, String> placeholders
     ) {
         this.server.showTitle(Title.title(
-                this.fusion.asComponent(title, placeholders),
-                this.fusion.asComponent(subtitle, placeholders),
+                this.fusion.asComponent(title, placeholders, List.of()),
+                this.fusion.asComponent(subtitle, placeholders, List.of()),
                 fadeIn,
                 duration,
                 fadeOut

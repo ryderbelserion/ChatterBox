@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TrafficListener implements Listener {
@@ -82,7 +83,7 @@ public class TrafficListener implements Listener {
 
                 final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
 
-                event.joinMessage(this.fusion.asComponent(player, output, placeholders));
+                event.joinMessage(this.fusion.asComponent(player, output, placeholders, List.of()));
 
                 return;
             }
@@ -109,7 +110,7 @@ public class TrafficListener implements Listener {
 
             final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
 
-            event.joinMessage(this.fusion.asComponent(player, output, placeholders));
+            event.joinMessage(this.fusion.asComponent(player, output, placeholders, List.of()));
         }
     }
 
@@ -155,7 +156,7 @@ public class TrafficListener implements Listener {
 
                 final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
 
-                event.quitMessage(this.fusion.asComponent(player, output, placeholders));
+                event.quitMessage(this.fusion.asComponent(player, output, placeholders, List.of()));
 
                 return;
             }
@@ -180,7 +181,7 @@ public class TrafficListener implements Listener {
 
             final String output = node.isList() ? StringUtils.toString(StringUtils.getStringList(node, default_message)) : node.getString(default_message);
 
-            event.quitMessage(this.fusion.asComponent(player, output, placeholders));
+            event.quitMessage(this.fusion.asComponent(player, output, placeholders, List.of()));
         }
     }
 }

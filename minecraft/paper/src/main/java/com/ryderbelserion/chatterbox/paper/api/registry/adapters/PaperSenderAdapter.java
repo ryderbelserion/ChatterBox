@@ -100,7 +100,7 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
         if (!(sender instanceof Player player)) {
             this.messageRegistry.getMessage(id).ifPresent(value -> reference.set(value.getValue()));
 
-            return this.fusion.asComponent(sender, reference.get(), map);
+            return this.fusion.asComponent(sender, reference.get(), map, List.of());
         }
 
         final Optional<PaperUserAdapter> optional = this.userRegistry.getUser(player.getUniqueId());
@@ -108,14 +108,14 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
         if (optional.isEmpty()) {
             this.messageRegistry.getMessage(id).ifPresent(value -> reference.set(value.getValue()));
 
-            return this.fusion.asComponent(player, reference.get(), map);
+            return this.fusion.asComponent(player, reference.get(), map, List.of());
         }
 
         final PaperUserAdapter user = optional.get();
 
         this.messageRegistry.getMessageByLocale(user.getLocaleKey(), id).ifPresent(value -> reference.set(value.getValue()));
 
-        return this.fusion.asComponent(player, reference.get(), map);
+        return this.fusion.asComponent(player, reference.get(), map, List.of());
     }
 
     @Override
