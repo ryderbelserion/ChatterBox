@@ -49,10 +49,6 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
             final Map<String, String> placeholders = new HashMap<>(this.platform.getPlaceholders(user, playerName));
 
-            final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
-
-            this.platform.sendMessageOfTheDay(config, player, placeholders); // send motd
-
             final DiscordConfig discordConfig = this.configManager.getDiscord();
 
             if (discordConfig.isEnabled() && discordConfig.isPlayerAlertsEnabled()) {
@@ -60,6 +56,10 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
 
                 alertConfig.sendDiscord(player, this.discordManager.getGuild(), PlayerAlert.JOIN_ALERT, placeholders);
             }
+
+            final CommentedConfigurationNode config = FileKeys.config.getYamlConfig();
+
+            this.platform.sendMessageOfTheDay(config, player, placeholders); // send motd
 
             if (config.node("root", "traffic", "join-message", "toggle").getBoolean(true)) { // module for join messages is enabled.
                 final String group = placeholders.getOrDefault("{group}", "").toLowerCase();
@@ -71,7 +71,6 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
                     if (configuration.node("toggle").getBoolean(false)) {
                         this.platform.sendTitle(
                                 player,
-                                true,
                                 configuration.node("header").getString("Player has joined!"),
                                 configuration.node("footer").getString("{player}"),
                                 configuration.node("delay", "duration").getInt(5),
@@ -97,7 +96,6 @@ public class PostConnectListener implements EventListener<PlayerConnectEvent> {
                 if (config.node("root", "traffic", "join-message", "title", "toggle").getBoolean(false)) { // the title is sent if the group is found, and the toggle is true.
                     this.platform.sendTitle(
                             player,
-                            true,
                             configuration.node("header").getString("Player has joined!"),
                             configuration.node("footer").getString("{player}"),
                             configuration.node("delay", "duration").getInt(5),

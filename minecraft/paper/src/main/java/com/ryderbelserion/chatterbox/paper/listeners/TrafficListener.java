@@ -67,7 +67,6 @@ public class TrafficListener implements Listener {
 
                     this.platform.sendTitle(
                             player,
-                            true,
                             configuration.node("header").getString("Player has joined!"),
                             configuration.node("footer").getString("{player}"),
                             configuration.node("delay", "duration").getInt(5),
@@ -95,7 +94,6 @@ public class TrafficListener implements Listener {
 
                 this.platform.sendTitle(
                         player,
-                        true,
                         configuration.node("header").getString("Player has joined!"),
                         configuration.node("footer").getString("{player}"),
                         configuration.node("delay", "duration").getInt(5),
@@ -142,7 +140,6 @@ public class TrafficListener implements Listener {
                 if (configuration.node("toggle").getBoolean(false)) {
                     this.platform.sendTitle(
                             player,
-                            true,
                             configuration.node("header").getString("Player has quit!"),
                             configuration.node("footer").getString("{player}"),
                             configuration.node("delay", "duration").getInt(5),
@@ -168,7 +165,6 @@ public class TrafficListener implements Listener {
             if (config.node("root", "traffic", "quit-message", "title", "toggle").getBoolean(false)) { // the title is sent if the group is found, and the toggle is true.
                 this.platform.sendTitle(
                         player,
-                        true,
                         configuration.node("header").getString("Player has quit!"),
                         configuration.node("footer").getString("{player}"),
                         configuration.node("delay", "duration").getInt(5),

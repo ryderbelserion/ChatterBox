@@ -127,13 +127,13 @@ public class ChatterBoxHytale extends ChatterBoxPlugin<IMessageReceiver, Message
     @Override
     public void sendTitle(
             @NotNull final IMessageReceiver sender,
-            final boolean alertServer,
+            final boolean notifyServer,
             @NotNull final String title, @NotNull final String subtitle, final int duration, final int fadeIn, final int fadeOut,
             @NotNull final Map<String, String> placeholders
     ) {
         final Universe universe = Universe.get();
 
-        if (alertServer) {
+        if (notifyServer) {
             final Message header = this.fusion.asComponent(sender,
                     title,
                     placeholders

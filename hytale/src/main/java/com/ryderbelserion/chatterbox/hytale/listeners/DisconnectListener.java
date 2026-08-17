@@ -66,7 +66,6 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                     if (configuration.node("toggle").getBoolean(false)) {
                         this.platform.sendTitle(
                                 player,
-                                true,
                                 configuration.node("header").getString("Player has quit!"),
                                 configuration.node("footer").getString("{player}"),
                                 configuration.node("delay", "duration").getInt(5),
@@ -92,7 +91,6 @@ public class DisconnectListener implements EventListener<PlayerDisconnectEvent> 
                 if (config.node("root", "traffic", "quit-message", "title", "toggle").getBoolean(false)) { // the title is sent if the group is found, and the toggle is true.
                     this.platform.sendTitle(
                             player,
-                            true,
                             configuration.node("header").getString("Player has quit!"),
                             configuration.node("footer").getString("{player}"),
                             configuration.node("delay", "duration").getInt(5),

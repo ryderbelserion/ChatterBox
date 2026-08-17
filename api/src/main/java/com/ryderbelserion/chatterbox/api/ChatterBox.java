@@ -46,6 +46,14 @@ public abstract class ChatterBox<S, C, TR> {
 
     }
 
+    public void sendTitle(
+            @NotNull final S sender,
+            @NotNull final String title, @NotNull final String subtitle, final int duration, final int fadeIn, final int fadeOut,
+            @NotNull final Map<String, String> placeholders
+    ) {
+        sendTitle(sender, true, title, subtitle, duration, fadeIn, fadeOut, placeholders);
+    }
+
     public abstract @NonNull IContextRegistry getContextRegistry();
 
     public abstract @NonNull MessageRegistry getMessageRegistry();
@@ -84,9 +92,5 @@ public abstract class ChatterBox<S, C, TR> {
 
     public final Path getDataPath() {
         return this.dataPath;
-    }
-
-    public final Path getUserPath() {
-        return this.dataPath.resolve("users");
     }
 }

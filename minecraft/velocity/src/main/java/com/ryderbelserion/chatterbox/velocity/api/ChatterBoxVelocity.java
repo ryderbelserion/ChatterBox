@@ -22,7 +22,6 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -135,15 +134,6 @@ public class ChatterBoxVelocity extends ChatterBoxPlugin<CommandSource, Componen
         }
 
         builder.schedule();
-    }
-
-    @Override
-    public void sendTitle(
-            final @NonNull CommandSource sender, final boolean notifyServer,
-            final @NotNull String title, final @NotNull String subtitle, final int duration, final int fadeIn, final int fadeOut,
-            final @NotNull Map<String, String> placeholders
-    ) {
-        super.sendTitle(sender, notifyServer, title, subtitle, duration, fadeIn, fadeOut, placeholders);
     }
 
     public @NotNull final ProxyServer getServer() {
