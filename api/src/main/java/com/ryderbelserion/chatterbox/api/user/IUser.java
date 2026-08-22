@@ -93,6 +93,8 @@ public abstract class IUser {
 
     public void init() {
         if (this.storage.hasUser(this.getUniqueId())) {
+            this.storage.populateCache(this);
+
             return;
         }
 
